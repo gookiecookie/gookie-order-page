@@ -77,14 +77,15 @@ body.drawer-open {
 
 .header-inner {
   position: relative;
-  display: grid;
-  grid-template-columns: 52px 1fr 52px;
+  display: flex;
   align-items: center;
+  justify-content: center;
+
   width: 100%;
-  max-width: 1440px;
+  max-width: none;
   height: 100%;
-  margin: 0 auto;
-  padding: 0 14px;
+  margin: 0;
+  padding: 0;
 }
 
 .brand-logo {
@@ -135,7 +136,21 @@ body.drawer-open {
 }
 
 .header-icon-button:active {
-  transform: scale(0.94);
+  opacity: 0.75;
+}
+
+#menuButton {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#cartButton {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .hamburger-icon {
