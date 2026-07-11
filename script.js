@@ -141,3 +141,74 @@ document.querySelectorAll(".drawer-nav a").forEach((link) => {
     closeAllDrawers();
   });
 });
+
+/* =========================
+   03. BOX BUILDER
+========================= */
+
+const boxSizeButtons = document.querySelectorAll(".box-size-card");
+const cookieBoxSlots = document.getElementById("cookieBoxSlots");
+const selectedBoxName = document.getElementById("selectedBoxName");
+const selectedCookieCount = document.getElementById("selectedCookieCount");
+const boxCapacity = document.getElementById("boxCapacity");
+const boxHelperText = document.getElementById("boxHelperText");
+
+let currentBoxSize = 6;
+let currentBoxName = "Chunky Box";
+let selectedCookies = [];
+
+
+function renderCookieSlots() {
+  cookieBoxSlots.innerHTML = "";
+
+  for (let index = 0; index < currentBoxSize; index += 1) {
+    const slot = document.createElement("div");
+
+    slot.className = "cookie-slot";
+
+    slot.innerHTML = `
+      <span class="cookie-slot-number">
+        ${String(index + 1).padStart(2, "0")}
+      </span>
+    `;
+
+    cookieBoxSlots.appendChild(slot);
+  }
+
+  selectedCookieCount.textContent = selectedCookies.length;
+  boxCapacity.textContent = currentBoxSize;
+
+  boxHelperText.textContent =
+    `Pick ${currentBoxSize} cookies to complete your ${currentBoxName}.`;
+}
+
+
+function selectBoxSize(button) {
+  const newBoxSize = Number(button.dataset.boxSize);
+  const newBoxName = button.dataset.boxName;
+
+  boxSizeButtons.forEach((boxButton) => {
+    boxButton.classList.remove("is-selected");
+  });
+
+  button.classList.add("is-selected");
+
+  currentBoxSize = newBoxSize;
+  currentBoxName = newBoxName;
+
+  selectedCookies = [];
+
+  selectedBoxName.textContent = currentBoxName;
+
+  renderCookieSlots();
+}
+
+
+boxSizeButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    selectBoxSize(button);
+  });
+});
+
+
+renderCookieSlots();
