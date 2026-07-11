@@ -16,7 +16,6 @@ const menuCloseButton = document.getElementById("menuCloseButton");
 const cartButton = document.getElementById("cartButton");
 const cartDrawer = document.getElementById("cartDrawer");
 const cartCloseButton = document.getElementById("cartCloseButton");
-const demoCartButton = document.getElementById("demoCartButton");
 
 
 /* =========================
@@ -105,10 +104,6 @@ menuButton.addEventListener("click", () => {
 });
 
 cartButton.addEventListener("click", () => {
-  openDrawer(cartDrawer, cartButton);
-});
-
-demoCartButton.addEventListener("click", () => {
   openDrawer(cartDrawer, cartButton);
 });
 
