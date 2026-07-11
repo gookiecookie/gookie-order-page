@@ -463,8 +463,8 @@ body.drawer-open {
   font-family: "League Spartan", sans-serif;
   font-size: clamp(3.2rem, 14vw, 7rem);
   font-weight: 900;
-  line-height: 0.82;
-  letter-spacing: -0.075em;
+  line-height: 0.88;
+  letter-spacing: -0.045em;
 }
 
 .hero-placeholder h1 span {
