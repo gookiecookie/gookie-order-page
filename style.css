@@ -440,46 +440,116 @@ body.drawer-open {
 
 
 /* =========================
-   07. TEMPORARY HERO
+   07. HERO SECTION
 ========================= */
 
-.hero-placeholder {
-  display: grid;
-  min-height: calc(100svh - var(--header-height-mobile));
-  place-items: center;
-  padding: 64px 24px;
-  background:
-    radial-gradient(circle at 20% 15%, rgba(187, 25, 26, 0.11), transparent 30%),
-    var(--cream);
+.hero-section {
+  overflow: hidden;
+  background: var(--cream);
 }
 
-.hero-placeholder-content {
-  width: min(100%, 720px);
+.hero-cookie-area {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 440px;
+  padding: 42px 20px 15px;
+  background: #f5d9b7;
+  isolation: isolate;
+}
+
+.hero-cookie-image {
+  position: relative;
+  z-index: 3;
+  display: block;
+  width: min(94vw, 560px);
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 22px 18px rgba(82, 38, 14, 0.18));
+}
+
+.hero-shape {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero-shape-one {
+  top: 8%;
+  left: -18%;
+  width: 250px;
+  height: 250px;
+  background: rgba(187, 25, 26, 0.09);
+}
+
+.hero-shape-two {
+  right: -23%;
+  bottom: -12%;
+  width: 310px;
+  height: 310px;
+  border: 2px solid rgba(187, 25, 26, 0.13);
+}
+
+.hero-content {
+  padding: 58px 24px 76px;
   text-align: center;
 }
 
-.hero-placeholder h1 {
-  margin: 12px 0 22px;
+.hero-content h1 {
+  margin: 13px auto 24px;
   font-family: "League Spartan", sans-serif;
-  font-size: clamp(3.2rem, 14vw, 7rem);
+  font-size: clamp(3.3rem, 15vw, 7rem);
   font-weight: 900;
-  line-height: 0.88;
-  letter-spacing: -0.025em;
+  line-height: 0.87;
+  letter-spacing: -0.035em;
 }
 
-.hero-placeholder h1 span {
+.hero-content h1 span {
   display: block;
+}
+
+.hero-line-dark {
+  color: var(--ink);
+}
+
+.hero-line-red {
   color: var(--gookie-red);
 }
 
-.hero-placeholder p:not(.section-kicker) {
-  max-width: 560px;
+.hero-description {
+  max-width: 520px;
   margin: 0 auto 30px;
   color: var(--muted);
-  font-size: clamp(1rem, 3.8vw, 1.2rem);
-  line-height: 1.6;
+  font-size: 1.05rem;
+  line-height: 1.65;
 }
 
+.hero-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  min-height: 58px;
+  padding: 16px 28px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--white);
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 0.055em;
+  transition:
+    transform var(--transition),
+    background-color var(--transition);
+}
+
+.hero-button span {
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.hero-button:active {
+  transform: scale(0.97);
+}
 .next-step-preview {
   padding: 86px 24px;
   text-align: center;
@@ -525,6 +595,44 @@ body.drawer-open {
   .hero-placeholder {
     min-height: calc(100vh - var(--header-height-desktop));
   }
+
+   .hero-section {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  min-height: calc(100vh - var(--header-height-desktop));
+}
+
+.hero-cookie-area {
+  min-height: 100%;
+  padding: 60px 30px;
+}
+
+.hero-cookie-image {
+  width: min(52vw, 700px);
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 80px clamp(40px, 6vw, 110px);
+  text-align: left;
+}
+
+.hero-content h1 {
+  margin-left: 0;
+  font-size: clamp(4.5rem, 7vw, 7.8rem);
+}
+
+.hero-description {
+  margin-left: 0;
+}
+
+.hero-button:hover {
+  background: var(--gookie-red);
+  transform: translateY(-3px);
+}
 }
 
 
