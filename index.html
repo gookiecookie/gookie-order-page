@@ -213,6 +213,98 @@
     </section>
   </main>
 
+<!-- =========================
+     06. BUILD YOUR BOX
+========================= -->
+<section class="box-builder-section" id="build-box">
+  <div class="builder-heading">
+    <p class="section-kicker">YOUR BOX. YOUR RULES.</p>
+
+    <h2>BUILD YOUR BOX</h2>
+
+    <p>
+      Choose your box size, then fill it with your favourite chunky wonders.
+    </p>
+  </div>
+
+  <!-- BOX SIZE OPTIONS -->
+  <div class="box-size-options" role="group" aria-label="Choose your box size">
+
+    <button
+      class="box-size-card"
+      type="button"
+      data-box-size="4"
+      data-box-name="Treat Box"
+    >
+      <span class="box-size-number">4</span>
+
+      <span class="box-size-details">
+        <strong>TREAT BOX</strong>
+        <small>4 chunky cookies</small>
+      </span>
+    </button>
+
+    <button
+      class="box-size-card is-selected"
+      type="button"
+      data-box-size="6"
+      data-box-name="Chunky Box"
+    >
+      <span class="box-badge">GOOKIE FAVE</span>
+
+      <span class="box-size-number">6</span>
+
+      <span class="box-size-details">
+        <strong>CHUNKY BOX</strong>
+        <small>6 chunky cookies</small>
+      </span>
+    </button>
+
+    <button
+      class="box-size-card"
+      type="button"
+      data-box-size="12"
+      data-box-name="Cookie Feast"
+    >
+      <span class="box-size-number">12</span>
+
+      <span class="box-size-details">
+        <strong>COOKIE FEAST</strong>
+        <small>12 chunky cookies</small>
+      </span>
+    </button>
+
+  </div>
+
+  <!-- COOKIE BOX -->
+  <div class="cookie-box-panel">
+
+    <div class="cookie-box-header">
+      <div>
+        <p class="cookie-box-label">YOUR BOX</p>
+        <h3 id="selectedBoxName">Chunky Box</h3>
+      </div>
+
+      <div class="box-counter">
+        <strong id="selectedCookieCount">0</strong>
+        <span>/</span>
+        <strong id="boxCapacity">6</strong>
+      </div>
+    </div>
+
+    <div
+      class="cookie-box-slots"
+      id="cookieBoxSlots"
+      aria-label="Your selected cookie box"
+    ></div>
+
+    <p class="box-helper-text" id="boxHelperText">
+      Pick 6 cookies to complete your Chunky Box.
+    </p>
+
+  </div>
+</section>
+  
   <script src="script.js"></script>
 </body>
 </html>
