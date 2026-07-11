@@ -158,14 +158,35 @@ function renderCookieSlots() {
 
   for (let index = 0; index < currentBoxSize; index += 1) {
     const slot = document.createElement("div");
+    const cookie = selectedCookies[index];
 
     slot.className = "cookie-slot";
 
-    slot.innerHTML = `
-      <span class="cookie-slot-number">
-        ${String(index + 1).padStart(2, "0")}
-      </span>
-    `;
+    if (cookie) {
+      slot.classList.add("has-cookie");
+
+      slot.innerHTML = `
+        <span class="cookie-slot-number">
+          ${String(index + 1).padStart(2, "0")}
+        </span>
+
+        <img
+          class="cookie-slot-image"
+          src="${cookie.image}"
+          alt="${cookie.name}"
+        >
+
+        <span class="cookie-slot-name">
+          ${cookie.name}
+        </span>
+      `;
+    } else {
+      slot.innerHTML = `
+        <span class="cookie-slot-number">
+          ${String(index + 1).padStart(2, "0")}
+        </span>
+      `;
+    }
 
     cookieBoxSlots.appendChild(slot);
   }
@@ -173,10 +194,105 @@ function renderCookieSlots() {
   selectedCookieCount.textContent = selectedCookies.length;
   boxCapacity.textContent = currentBoxSize;
 
-  boxHelperText.textContent =
-    `Pick ${currentBoxSize} cookies to complete your ${currentBoxName}.`;
+  const remainingCookies = currentBoxSize - selectedCookies.length;
+
+  if (remainingCookies === 0) {
+    boxHelperText.textContent = "Your Gookie box is ready! 🎉";
+  } else {
+    boxHelperText.textContent =
+      `Pick ${remainingCookies} more ${
+        remainingCookies === 1 ? "cookie" : "cookies"
+      } to complete your ${currentBoxName}.`;
+  }
+
+  updateFlavourQuantities();
+  updateCartCounter();
 }
 
+/* =========================
+   04. FLAVOUR SELECTION
+========================= */
+
+const flavourCards = document.querySelectorAll(".flavour-card");
+const headerCartCount = document.getElementById("cartCount");
+const cartSelectedCount = document.getElementById("cartSelectedCount");
+
+
+function addCookie(card) {
+  if (selectedCookies.length >= currentBoxSize) {
+    boxHelperText.textContent =
+      "Your box is already full. Remove a cookie to choose another.";
+
+    return;
+  }
+
+  selectedCookies.push({
+    id: card.dataset.cookieId,
+    name: card.dataset.cookieName,
+    image: card.dataset.cookieImage
+  });
+
+  renderCookieSlots();
+}
+
+
+function removeCookie(card) {
+  const cookieId = card.dataset.cookieId;
+
+  const cookieIndex = selectedCookies
+    .map((cookie) => cookie.id)
+    .lastIndexOf(cookieId);
+
+  if (cookieIndex === -1) {
+    return;
+  }
+
+  selectedCookies.splice(cookieIndex, 1);
+
+  renderCookieSlots();
+}
+
+
+function updateFlavourQuantities() {
+  flavourCards.forEach((card) => {
+    const cookieId = card.dataset.cookieId;
+
+    const quantity = selectedCookies.filter(
+      (cookie) => cookie.id === cookieId
+    ).length;
+
+    const quantityDisplay = card.querySelector(".flavour-quantity");
+
+    quantityDisplay.textContent = quantity;
+  });
+}
+
+
+function updateCartCounter() {
+  const totalSelected = selectedCookies.length;
+
+  headerCartCount.textContent = totalSelected;
+  headerCartCount.setAttribute(
+    "aria-label",
+    `${totalSelected} items in cart`
+  );
+
+  cartSelectedCount.textContent = totalSelected;
+}
+
+
+flavourCards.forEach((card) => {
+  const increaseButton = card.querySelector(".increase-cookie");
+  const decreaseButton = card.querySelector(".decrease-cookie");
+
+  increaseButton.addEventListener("click", () => {
+    addCookie(card);
+  });
+
+  decreaseButton.addEventListener("click", () => {
+    removeCookie(card);
+  });
+});
 
 function selectBoxSize(button) {
   const newBoxSize = Number(button.dataset.boxSize);
