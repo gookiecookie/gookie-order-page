@@ -98,12 +98,10 @@ body.drawer-open {
   color: var(--white);
 }
 
-.brand-logo span {
-  font-family: "League Spartan", sans-serif;
-  font-size: clamp(1.85rem, 7vw, 2.6rem);
-  font-weight: 900;
-  line-height: 1;
-  letter-spacing: -0.07em;
+.brand-logo img{
+    height:48px;
+    width:auto;
+    display:block;
 }
 
 .header-icon-button {
