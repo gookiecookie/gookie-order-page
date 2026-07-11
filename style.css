@@ -462,7 +462,6 @@ display:flex;
 gap:18px;
 width:max-content;
 padding:10px 0;
-animation:gookieMarquee 42s linear infinite;
 will-change:transform
 }
 
@@ -526,18 +525,69 @@ font-size:.84rem;
 text-align:center
 }
 
-@keyframes gookieMarquee {
-from {
-transform:translateX(0)
+.marquee-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
 }
 
-to {
-transform:translateX(-50%)
+.marquee-shell {
+  overflow-x: auto;
+  overflow-y: hidden;
+  flex: 1;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  cursor: grab;
+  touch-action: pan-y;
 }
 
-
+.marquee-shell::-webkit-scrollbar {
+  display: none;
 }
 
+.marquee-shell.is-dragging {
+  cursor: grabbing;
+  scroll-behavior: auto;
+}
+
+.marquee-arrow {
+  position: relative;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+  border: 1px solid rgba(23, 21, 21, 0.12);
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--ink);
+  font-size: 1.45rem;
+  cursor: pointer;
+  box-shadow: 0 10px 28px rgba(55, 26, 12, 0.12);
+  transition:
+    transform var(--transition),
+    background-color var(--transition),
+    color var(--transition);
+}
+
+.marquee-arrow:hover {
+  background: var(--gookie-red);
+  color: var(--white);
+  transform: scale(1.06);
+}
+
+.marquee-arrow:active {
+  transform: scale(0.94);
+}
+
+.marquee-track {
+  animation: none;
+  transform: none;
+  padding-inline: 8px;
+}
 
 .choice-section,.order-section {
 padding:90px 20px
@@ -1056,6 +1106,38 @@ margin-bottom:16px
 
 
 @media(min-width:768px) {
+.marquee-wrapper {
+    gap: 0;
+  }
+
+  .marquee-arrow {
+    position: absolute;
+    top: 50%;
+    width: 44px;
+    height: 44px;
+    transform: translateY(-50%);
+  }
+
+  .marquee-arrow:hover {
+    transform: translateY(-50%) scale(1.06);
+  }
+
+  .marquee-arrow:active {
+    transform: translateY(-50%) scale(0.94);
+  }
+
+  .marquee-arrow-left {
+    left: 10px;
+  }
+
+  .marquee-arrow-right {
+    right: 10px;
+  }
+
+  .marquee-shell {
+    padding-inline: 18px;
+  }
+
 .site-header {
 height:var(--header-height-desktop)
 }
