@@ -464,7 +464,7 @@ body.drawer-open {
   font-size: clamp(3.2rem, 14vw, 7rem);
   font-weight: 900;
   line-height: 0.88;
-  letter-spacing: -0.045em;
+  letter-spacing: -0.025em;
 }
 
 .hero-placeholder h1 span {
