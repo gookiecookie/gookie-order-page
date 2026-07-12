@@ -526,6 +526,56 @@ font-size:.84rem;
 text-align:center
 }
 
+/* ========================================
+   MARQUEE CONTROLS
+======================================== */
+
+.marquee-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.marquee-arrow {
+    position: relative;
+    z-index: 5;
+
+    display: grid;
+    place-items: center;
+
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
+
+    border: 1px solid var(--line);
+    border-radius: 50%;
+
+    background: var(--white);
+    color: var(--ink);
+
+    font-size: 1.4rem;
+    cursor: pointer;
+
+    box-shadow: 0 10px 28px rgba(55, 26, 12, 0.12);
+
+    transition:
+        transform var(--transition),
+        background-color var(--transition),
+        color var(--transition);
+}
+
+.marquee-arrow:hover {
+    background: var(--gookie-red);
+    color: var(--white);
+    transform: scale(1.06);
+}
+
+.marquee-arrow:active {
+    transform: scale(0.94);
+}
+
 @keyframes gookieMarquee {
 from {
 transform:translateX(0)
