@@ -1402,3 +1402,36 @@ button.cookie-slot {
     animation: none;
   }
 }
+
+/* =========================================================
+   MEET THE GOOKIES — INTERACTIVE CAROUSEL
+   ========================================================= */
+
+.marquee-shell {
+  touch-action: pan-y;
+  user-select: none;
+  overscroll-behavior-x: contain;
+}
+
+.marquee-shell.is-dragging {
+  cursor: grabbing;
+  scroll-behavior: auto;
+}
+
+.marquee-shell.is-dragging .marquee-card {
+  pointer-events: none;
+}
+
+.marquee-track.is-paused .marquee-card-image img {
+  transform: scale(1.015);
+}
+
+.marquee-card-image img {
+  transition: transform var(--transition);
+}
+
+.marquee-arrow:focus-visible,
+.marquee-card:focus-visible {
+  outline: 3px solid rgba(187, 25, 26, 0.3);
+  outline-offset: 4px;
+}

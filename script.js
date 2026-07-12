@@ -139,7 +139,10 @@ const $ = (id) => document.getElementById(id),
   cartDrawer = $("cartDrawer"),
   menuCloseButton = $("menuCloseButton"),
   cartCloseButton = $("cartCloseButton"),
+  marqueeShell = $("marqueeShell"),
   marqueeTrack = $("marqueeTrack"),
+  marqueePrev = $("marqueePrev"),
+  marqueeNext = $("marqueeNext"),
   cookieModal = $("cookieModal"),
   cookieModalClose = $("cookieModalClose"),
   modalCookieImage = $("modalCookieImage"),
@@ -189,7 +192,15 @@ let buildBoxSize = 0,
   selectedCollection = null,
   gookieChoiceSize = 0,
   gookieChoiceSelection = [],
-  currentOrder = null;
+  currentOrder = null,
+  marqueeAnimationFrame = null,
+  marqueeLastTimestamp = 0,
+  marqueePaused = false,
+  marqueeDragging = false,
+  marqueePointerStartX = 0,
+  marqueeScrollStart = 0,
+  marqueeDragDistance = 0,
+  marqueeResumeTimer = null;
 const getCookieById = (id) => gookieCatalogue.find((c) => c.id === id);
 function openOverlay() {
   pageOverlay.hidden = false;
@@ -250,19 +261,128 @@ function createMarqueeCard(c) {
   b.className = "marquee-card";
   b.type = "button";
   b.innerHTML = `<span class="marquee-card-image"><img src="${c.image}" alt="${c.name}"></span><span class="marquee-card-copy"><small>${c.subtitle}</small><strong>${c.name}</strong></span>`;
-  b.addEventListener("click", () => {
+  b.addEventListener("click", (event) => {
+    if (marqueeDragDistance > 8) {
+      event.preventDefault();
+      marqueeDragDistance = 0;
+      return;
+    }
+
     pauseMarquee();
     openCookieDetails(c);
   });
   return b;
 }
 function renderMarquee() {
-  [...gookieCatalogue, ...gookieCatalogue].forEach((c) =>
-    marqueeTrack.appendChild(createMarqueeCard(c)),
-  );
+  marqueeTrack.innerHTML = "";
+
+  [...gookieCatalogue, ...gookieCatalogue].forEach((cookie) => {
+    marqueeTrack.appendChild(createMarqueeCard(cookie));
+  });
 }
-const pauseMarquee = () => marqueeTrack.classList.add("is-paused"),
-  resumeMarquee = () => marqueeTrack.classList.remove("is-paused");
+
+function getMarqueeLoopWidth() {
+  return marqueeTrack.scrollWidth / 2;
+}
+
+function normaliseMarqueePosition() {
+  const loopWidth = getMarqueeLoopWidth();
+
+  if (!loopWidth) return;
+
+  if (marqueeShell.scrollLeft >= loopWidth) {
+    marqueeShell.scrollLeft -= loopWidth;
+  } else if (marqueeShell.scrollLeft < 0) {
+    marqueeShell.scrollLeft += loopWidth;
+  }
+}
+
+function animateMarquee(timestamp) {
+  if (!marqueeLastTimestamp) marqueeLastTimestamp = timestamp;
+
+  const elapsed = Math.min(timestamp - marqueeLastTimestamp, 40);
+  marqueeLastTimestamp = timestamp;
+
+  if (!marqueePaused && !marqueeDragging) {
+    const pixelsPerSecond = 28;
+    marqueeShell.scrollLeft += (pixelsPerSecond * elapsed) / 1000;
+    normaliseMarqueePosition();
+  }
+
+  marqueeAnimationFrame = requestAnimationFrame(animateMarquee);
+}
+
+function startMarqueeAnimation() {
+  if (marqueeAnimationFrame) return;
+
+  marqueeLastTimestamp = 0;
+  marqueeAnimationFrame = requestAnimationFrame(animateMarquee);
+}
+
+function pauseMarquee() {
+  marqueePaused = true;
+  marqueeTrack.classList.add("is-paused");
+  clearTimeout(marqueeResumeTimer);
+}
+
+function resumeMarquee(delay = 0) {
+  clearTimeout(marqueeResumeTimer);
+
+  marqueeResumeTimer = setTimeout(() => {
+    marqueePaused = false;
+    marqueeTrack.classList.remove("is-paused");
+  }, delay);
+}
+
+function scrollMarqueeByCard(direction) {
+  const firstCard = marqueeTrack.querySelector(".marquee-card");
+  const trackStyles = window.getComputedStyle(marqueeTrack);
+  const gap = Number.parseFloat(trackStyles.columnGap || trackStyles.gap) || 18;
+  const distance = firstCard ? firstCard.offsetWidth + gap : 320;
+
+  pauseMarquee();
+  marqueeShell.scrollBy({
+    left: distance * direction,
+    behavior: "smooth",
+  });
+
+  setTimeout(normaliseMarqueePosition, 500);
+  resumeMarquee(1400);
+}
+
+function beginMarqueeDrag(event) {
+  if (event.pointerType === "mouse" && event.button !== 0) return;
+
+  marqueeDragging = true;
+  marqueePointerStartX = event.clientX;
+  marqueeScrollStart = marqueeShell.scrollLeft;
+  marqueeDragDistance = 0;
+  marqueeShell.classList.add("is-dragging");
+  marqueeShell.setPointerCapture(event.pointerId);
+  pauseMarquee();
+}
+
+function moveMarqueeDrag(event) {
+  if (!marqueeDragging) return;
+
+  const distance = event.clientX - marqueePointerStartX;
+  marqueeDragDistance = Math.max(marqueeDragDistance, Math.abs(distance));
+  marqueeShell.scrollLeft = marqueeScrollStart - distance;
+  normaliseMarqueePosition();
+}
+
+function endMarqueeDrag(event) {
+  if (!marqueeDragging) return;
+
+  marqueeDragging = false;
+  marqueeShell.classList.remove("is-dragging");
+
+  if (marqueeShell.hasPointerCapture(event.pointerId)) {
+    marqueeShell.releasePointerCapture(event.pointerId);
+  }
+
+  resumeMarquee(1100);
+}
 function openCookieDetails(c) {
   modalCookieImage.src = c.image;
   modalCookieImage.alt = c.name;
@@ -594,6 +714,19 @@ gookieChoiceSizeOptions
   .forEach((b) => b.addEventListener("click", () => selectGookieChoiceSize(b)));
 reshuffleChoice.addEventListener("click", createGookieChoiceSelection);
 keepGookieChoice.addEventListener("click", saveGookieChoiceOrder);
+
+marqueePrev.addEventListener("click", () => scrollMarqueeByCard(-1));
+marqueeNext.addEventListener("click", () => scrollMarqueeByCard(1));
+marqueeShell.addEventListener("pointerdown", beginMarqueeDrag);
+marqueeShell.addEventListener("pointermove", moveMarqueeDrag);
+marqueeShell.addEventListener("pointerup", endMarqueeDrag);
+marqueeShell.addEventListener("pointercancel", endMarqueeDrag);
+marqueeShell.addEventListener("mouseenter", pauseMarquee);
+marqueeShell.addEventListener("mouseleave", () => {
+  if (!marqueeDragging) resumeMarquee(500);
+});
+marqueeShell.addEventListener("focusin", pauseMarquee);
+marqueeShell.addEventListener("focusout", () => resumeMarquee(500));
 document
   .querySelectorAll(".drawer-nav a")
   .forEach((a) => a.addEventListener("click", closeAllDrawers));
@@ -605,6 +738,7 @@ document.addEventListener("keydown", (e) => {
   }
 });
 renderMarquee();
+startMarqueeAnimation();
 renderCollections();
 renderCookieSlots(buildCookieSlots, 0, []);
 updateBuildBoxProgress();
