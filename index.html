@@ -83,7 +83,31 @@
         <h2>MEET THE GOOKIES</h2>
         <p>Tap any Gookie to discover what makes it wonderful.</p>
       </div>
-      <div class="marquee-shell" id="marqueeShell"><div class="marquee-track" id="marqueeTrack"></div></div>
+      <div class="marquee-wrapper">
+
+  <button
+    class="marquee-arrow marquee-arrow-left"
+    id="marqueePrev"
+    type="button"
+    aria-label="View previous Gookies"
+  >
+    ←
+  </button>
+
+  <div class="marquee-shell" id="marqueeShell">
+    <div class="marquee-track" id="marqueeTrack"></div>
+  </div>
+
+  <button
+    class="marquee-arrow marquee-arrow-right"
+    id="marqueeNext"
+    type="button"
+    aria-label="View more Gookies"
+  >
+    →
+  </button>
+
+</div>
       <p class="marquee-hint">Moving automatically. Tap any cookie to pause and explore.</p>
     </section>
 
