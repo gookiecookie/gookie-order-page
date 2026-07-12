@@ -130,6 +130,86 @@ const gookieCollections = [
     pool: ["mallow-melt"],
   },
 ];
+
+const gookiePicks = {
+  "first-timer": {
+    id: "first-timer",
+    name: "First-Timer",
+    kicker: "START HERE",
+    description:
+      "A friendly introduction to four different sides of Gookie.",
+    quantity: 4,
+    price: 36,
+    image: "first-timer-box.png",
+    cookies: [
+      "wonder-chip",
+      "dark-crush",
+      "matcha-matchy",
+      "biscoff-boom",
+    ],
+    revealFlavours: true,
+  },
+
+  "the-classics": {
+    id: "the-classics",
+    name: "The Classics",
+    kicker: "SIMPLE. TIMELESS. GOOD.",
+    description:
+      "Six Wonder Chips for anyone who knows exactly what they love.",
+    quantity: 6,
+    price: 52,
+    image: "the-classics-box.png",
+    cookies: Array(6).fill("wonder-chip"),
+    revealFlavours: true,
+  },
+
+  "surprise-box": {
+    id: "surprise-box",
+    name: "Surprise Box",
+    kicker: "NO PEEKING",
+    description:
+      "Six mixed Gookies selected by Team Gookie. The flavours are part of the surprise.",
+    quantity: 6,
+    price: 52,
+    image: "surprise-box.png",
+    cookies: [
+      "red-bloom",
+      "dream-cream",
+      "mallow-melt",
+      "choki-chomp",
+      "coffee-kiss",
+      "monthly-wonder",
+    ],
+    revealFlavours: false,
+  },
+
+  "full-wonder": {
+    id: "full-wonder",
+    name: "Full Wonder",
+    kicker: "THE FULL EXPERIENCE",
+    description:
+      "A full-sized tour through the colourful world of Gookie.",
+    quantity: 12,
+    price: 99,
+    image: "full-wonder-box.png",
+    cookies: [
+      "wonder-chip",
+      "wonder-chip",
+      "choco-loco",
+      "dark-crush",
+      "red-bloom",
+      "matcha-matchy",
+      "dream-cream",
+      "mallow-melt",
+      "biscoff-boom",
+      "choki-chomp",
+      "coffee-kiss",
+      "monthly-wonder",
+    ],
+    revealFlavours: true,
+  },
+};
+
 const GOOKIE_PRICING = Object.freeze({
   4: 39,
   6: 56,
@@ -232,6 +312,19 @@ let buildBoxSize = 0,
   marqueeDragDistance = 0,
   marqueeResumeTimer = null,
   marqueeAutoPosition = 0;
+
+const gookiePickModal = $("gookiePickModal");
+const gookiePickModalClose = $("gookiePickModalClose");
+const gookiePickModalImage = $("gookiePickModalImage");
+const gookiePickModalKicker = $("gookiePickModalKicker");
+const gookiePickModalTitle = $("gookiePickModalTitle");
+const gookiePickModalDescription = $("gookiePickModalDescription");
+const gookiePickModalIncluded = $("gookiePickModalIncluded");
+const gookiePickModalQuantity = $("gookiePickModalQuantity");
+const gookiePickModalPrice = $("gookiePickModalPrice");
+const addGookiePickToCart = $("addGookiePickToCart");
+
+let activeGookiePick = null;
 
 const getCookieById = (id) =>
   gookieCatalogue.find((c) => c.id === id);
@@ -675,6 +768,87 @@ function renderGookieChoicePreview() {
   gookieChoicePreview.classList.remove("is-hidden");
 }
 
+function renderGookiePickIncluded(pick) {
+  gookiePickModalIncluded.innerHTML = "";
+
+  if (!pick.revealFlavours) {
+    const row = document.createElement("div");
+    row.className = "gookie-pick-included-row";
+    row.innerHTML = `
+      <strong>6 mixed Gookies</strong>
+      <span>Flavours are a surprise</span>
+    `;
+    gookiePickModalIncluded.appendChild(row);
+    return;
+  }
+
+  const counts = {};
+
+  pick.cookies.forEach((cookieId) => {
+    counts[cookieId] = (counts[cookieId] || 0) + 1;
+  });
+
+  Object.entries(counts).forEach(([cookieId, quantity]) => {
+    const cookie = getCookieById(cookieId);
+    if (!cookie) return;
+
+    const row = document.createElement("div");
+    row.className = "gookie-pick-included-row";
+    row.innerHTML = `
+      <strong>${cookie.name}</strong>
+      <span>×${quantity}</span>
+    `;
+
+    gookiePickModalIncluded.appendChild(row);
+  });
+}
+
+function openGookiePickDetails(pickId) {
+  const pick = gookiePicks[pickId];
+  if (!pick) return;
+
+  activeGookiePick = pick;
+
+  document
+    .querySelectorAll(".gookies-pick-card")
+    .forEach((card) => {
+      card.classList.toggle(
+        "is-selected",
+        card.dataset.pickId === pickId,
+      );
+    });
+
+  gookiePickModalImage.src = pick.image;
+  gookiePickModalImage.alt = `${pick.name} Gookie box`;
+  gookiePickModalKicker.textContent = pick.kicker;
+  gookiePickModalTitle.textContent = pick.name;
+  gookiePickModalDescription.textContent = pick.description;
+  gookiePickModalQuantity.textContent =
+    `${pick.quantity} Cookies`;
+  gookiePickModalPrice.textContent = `RM${pick.price}`;
+
+  renderGookiePickIncluded(pick);
+  openModal(gookiePickModal);
+}
+
+function addSelectedGookiePickToCart() {
+  if (!activeGookiePick) return;
+
+  currentOrder = {
+    type: "Gookie's Picks",
+    pickId: activeGookiePick.id,
+    collectionName: activeGookiePick.name,
+    boxName: activeGookiePick.name,
+    boxSize: activeGookiePick.quantity,
+    price: activeGookiePick.price,
+    cookies: [...activeGookiePick.cookies],
+  };
+
+  updateCart();
+  closeModal(gookiePickModal);
+  openDrawer(cartDrawer, cartButton);
+}
+
 function saveGookieChoiceOrder() {
   if (!selectedCollection || !gookieChoiceSelection.length) return;
   currentOrder = {
@@ -1079,7 +1253,6 @@ openFlavourSelector.addEventListener("click", () => {
 });
 flavourModalClose.addEventListener("click", () => closeModal(flavourModal));
 saveFlavourSelection.addEventListener("click", saveBuildOrder);
-keepGookieChoice.addEventListener("click", saveGookieChoiceOrder);
 checkoutButton.addEventListener("click", openCheckout);
 checkoutModalClose.addEventListener("click", () => closeModal(checkoutModal));
 customerDetailsForm.addEventListener("submit", handleCustomerDetailsSubmit);
@@ -1158,6 +1331,23 @@ showBuildYourBox.addEventListener("click", () => {
 showGookiesChoice.addEventListener("click", () => {
   switchOrderTab("choice");
 });
+
+document
+  .querySelectorAll(".gookies-pick-card")
+  .forEach((card) => {
+    card.addEventListener("click", () => {
+      openGookiePickDetails(card.dataset.pickId);
+    });
+  });
+
+gookiePickModalClose.addEventListener("click", () => {
+  closeModal(gookiePickModal);
+});
+
+addGookiePickToCart.addEventListener(
+  "click",
+  addSelectedGookiePickToCart,
+);
 
 switchOrderTab("build");
 
