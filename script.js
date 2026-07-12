@@ -244,8 +244,6 @@ const orderPanels = document.querySelectorAll(".order-panel");
 const getCookieById = (id) =>
   gookieCatalogue.find((c) => c.id === id);
 
-const getCookieById = (id) => gookieCatalogue.find((c) => c.id === id);
-
 function openOverlay() {
   pageOverlay.hidden = false;
   requestAnimationFrame(() => pageOverlay.classList.add("is-visible"));
