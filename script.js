@@ -349,6 +349,23 @@ function updateBuildBoxProgress() {
       : `${percentage}% complete`;
 }
 
+function updateBuildActionButton() {
+  const hasBoxSize = buildBoxSize > 0;
+  const isComplete = hasBoxSize && buildSelection.length === buildBoxSize;
+
+  openFlavourSelector.disabled = !hasBoxSize;
+  openFlavourSelector.classList.toggle("is-ready", isComplete);
+  openFlavourSelector.textContent = isComplete
+    ? "✓ ADD TO CART"
+    : buildSelection.length > 0
+      ? "EDIT MY GOOKIES"
+      : "CHOOSE MY GOOKIES";
+
+  saveFlavourSelection.textContent = isComplete
+    ? "✓ ADD TO CART"
+    : "COMPLETE YOUR BOX";
+}
+
 function selectBuildBox(button) {
   buildBoxSizeOptions
     .querySelectorAll(".box-size-card")
@@ -361,7 +378,6 @@ function selectBuildBox(button) {
   buildSelectedCount.textContent = "0";
   buildBoxCapacity.textContent = String(buildBoxSize);
   buildBoxHelper.textContent = `Pick ${buildBoxSize} cookies to complete your ${buildBoxName}.`;
-  openFlavourSelector.disabled = false;
   renderCookieSlots(
     buildCookieSlots,
     buildBoxSize,
@@ -369,6 +385,7 @@ function selectBuildBox(button) {
     removeBuildCookieAtIndex,
   );
   updateBuildBoxProgress();
+  updateBuildActionButton();
 }
 const getBuildQuantity = (id) => buildSelection.filter((x) => x === id).length;
 function addBuildCookie(id) {
@@ -418,6 +435,7 @@ function updateFlavourSelector() {
   );
   buildSelectedCount.textContent = String(buildSelection.length);
   updateBuildBoxProgress();
+  updateBuildActionButton();
 
   const r = buildBoxSize - buildSelection.length;
   buildBoxHelper.textContent =
@@ -558,7 +576,17 @@ showGookiesChoice.addEventListener("click", () =>
 buildBoxSizeOptions
   .querySelectorAll(".box-size-card")
   .forEach((b) => b.addEventListener("click", () => selectBuildBox(b)));
-openFlavourSelector.addEventListener("click", openBuildFlavourSelector);
+openFlavourSelector.addEventListener("click", () => {
+  const isComplete =
+    buildBoxSize > 0 && buildSelection.length === buildBoxSize;
+
+  if (isComplete) {
+    saveBuildOrder();
+    return;
+  }
+
+  openBuildFlavourSelector();
+});
 flavourModalClose.addEventListener("click", () => closeModal(flavourModal));
 saveFlavourSelection.addEventListener("click", saveBuildOrder);
 gookieChoiceSizeOptions

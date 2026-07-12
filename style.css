@@ -1370,3 +1370,35 @@ button.cookie-slot {
     box-shadow: none;
   }
 }
+
+
+/* =========================================================
+   19. BUILD-YOUR-BOX READY STATE
+   ========================================================= */
+
+#openFlavourSelector.is-ready {
+  background: var(--ink);
+  box-shadow: 0 14px 34px rgba(23, 21, 21, 0.22);
+  animation: readyButtonPulse 1.8s ease-in-out infinite;
+}
+
+#openFlavourSelector.is-ready:hover {
+  background: var(--gookie-red-dark);
+}
+
+@keyframes readyButtonPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.015);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #openFlavourSelector.is-ready {
+    animation: none;
+  }
+}
