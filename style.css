@@ -557,7 +557,7 @@ img {
 }
 
 .marquee-arrow {
-  position: relative;
+  position: absolute;
   z-index: 5;
 
   display: grid;
