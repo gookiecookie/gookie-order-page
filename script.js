@@ -235,6 +235,10 @@ let buildBoxSize = 0,
   marqueeDragDistance = 0,
   marqueeResumeTimer = null,
   marqueeAutoPosition = 0;
+orderBuilder = $("orderBuilder"),
+buildTab = $("buildTab"),
+choiceTab = $("choiceTab"),
+orderPanels = document.querySelectorAll(".order-panel"),
 const getCookieById = (id) => gookieCatalogue.find((c) => c.id === id);
 function openOverlay() {
   pageOverlay.hidden = false;
@@ -437,6 +441,40 @@ function showOrderSection(show, hide) {
   show.classList.remove("is-hidden");
   setTimeout(() => scrollToSection(show), 20);
 }
+
+function switchOrderTab(tab) {
+
+  buildTab.classList.remove("is-active");
+  choiceTab.classList.remove("is-active");
+
+  buildTab.setAttribute("aria-selected", "false");
+  choiceTab.setAttribute("aria-selected", "false");
+
+  orderPanels.forEach(panel => {
+    panel.classList.remove("is-active");
+    panel.hidden = true;
+  });
+
+  if (tab === "build") {
+
+    buildTab.classList.add("is-active");
+    buildTab.setAttribute("aria-selected", "true");
+
+    document.getElementById("buildPanel").hidden = false;
+    document.getElementById("buildPanel").classList.add("is-active");
+
+  } else {
+
+    choiceTab.classList.add("is-active");
+    choiceTab.setAttribute("aria-selected", "true");
+
+    document.getElementById("choicePanel").hidden = false;
+    document.getElementById("choicePanel").classList.add("is-active");
+
+  }
+
+}
+
 function renderCookieSlots(
   container,
   capacity,
@@ -1153,6 +1191,20 @@ window.addEventListener("resize", () => {
   marqueeAutoPosition = marqueeShell.scrollLeft;
   marqueeLastTimestamp = 0;
 });
+
+buildTab.addEventListener("click", () => {
+
+    switchOrderTab("build");
+
+});
+
+choiceTab.addEventListener("click", () => {
+
+    switchOrderTab("choice");
+
+});
+
+switchOrderTab("build");
 
 renderMarquee();
 startMarqueeAnimation();
