@@ -1078,11 +1078,7 @@ openFlavourSelector.addEventListener("click", () => {
 });
 flavourModalClose.addEventListener("click", () => closeModal(flavourModal));
 saveFlavourSelection.addEventListener("click", saveBuildOrder);
-gookieChoiceSizeOptions
-  .querySelectorAll(".box-size-card")
-  .forEach((b) => b.addEventListener("click", () => selectGookieChoiceSize(b)));
-reshuffleChoice.addEventListener("click", createGookieChoiceSelection);
-keepGookieChoice.addEventListener("click", saveGookieChoiceOrder);
+
 checkoutButton.addEventListener("click", openCheckout);
 checkoutModalClose.addEventListener("click", () => closeModal(checkoutModal));
 customerDetailsForm.addEventListener("submit", handleCustomerDetailsSubmit);
