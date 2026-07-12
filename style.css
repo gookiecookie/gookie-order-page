@@ -1498,3 +1498,84 @@ button.cookie-slot {
   outline: 3px solid rgba(187, 25, 26, 0.3);
   outline-offset: 4px;
 }
+
+
+/* =========================================================
+   20. MEET THE GOOKIES — MOBILE CAROUSEL FINAL FIX
+   ========================================================= */
+
+@media (max-width: 767px) {
+  .meet-section {
+    padding: 64px 0 68px;
+  }
+
+  .meet-section .section-heading {
+    margin-bottom: 28px;
+  }
+
+  .marquee-shell {
+    width: 100%;
+    overflow-x: auto;
+    scroll-behavior: auto;
+    -webkit-overflow-scrolling: auto;
+    touch-action: pan-x pan-y;
+  }
+
+  .marquee-track {
+    gap: 12px;
+    padding: 8px 64px 14px;
+  }
+
+  .marquee-card {
+    width: min(56vw, 220px);
+    border-radius: 22px;
+    box-shadow: 0 10px 26px rgba(65, 27, 15, 0.1);
+  }
+
+  .marquee-card-image {
+    aspect-ratio: 1 / 0.92;
+  }
+
+  .marquee-card-image img {
+    width: 82%;
+    height: 82%;
+  }
+
+  .marquee-card-copy {
+    min-height: 78px;
+    padding: 13px 14px 15px;
+  }
+
+  .marquee-card-copy small {
+    margin-bottom: 4px;
+    font-size: 0.58rem;
+    line-height: 1.25;
+    letter-spacing: 0.09em;
+  }
+
+  .marquee-card-copy strong {
+    font-size: 1.05rem;
+    line-height: 1.02;
+  }
+
+  .marquee-arrow {
+    top: 42%;
+    width: 42px;
+    height: 42px;
+    font-size: 1.35rem;
+  }
+
+  .marquee-arrow-left {
+    left: 10px;
+  }
+
+  .marquee-arrow-right {
+    right: 10px;
+  }
+
+  .marquee-hint {
+    max-width: 300px;
+    margin-top: 18px;
+    font-size: 0.78rem;
+  }
+}

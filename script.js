@@ -297,7 +297,7 @@ function normaliseMarqueePosition() {
     marqueeAutoPosition += loopWidth;
   }
 
-  marqueeShell.scrollLeft = marqueeAutoPosition;
+  marqueeShell.scrollLeft = Math.round(marqueeAutoPosition);
 }
 
 function animateMarquee(timestamp) {
@@ -307,7 +307,7 @@ function animateMarquee(timestamp) {
   marqueeLastTimestamp = timestamp;
 
   if (!marqueePaused && !marqueeDragging) {
-    const pixelsPerSecond = 34;
+    const pixelsPerSecond = window.innerWidth < 768 ? 48 : 38;
     marqueeAutoPosition += (pixelsPerSecond * elapsed) / 1000;
     normaliseMarqueePosition();
   }
@@ -725,12 +725,18 @@ marqueeShell.addEventListener("pointerdown", beginMarqueeDrag);
 marqueeShell.addEventListener("pointermove", moveMarqueeDrag);
 marqueeShell.addEventListener("pointerup", endMarqueeDrag);
 marqueeShell.addEventListener("pointercancel", endMarqueeDrag);
-marqueeShell.addEventListener("mouseenter", pauseMarquee);
-marqueeShell.addEventListener("mouseleave", () => {
-  if (!marqueeDragging) resumeMarquee(500);
-});
-marqueeShell.addEventListener("focusin", pauseMarquee);
-marqueeShell.addEventListener("focusout", () => resumeMarquee(500));
+const supportsRealHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+if (supportsRealHover) {
+  marqueeShell.addEventListener("mouseenter", pauseMarquee);
+  marqueeShell.addEventListener("mouseleave", () => {
+    if (!marqueeDragging) resumeMarquee(500);
+  });
+}
+if (supportsRealHover) {
+  marqueeShell.addEventListener("focusin", pauseMarquee);
+  marqueeShell.addEventListener("focusout", () => resumeMarquee(500));
+}
 marqueeShell.addEventListener("touchstart", pauseMarquee, { passive: true });
 marqueeShell.addEventListener("touchend", () => {
   marqueeAutoPosition = marqueeShell.scrollLeft;
@@ -751,6 +757,20 @@ document.addEventListener("keydown", (e) => {
     resumeMarquee();
   }
 });
+document.addEventListener("visibilitychange", () => {
+  marqueeLastTimestamp = 0;
+
+  if (!document.hidden) {
+    marqueeAutoPosition = marqueeShell.scrollLeft;
+    resumeMarquee(150);
+  }
+});
+
+window.addEventListener("resize", () => {
+  marqueeAutoPosition = marqueeShell.scrollLeft;
+  marqueeLastTimestamp = 0;
+});
+
 renderMarquee();
 startMarqueeAnimation();
 renderCollections();
