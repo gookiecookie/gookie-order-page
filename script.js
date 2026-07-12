@@ -200,7 +200,8 @@ let buildBoxSize = 0,
   marqueePointerStartX = 0,
   marqueeScrollStart = 0,
   marqueeDragDistance = 0,
-  marqueeResumeTimer = null;
+  marqueeResumeTimer = null,
+  marqueeAutoPosition = 0;
 const getCookieById = (id) => gookieCatalogue.find((c) => c.id === id);
 function openOverlay() {
   pageOverlay.hidden = false;
@@ -290,11 +291,13 @@ function normaliseMarqueePosition() {
 
   if (!loopWidth) return;
 
-  if (marqueeShell.scrollLeft >= loopWidth) {
-    marqueeShell.scrollLeft -= loopWidth;
-  } else if (marqueeShell.scrollLeft < 0) {
-    marqueeShell.scrollLeft += loopWidth;
+  if (marqueeAutoPosition >= loopWidth) {
+    marqueeAutoPosition -= loopWidth;
+  } else if (marqueeAutoPosition < 0) {
+    marqueeAutoPosition += loopWidth;
   }
+
+  marqueeShell.scrollLeft = marqueeAutoPosition;
 }
 
 function animateMarquee(timestamp) {
@@ -304,8 +307,8 @@ function animateMarquee(timestamp) {
   marqueeLastTimestamp = timestamp;
 
   if (!marqueePaused && !marqueeDragging) {
-    const pixelsPerSecond = 28;
-    marqueeShell.scrollLeft += (pixelsPerSecond * elapsed) / 1000;
+    const pixelsPerSecond = 34;
+    marqueeAutoPosition += (pixelsPerSecond * elapsed) / 1000;
     normaliseMarqueePosition();
   }
 
@@ -315,6 +318,7 @@ function animateMarquee(timestamp) {
 function startMarqueeAnimation() {
   if (marqueeAnimationFrame) return;
 
+  marqueeAutoPosition = marqueeShell.scrollLeft;
   marqueeLastTimestamp = 0;
   marqueeAnimationFrame = requestAnimationFrame(animateMarquee);
 }
@@ -351,7 +355,7 @@ function scrollMarqueeByCard(direction) {
 }
 
 function beginMarqueeDrag(event) {
-  if (event.pointerType === "mouse" && event.button !== 0) return;
+  if (event.pointerType !== "mouse" || event.button !== 0) return;
 
   marqueeDragging = true;
   marqueePointerStartX = event.clientX;
@@ -367,7 +371,7 @@ function moveMarqueeDrag(event) {
 
   const distance = event.clientX - marqueePointerStartX;
   marqueeDragDistance = Math.max(marqueeDragDistance, Math.abs(distance));
-  marqueeShell.scrollLeft = marqueeScrollStart - distance;
+  marqueeAutoPosition = marqueeScrollStart - distance;
   normaliseMarqueePosition();
 }
 
@@ -727,6 +731,16 @@ marqueeShell.addEventListener("mouseleave", () => {
 });
 marqueeShell.addEventListener("focusin", pauseMarquee);
 marqueeShell.addEventListener("focusout", () => resumeMarquee(500));
+marqueeShell.addEventListener("touchstart", pauseMarquee, { passive: true });
+marqueeShell.addEventListener("touchend", () => {
+  marqueeAutoPosition = marqueeShell.scrollLeft;
+  resumeMarquee(1200);
+}, { passive: true });
+marqueeShell.addEventListener("scroll", () => {
+  if (marqueePaused || marqueeDragging) {
+    marqueeAutoPosition = marqueeShell.scrollLeft;
+  }
+}, { passive: true });
 document
   .querySelectorAll(".drawer-nav a")
   .forEach((a) => a.addEventListener("click", closeAllDrawers));
