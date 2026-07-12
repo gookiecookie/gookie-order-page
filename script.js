@@ -185,7 +185,23 @@ const $ = (id) => document.getElementById(id),
   cartEmptyState = $("cartEmptyState"),
   cartContent = $("cartContent"),
   cartOrderSummary = $("cartOrderSummary"),
-  checkoutButton = $("checkoutButton");
+  checkoutButton = $("checkoutButton"),
+  checkoutModal = $("checkoutModal"),
+  checkoutModalClose = $("checkoutModalClose"),
+  checkoutModalTitle = $("checkoutModalTitle"),
+  customerDetailsForm = $("customerDetailsForm"),
+  customerName = $("customerName"),
+  customerPhone = $("customerPhone"),
+  deliveryAddress = $("deliveryAddress"),
+  deliveryPostcode = $("deliveryPostcode"),
+  orderNotes = $("orderNotes"),
+  checkoutReview = $("checkoutReview"),
+  checkoutDetailsSummary = $("checkoutDetailsSummary"),
+  checkoutReviewCount = $("checkoutReviewCount"),
+  checkoutOrderReview = $("checkoutOrderReview"),
+  editCustomerDetails = $("editCustomerDetails"),
+  proceedToPaymentButton = $("proceedToPaymentButton"),
+  checkoutNextStepNote = $("checkoutNextStepNote");
 let buildBoxSize = 0,
   buildBoxName = "",
   buildSelection = [],
@@ -193,6 +209,7 @@ let buildBoxSize = 0,
   gookieChoiceSize = 0,
   gookieChoiceSelection = [],
   currentOrder = null,
+  customerDetails = null,
   marqueeAnimationFrame = null,
   marqueeLastTimestamp = 0,
   marqueePaused = false,
@@ -755,6 +772,175 @@ function updateCart() {
   $("editCartOrder").addEventListener("click", editCurrentOrder);
   $("removeCartOrder").addEventListener("click", removeCurrentOrder);
 }
+
+
+/* =========================================================
+   CHECKOUT: CUSTOMER DETAILS & ORDER REVIEW
+   ========================================================= */
+
+function normalisePhoneNumber(value) {
+  return value.replace(/[\s()-]/g, "");
+}
+
+function setFieldError(input, message) {
+  const field = input.closest(".form-field");
+  const error = $(input.id + "Error");
+
+  field.classList.toggle("has-error", Boolean(message));
+  input.setAttribute("aria-invalid", message ? "true" : "false");
+
+  if (error) error.textContent = message;
+}
+
+function validateCustomerDetails() {
+  const name = customerName.value.trim();
+  const phone = normalisePhoneNumber(customerPhone.value.trim());
+  const address = deliveryAddress.value.trim();
+  const postcode = deliveryPostcode.value.trim();
+  let firstInvalidField = null;
+
+  const validations = [
+    {
+      input: customerName,
+      message: name.length >= 2 ? "" : "Please enter the recipient's full name.",
+    },
+    {
+      input: customerPhone,
+      message: /^(?:\+?6?01)[0-46-9]\d{7,8}$/.test(phone)
+        ? ""
+        : "Please enter a valid Malaysian mobile number.",
+    },
+    {
+      input: deliveryAddress,
+      message:
+        address.length >= 12
+          ? ""
+          : "Please enter a complete delivery address.",
+    },
+    {
+      input: deliveryPostcode,
+      message: /^\d{5}$/.test(postcode)
+        ? ""
+        : "Postcode must contain exactly 5 digits.",
+    },
+  ];
+
+  validations.forEach(({ input, message }) => {
+    setFieldError(input, message);
+    if (message && !firstInvalidField) firstInvalidField = input;
+  });
+
+  if (firstInvalidField) {
+    firstInvalidField.focus();
+    return false;
+  }
+
+  customerPhone.value = phone;
+  return true;
+}
+
+function getCurrentCustomerDetails() {
+  return {
+    name: customerName.value.trim(),
+    phone: normalisePhoneNumber(customerPhone.value.trim()),
+    address: deliveryAddress.value.trim(),
+    postcode: deliveryPostcode.value.trim(),
+    notes: orderNotes.value.trim(),
+  };
+}
+
+function populateCustomerDetailsForm() {
+  if (!customerDetails) return;
+
+  customerName.value = customerDetails.name;
+  customerPhone.value = customerDetails.phone;
+  deliveryAddress.value = customerDetails.address;
+  deliveryPostcode.value = customerDetails.postcode;
+  orderNotes.value = customerDetails.notes;
+}
+
+function renderCheckoutReview() {
+  if (!currentOrder || !customerDetails) return;
+
+  const counts = {};
+  currentOrder.cookies.forEach((id) => {
+    counts[id] = (counts[id] || 0) + 1;
+  });
+
+  const flavourRows = Object.entries(counts)
+    .map(([id, quantity]) => {
+      const cookie = getCookieById(id);
+      return `
+        <div class="checkout-review-flavour">
+          <span>${cookie.name}</span>
+          <strong>×${quantity}</strong>
+        </div>
+      `;
+    })
+    .join("");
+
+  const notesMarkup = customerDetails.notes
+    ? `<span class="checkout-notes"><strong>Order notes</strong>${customerDetails.notes}</span>`
+    : "";
+
+  checkoutDetailsSummary.innerHTML = `
+    <strong>${customerDetails.name}</strong>
+    <span>${customerDetails.address}\n${customerDetails.postcode}</span>
+    <span class="checkout-phone">${customerDetails.phone}</span>
+    ${notesMarkup}
+  `;
+
+  checkoutReviewCount.textContent = `${currentOrder.boxSize} cookies`;
+  checkoutOrderReview.innerHTML = `
+    <div class="checkout-order-header">
+      <strong>${currentOrder.boxName}</strong>
+      <span>${currentOrder.collectionName || currentOrder.type}</span>
+    </div>
+    <div class="checkout-review-flavours">
+      ${flavourRows}
+    </div>
+  `;
+}
+
+function showCustomerDetailsStep() {
+  checkoutModalTitle.textContent = "Your details";
+  customerDetailsForm.classList.remove("is-hidden");
+  checkoutReview.classList.add("is-hidden");
+  checkoutNextStepNote.hidden = true;
+  populateCustomerDetailsForm();
+}
+
+function showCheckoutReviewStep() {
+  checkoutModalTitle.textContent = "Review order";
+  customerDetailsForm.classList.add("is-hidden");
+  checkoutReview.classList.remove("is-hidden");
+  renderCheckoutReview();
+}
+
+function openCheckout() {
+  if (!currentOrder) return;
+
+  closeDrawer(cartDrawer);
+  showCustomerDetailsStep();
+  openModal(checkoutModal);
+
+  setTimeout(() => customerName.focus(), 280);
+}
+
+function handleCustomerDetailsSubmit(event) {
+  event.preventDefault();
+
+  if (!validateCustomerDetails()) return;
+
+  customerDetails = getCurrentCustomerDetails();
+  showCheckoutReviewStep();
+}
+
+function acknowledgePaymentNextStep() {
+  checkoutNextStepNote.hidden = false;
+  checkoutNextStepNote.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
 menuButton.addEventListener("click", () => openDrawer(menuDrawer, menuButton));
 cartButton.addEventListener("click", () => openDrawer(cartDrawer, cartButton));
 menuCloseButton.addEventListener("click", () => closeDrawer(menuDrawer));
@@ -797,6 +983,19 @@ gookieChoiceSizeOptions
   .forEach((b) => b.addEventListener("click", () => selectGookieChoiceSize(b)));
 reshuffleChoice.addEventListener("click", createGookieChoiceSelection);
 keepGookieChoice.addEventListener("click", saveGookieChoiceOrder);
+checkoutButton.addEventListener("click", openCheckout);
+checkoutModalClose.addEventListener("click", () => closeModal(checkoutModal));
+customerDetailsForm.addEventListener("submit", handleCustomerDetailsSubmit);
+editCustomerDetails.addEventListener("click", showCustomerDetailsStep);
+proceedToPaymentButton.addEventListener("click", acknowledgePaymentNextStep);
+
+[customerName, customerPhone, deliveryAddress, deliveryPostcode].forEach((input) => {
+  input.addEventListener("input", () => setFieldError(input, ""));
+});
+
+deliveryPostcode.addEventListener("input", () => {
+  deliveryPostcode.value = deliveryPostcode.value.replace(/\D/g, "").slice(0, 5);
+});
 
 marqueePrev.addEventListener("click", () => scrollMarqueeByCard(-1));
 marqueeNext.addEventListener("click", () => scrollMarqueeByCard(1));

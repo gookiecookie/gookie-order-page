@@ -11,7 +11,7 @@
       href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=League+Spartan:wght@700;800;900&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css?v=5.5" />
+    <link rel="stylesheet" href="style.css?v=5.6" />
   </head>
   <body>
     <button
@@ -451,6 +451,153 @@
       </div>
     </section>
 
-    <script src="script.js?v=5.5"></script>
+
+    <!-- =========================================================
+         CHECKOUT MODAL: CUSTOMER DETAILS & ORDER REVIEW
+         ========================================================= -->
+    <section
+      class="modal"
+      id="checkoutModal"
+      aria-hidden="true"
+      aria-label="Checkout details"
+    >
+      <div class="modal-card checkout-modal-card">
+        <div class="modal-sticky-header">
+          <div>
+            <p class="drawer-eyebrow">ALMOST THERE</p>
+            <h2 id="checkoutModalTitle">Your details</h2>
+          </div>
+          <button
+            class="modal-close-button"
+            id="checkoutModalClose"
+            type="button"
+            aria-label="Close checkout"
+          >
+            ×
+          </button>
+        </div>
+
+        <div class="checkout-modal-body">
+          <!-- ==================== CUSTOMER DETAILS FORM ==================== -->
+          <form class="checkout-form" id="customerDetailsForm" novalidate>
+            <div class="checkout-intro">
+              <p class="section-kicker">COURIER DELIVERY</p>
+              <h3>Where should we send your chunky wonders?</h3>
+              <p>
+                Enter the recipient details exactly as they should appear on
+                the parcel.
+              </p>
+            </div>
+
+            <div class="form-field">
+              <label for="customerName">Full name</label>
+              <input
+                id="customerName"
+                name="customerName"
+                type="text"
+                autocomplete="name"
+                placeholder="e.g. Amar Amirah"
+                required
+              />
+              <small class="form-error" id="customerNameError"></small>
+            </div>
+
+            <div class="form-field">
+              <label for="customerPhone">Phone number</label>
+              <input
+                id="customerPhone"
+                name="customerPhone"
+                type="tel"
+                inputmode="tel"
+                autocomplete="tel"
+                placeholder="e.g. 0123456789"
+                required
+              />
+              <small class="form-help">Malaysia number without spaces is fine.</small>
+              <small class="form-error" id="customerPhoneError"></small>
+            </div>
+
+            <div class="form-field">
+              <label for="deliveryAddress">Full delivery address</label>
+              <textarea
+                id="deliveryAddress"
+                name="deliveryAddress"
+                rows="4"
+                autocomplete="street-address"
+                placeholder="House/unit, street, area, city and state"
+                required
+              ></textarea>
+              <small class="form-error" id="deliveryAddressError"></small>
+            </div>
+
+            <div class="form-field">
+              <label for="deliveryPostcode">Postcode</label>
+              <input
+                id="deliveryPostcode"
+                name="deliveryPostcode"
+                type="text"
+                inputmode="numeric"
+                autocomplete="postal-code"
+                maxlength="5"
+                placeholder="e.g. 68000"
+                required
+              />
+              <small class="form-error" id="deliveryPostcodeError"></small>
+            </div>
+
+            <div class="form-field">
+              <label for="orderNotes">Order notes <span>(optional)</span></label>
+              <textarea
+                id="orderNotes"
+                name="orderNotes"
+                rows="3"
+                placeholder="Gift note, delivery instruction or allergy reminder"
+              ></textarea>
+            </div>
+
+            <button class="primary-button" type="submit">
+              REVIEW MY ORDER
+            </button>
+          </form>
+
+          <!-- ==================== CHECKOUT REVIEW ==================== -->
+          <div class="checkout-review is-hidden" id="checkoutReview">
+            <div class="checkout-intro">
+              <p class="section-kicker">ONE LAST CHECK</p>
+              <h3>Everything looks delicious.</h3>
+              <p>Check the details below before continuing to payment.</p>
+            </div>
+
+            <div class="checkout-review-section">
+              <div class="checkout-review-heading">
+                <h4>Delivery details</h4>
+                <button class="text-button" id="editCustomerDetails" type="button">
+                  EDIT
+                </button>
+              </div>
+              <div class="checkout-details-card" id="checkoutDetailsSummary"></div>
+            </div>
+
+            <div class="checkout-review-section">
+              <div class="checkout-review-heading">
+                <h4>Your Gookies</h4>
+                <span id="checkoutReviewCount"></span>
+              </div>
+              <div class="checkout-order-review" id="checkoutOrderReview"></div>
+            </div>
+
+            <button class="primary-button" id="proceedToPaymentButton" type="button">
+              CONTINUE TO PAYMENT
+            </button>
+            <p class="checkout-next-step-note" id="checkoutNextStepNote" hidden>
+              Customer details saved. The QR payment screen will be connected
+              in the next step.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script src="script.js?v=5.6"></script>
   </body>
 </html>
