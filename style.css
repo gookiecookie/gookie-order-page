@@ -366,7 +366,7 @@ img {
   place-items: center;
   min-height: 430px;
   padding: 40px 20px 16px;
-  background: #fff1dc;
+  background: #f3d6b5;
   isolation: isolate;
 }
 
@@ -2163,5 +2163,172 @@ button.cookie-slot {
 
   .payment-modal-body {
     padding: 34px 38px 42px;
+  }
+}
+
+/* =========================================================
+   COMMIT 1 — COMPACT TABBED ORDER BUILDER
+   ========================================================= */
+
+.order-builder {
+  position: relative;
+  padding: 88px 20px 96px;
+  background: var(--cream-soft);
+  scroll-margin-top: calc(var(--header-height-mobile) + 14px);
+}
+
+.order-builder-heading {
+  margin-bottom: 26px;
+}
+
+.order-builder-heading h2 {
+  margin-bottom: 12px;
+}
+
+.order-builder-tabs {
+  position: relative;
+  z-index: 8;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 5px;
+  width: min(100%, 720px);
+  margin: 0 auto 28px;
+  padding: 5px;
+  border: 1px solid rgba(23, 21, 21, 0.1);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 12px 34px rgba(55, 26, 12, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.order-builder-tab {
+  min-width: 0;
+  min-height: 54px;
+  padding: 13px 12px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font-size: clamp(0.7rem, 3vw, 0.84rem);
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: 0.055em;
+  cursor: pointer;
+  transition:
+    color var(--transition),
+    background-color var(--transition),
+    box-shadow var(--transition),
+    transform var(--transition);
+}
+
+.order-builder-tab:hover:not(.is-active) {
+  color: var(--ink);
+  background: rgba(187, 25, 26, 0.06);
+}
+
+.order-builder-tab.is-active {
+  background: var(--gookie-red);
+  color: var(--white);
+  box-shadow: 0 8px 20px rgba(187, 25, 26, 0.24);
+}
+
+.order-builder-tab:active {
+  transform: scale(0.98);
+}
+
+.order-builder-tab:focus-visible {
+  outline: 3px solid rgba(187, 25, 26, 0.22);
+  outline-offset: 3px;
+}
+
+.order-builder-content {
+  width: min(100%, 1050px);
+  margin: 0 auto;
+}
+
+.order-builder-panel.order-section {
+  padding: 0;
+  background: transparent;
+  scroll-margin-top: calc(var(--header-height-mobile) + 92px);
+}
+
+.order-builder-panel:not(.is-hidden) {
+  animation: orderPanelIn 240ms ease both;
+}
+
+@keyframes orderPanelIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* The old choice cards are no longer rendered in Commit 1. */
+.choice-section,
+.choice-grid,
+.choice-card {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .order-builder {
+    padding: 72px 14px 84px;
+  }
+
+  .order-builder-heading {
+    padding-inline: 8px;
+    margin-bottom: 22px;
+  }
+
+  .order-builder-heading h2 {
+    font-size: clamp(2.75rem, 14vw, 4.5rem);
+  }
+
+  .order-builder-tabs {
+    position: sticky;
+    top: calc(var(--header-height-mobile) + 8px);
+    margin-bottom: 22px;
+  }
+
+  .order-builder-tab {
+    min-height: 50px;
+    padding-inline: 8px;
+    letter-spacing: 0.035em;
+  }
+
+  .order-builder-content {
+    width: 100%;
+  }
+}
+
+@media (min-width: 768px) {
+  .order-builder {
+    padding: 110px 32px 120px;
+    scroll-margin-top: calc(var(--header-height-desktop) + 18px);
+  }
+
+  .order-builder-tabs {
+    margin-bottom: 36px;
+  }
+
+  .order-builder-tab {
+    min-height: 58px;
+    font-size: 0.84rem;
+  }
+
+  .order-builder-panel.order-section {
+    scroll-margin-top: calc(var(--header-height-desktop) + 100px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .order-builder-panel:not(.is-hidden) {
+    animation: none;
   }
 }
