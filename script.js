@@ -1163,7 +1163,6 @@ switchOrderTab("build");
 
 renderMarquee();
 startMarqueeAnimation();
-renderCollections();
 renderCookieSlots(buildCookieSlots, 0, []);
 updateBuildBoxProgress();
 updateCart();
