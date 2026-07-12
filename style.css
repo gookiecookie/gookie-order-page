@@ -2332,3 +2332,134 @@ button.cookie-slot {
     animation: none;
   }
 }
+
+/* =========================================================
+   GOOKIE'S PICKS
+   ========================================================= */
+
+.gookies-picks-intro {
+  width: min(100%, 760px);
+  margin: 0 auto 28px;
+  text-align: center;
+}
+
+.gookies-picks-intro h2 {
+  margin: 10px 0 12px;
+  font-family: "League Spartan", sans-serif;
+  font-size: clamp(2.8rem, 11vw, 5.6rem);
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -0.045em;
+}
+
+.gookies-picks-intro > p:last-child {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+.gookies-picks-grid {
+  display: grid;
+  gap: 16px;
+  width: min(100%, 920px);
+  margin: 0 auto 28px;
+}
+
+.gookies-pick-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-height: 190px;
+  padding: 24px;
+  border: 2px solid transparent;
+  border-radius: 28px;
+  background: var(--white);
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 14px 38px rgba(55, 26, 12, 0.08);
+
+  transition:
+    transform var(--transition),
+    border-color var(--transition),
+    background-color var(--transition),
+    box-shadow var(--transition);
+}
+
+.gookies-pick-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 48px rgba(55, 26, 12, 0.12);
+}
+
+.gookies-pick-card.is-selected {
+  border-color: var(--gookie-red);
+  background: #fff4e8;
+  box-shadow: 0 20px 50px rgba(187, 25, 26, 0.14);
+}
+
+.gookies-pick-card.is-selected::after {
+  content: "✓";
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--gookie-red);
+  color: var(--white);
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+.gookies-pick-card strong {
+  display: block;
+  max-width: calc(100% - 46px);
+  margin-top: auto;
+  font-family: "League Spartan", sans-serif;
+  font-size: 1.65rem;
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+}
+
+.gookies-pick-card p {
+  max-width: 520px;
+  margin: 11px 0 18px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.gookies-pick-card > span:last-child {
+  color: var(--gookie-red);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.gookies-pick-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  margin-bottom: 28px;
+  padding: 6px 11px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--white);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+@media (min-width: 700px) {
+  .gookies-picks-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .gookies-pick-card {
+    min-height: 230px;
+    padding: 28px;
+  }
+}
