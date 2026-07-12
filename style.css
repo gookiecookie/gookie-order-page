@@ -453,21 +453,28 @@ background:var(--white)
 }
 
 .marquee-shell {
-overflow:hidden;
-width:100%
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+
+    cursor: grab;
+}
+
+.marquee-shell::-webkit-scrollbar {
+    display: none;
 }
 
 .marquee-track {
-display:flex;
-gap:18px;
-width:max-content;
-padding:10px 0;
-animation:gookieMarquee 42s linear infinite;
-will-change:transform
-}
+    display: flex;
+    gap: 18px;
+    width: max-content;
+    padding: 10px 0;
 
-.marquee-track.is-paused {
-animation-play-state:paused
+    animation: none;
+    transform: none;
 }
 
 .marquee-card {
@@ -577,19 +584,6 @@ backdrop-filter:blur(10px);
 .marquee-arrow:active {
     transform: scale(0.94);
 }
-
-@keyframes gookieMarquee {
-from {
-transform:translateX(0)
-}
-
-to {
-transform:translateX(-50%)
-}
-
-
-}
-
 
 .choice-section,.order-section {
 padding:90px 20px
