@@ -235,11 +235,17 @@ let buildBoxSize = 0,
   marqueeDragDistance = 0,
   marqueeResumeTimer = null,
   marqueeAutoPosition = 0;
-orderBuilder = $("orderBuilder"),
-buildTab = $("buildTab"),
-choiceTab = $("choiceTab"),
-orderPanels = document.querySelectorAll(".order-panel"),
+
+const orderBuilder = $("orderBuilder");
+const buildTab = $("buildTab");
+const choiceTab = $("choiceTab");
+const orderPanels = document.querySelectorAll(".order-panel");
+
+const getCookieById = (id) =>
+  gookieCatalogue.find((c) => c.id === id);
+
 const getCookieById = (id) => gookieCatalogue.find((c) => c.id === id);
+
 function openOverlay() {
   pageOverlay.hidden = false;
   requestAnimationFrame(() => pageOverlay.classList.add("is-visible"));
