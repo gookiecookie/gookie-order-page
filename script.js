@@ -180,13 +180,10 @@ const $ = (id) => document.getElementById(id),
   flavourNameList = $("flavourNameList"),
   saveFlavourSelection = $("saveFlavourSelection"),
   collectionGrid = $("collectionGrid"),
-  gookieChoiceBoxArea = $("gookieChoiceBoxArea"),
-  gookieChoiceSizeOptions = $("gookieChoiceSizeOptions"),
   gookieChoicePreview = $("gookieChoicePreview"),
   gookieChoiceTitle = $("gookieChoiceTitle"),
   gookieChoiceSlots = $("gookieChoiceSlots"),
   gookieChoiceSummary = $("gookieChoiceSummary"),
-  reshuffleChoice = $("reshuffleChoice"),
   keepGookieChoice = $("keepGookieChoice"),
   cartCount = $("cartCount"),
   cartSelectedCount = $("cartSelectedCount"),
@@ -653,7 +650,6 @@ function renderCollections() {
         .forEach((c) => c.classList.remove("is-selected"));
       b.classList.add("is-selected");
       selectedCollection = col;
-      gookieChoiceBoxArea.classList.remove("is-hidden");
       gookieChoicePreview.classList.add("is-hidden");
     });
     collectionGrid.appendChild(b);
@@ -667,18 +663,7 @@ function shuffleArray(v) {
   }
   return a;
 }
-function createGookieChoiceSelection() {
-  if (!selectedCollection || !gookieChoiceSize) return;
-  const pool = selectedCollection.pool;
-  if (pool.length === 1)
-    gookieChoiceSelection = Array(gookieChoiceSize).fill(pool[0]);
-  else {
-    let s = [];
-    while (s.length < gookieChoiceSize) s.push(...shuffleArray(pool));
-    gookieChoiceSelection = s.slice(0, gookieChoiceSize);
-  }
-  renderGookieChoicePreview();
-}
+
 function renderGookieChoicePreview() {
   gookieChoiceTitle.textContent = `${selectedCollection.name} · ${gookieChoiceSize} Cookies`;
   renderCookieSlots(gookieChoiceSlots, gookieChoiceSize, gookieChoiceSelection);
@@ -689,17 +674,9 @@ function renderGookieChoicePreview() {
     .join(" · ");
   gookieChoicePreview.classList.remove("is-hidden");
 }
-function selectGookieChoiceSize(button) {
-  gookieChoiceSizeOptions
-    .querySelectorAll(".box-size-card")
-    .forEach((c) => c.classList.remove("is-selected"));
-  button.classList.add("is-selected");
-  gookieChoiceSize = Number(button.dataset.boxSize);
-  createGookieChoiceSelection();
-}
+
 function saveGookieChoiceOrder() {
   if (!selectedCollection || !gookieChoiceSelection.length) return;
-  const b = gookieChoiceSizeOptions.querySelector(".box-size-card.is-selected");
   currentOrder = {
     type: "Gookie's Choice",
     collectionName: selectedCollection.name,
@@ -1102,10 +1079,6 @@ openFlavourSelector.addEventListener("click", () => {
 });
 flavourModalClose.addEventListener("click", () => closeModal(flavourModal));
 saveFlavourSelection.addEventListener("click", saveBuildOrder);
-gookieChoiceSizeOptions
-  .querySelectorAll(".box-size-card")
-  .forEach((b) => b.addEventListener("click", () => selectGookieChoiceSize(b)));
-reshuffleChoice.addEventListener("click", createGookieChoiceSelection);
 keepGookieChoice.addEventListener("click", saveGookieChoiceOrder);
 checkoutButton.addEventListener("click", openCheckout);
 checkoutModalClose.addEventListener("click", () => closeModal(checkoutModal));
