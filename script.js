@@ -236,11 +236,6 @@ let buildBoxSize = 0,
   marqueeResumeTimer = null,
   marqueeAutoPosition = 0;
 
-const orderBuilder = $("orderBuilder");
-const buildTab = $("buildTab");
-const choiceTab = $("choiceTab");
-const orderPanels = document.querySelectorAll(".order-panel");
-
 const getCookieById = (id) =>
   gookieCatalogue.find((c) => c.id === id);
 
@@ -447,36 +442,23 @@ function showOrderSection(show, hide) {
 }
 
 function switchOrderTab(tab) {
+  const showBuild = tab === "build";
 
-  buildTab.classList.remove("is-active");
-  choiceTab.classList.remove("is-active");
+  showBuildYourBox.classList.toggle("is-active", showBuild);
+  showGookiesChoice.classList.toggle("is-active", !showBuild);
 
-  buildTab.setAttribute("aria-selected", "false");
-  choiceTab.setAttribute("aria-selected", "false");
+  showBuildYourBox.setAttribute(
+    "aria-selected",
+    showBuild ? "true" : "false"
+  );
 
-  orderPanels.forEach(panel => {
-    panel.classList.remove("is-active");
-    panel.hidden = true;
-  });
+  showGookiesChoice.setAttribute(
+    "aria-selected",
+    showBuild ? "false" : "true"
+  );
 
-  if (tab === "build") {
-
-    buildTab.classList.add("is-active");
-    buildTab.setAttribute("aria-selected", "true");
-
-    document.getElementById("buildPanel").hidden = false;
-    document.getElementById("buildPanel").classList.add("is-active");
-
-  } else {
-
-    choiceTab.classList.add("is-active");
-    choiceTab.setAttribute("aria-selected", "true");
-
-    document.getElementById("choicePanel").hidden = false;
-    document.getElementById("choicePanel").classList.add("is-active");
-
-  }
-
+  buildYourBoxSection.classList.toggle("is-hidden", !showBuild);
+  gookiesChoiceSection.classList.toggle("is-hidden", showBuild);
 }
 
 function renderCookieSlots(
@@ -1196,16 +1178,12 @@ window.addEventListener("resize", () => {
   marqueeLastTimestamp = 0;
 });
 
-buildTab.addEventListener("click", () => {
-
-    switchOrderTab("build");
-
+showBuildYourBox.addEventListener("click", () => {
+  switchOrderTab("build");
 });
 
-choiceTab.addEventListener("click", () => {
-
-    switchOrderTab("choice");
-
+showGookiesChoice.addEventListener("click", () => {
+  switchOrderTab("choice");
 });
 
 switchOrderTab("build");
