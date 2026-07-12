@@ -280,16 +280,47 @@ function showOrderSection(show, hide) {
   show.classList.remove("is-hidden");
   setTimeout(() => scrollToSection(show), 20);
 }
-function renderCookieSlots(container, capacity, selection) {
+function renderCookieSlots(
+  container,
+  capacity,
+  selection,
+  onCookieRemove = null,
+) {
   container.innerHTML = "";
+
   for (let i = 0; i < capacity; i++) {
-    const slot = document.createElement("div"),
-      cookie = selection[i] ? getCookieById(selection[i]) : null;
+    const cookie = selection[i] ? getCookieById(selection[i]) : null;
+    const isRemovable = Boolean(cookie && onCookieRemove);
+    const slot = document.createElement(isRemovable ? "button" : "div");
+
     slot.className = "cookie-slot";
+
+    if (isRemovable) {
+      slot.type = "button";
+      slot.classList.add("is-removable");
+      slot.setAttribute(
+        "aria-label",
+        `Remove ${cookie.name} from your box`,
+      );
+    }
+
     if (cookie) {
       slot.classList.add("has-cookie");
-      slot.innerHTML = `<img src="${cookie.image}" alt="${cookie.name}"><span class="cookie-slot-name">${cookie.name}</span>`;
+      slot.innerHTML = `
+        <img src="${cookie.image}" alt="${cookie.name}">
+        <span class="cookie-slot-name">${cookie.name}</span>
+        ${
+          isRemovable
+            ? '<span class="cookie-slot-remove" aria-hidden="true">×</span>'
+            : ""
+        }
+      `;
+
+      if (isRemovable) {
+        slot.addEventListener("click", () => onCookieRemove(i));
+      }
     }
+
     container.appendChild(slot);
   }
 }
@@ -331,7 +362,12 @@ function selectBuildBox(button) {
   buildBoxCapacity.textContent = String(buildBoxSize);
   buildBoxHelper.textContent = `Pick ${buildBoxSize} cookies to complete your ${buildBoxName}.`;
   openFlavourSelector.disabled = false;
-  renderCookieSlots(buildCookieSlots, buildBoxSize, buildSelection);
+  renderCookieSlots(
+    buildCookieSlots,
+    buildBoxSize,
+    buildSelection,
+    removeBuildCookieAtIndex,
+  );
   updateBuildBoxProgress();
 }
 const getBuildQuantity = (id) => buildSelection.filter((x) => x === id).length;
@@ -347,6 +383,12 @@ function removeBuildCookie(id) {
     buildSelection.splice(i, 1);
     updateFlavourSelector();
   }
+}
+function removeBuildCookieAtIndex(index) {
+  if (index < 0 || index >= buildSelection.length) return;
+
+  buildSelection.splice(index, 1);
+  updateFlavourSelector();
 }
 function renderFlavourList() {
   flavourNameList.innerHTML = "";
@@ -368,7 +410,12 @@ function updateFlavourSelector() {
   flavourBoxCapacity.textContent = String(buildBoxSize);
   saveFlavourSelection.disabled = buildSelection.length !== buildBoxSize;
   renderFlavourList();
-  renderCookieSlots(buildCookieSlots, buildBoxSize, buildSelection);
+  renderCookieSlots(
+    buildCookieSlots,
+    buildBoxSize,
+    buildSelection,
+    removeBuildCookieAtIndex,
+  );
   buildSelectedCount.textContent = String(buildSelection.length);
   updateBuildBoxProgress();
 

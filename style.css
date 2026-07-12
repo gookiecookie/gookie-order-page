@@ -1307,3 +1307,66 @@ img {
     animation: none;
   }
 }
+
+/* =========================================================
+   18. INTERACTIVE BUILD-YOUR-BOX SLOTS
+   ========================================================= */
+
+button.cookie-slot {
+  width: 100%;
+  padding: 0;
+  border: 2px dashed rgba(187, 25, 26, 0.22);
+  font: inherit;
+  color: inherit;
+  appearance: none;
+}
+
+.cookie-slot.is-removable {
+  cursor: pointer;
+  transition:
+    transform var(--transition),
+    border-color var(--transition),
+    box-shadow var(--transition);
+}
+
+.cookie-slot.is-removable:hover,
+.cookie-slot.is-removable:focus-visible {
+  border-color: var(--gookie-red);
+  box-shadow: 0 12px 28px rgba(67, 24, 18, 0.16);
+  transform: translateY(-3px) scale(1.02);
+  outline: none;
+}
+
+.cookie-slot.is-removable:active {
+  transform: scale(0.96);
+}
+
+.cookie-slot-remove {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  display: grid;
+  place-items: center;
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  background: var(--gookie-red);
+  color: var(--white);
+  font-size: 1.1rem;
+  font-weight: 800;
+  line-height: 1;
+  box-shadow: 0 5px 14px rgba(67, 24, 18, 0.2);
+  transition: transform var(--transition);
+}
+
+.cookie-slot.is-removable:hover .cookie-slot-remove,
+.cookie-slot.is-removable:focus-visible .cookie-slot-remove {
+  transform: rotate(90deg) scale(1.08);
+}
+
+@media (hover: none) {
+  .cookie-slot.is-removable:hover {
+    transform: none;
+    box-shadow: none;
+  }
+}
