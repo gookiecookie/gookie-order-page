@@ -130,6 +130,14 @@ const gookieCollections = [
     pool: ["mallow-melt"],
   },
 ];
+const GOOKIE_PRICING = Object.freeze({
+  4: 39,
+  6: 56,
+  12: 108,
+});
+const GOOKIE_WHATSAPP_NUMBER = "60102810487";
+const GOOKIE_DELIVERY_FEE = 0; // Update here when courier pricing is final.
+
 const $ = (id) => document.getElementById(id),
   body = document.body,
   pageOverlay = $("pageOverlay"),
@@ -201,7 +209,14 @@ const $ = (id) => document.getElementById(id),
   checkoutOrderReview = $("checkoutOrderReview"),
   editCustomerDetails = $("editCustomerDetails"),
   proceedToPaymentButton = $("proceedToPaymentButton"),
-  checkoutNextStepNote = $("checkoutNextStepNote");
+  checkoutNextStepNote = $("checkoutNextStepNote"),
+  paymentModal = $("paymentModal"),
+  paymentModalClose = $("paymentModalClose"),
+  paymentOrderId = $("paymentOrderId"),
+  paymentTotal = $("paymentTotal"),
+  paymentBoxSummary = $("paymentBoxSummary"),
+  paymentProofSaved = $("paymentProofSaved"),
+  continueToWhatsAppButton = $("continueToWhatsAppButton");
 let buildBoxSize = 0,
   buildBoxName = "",
   buildSelection = [],
@@ -210,6 +225,7 @@ let buildBoxSize = 0,
   gookieChoiceSelection = [],
   currentOrder = null,
   customerDetails = null,
+  currentOrderId = null,
   marqueeAnimationFrame = null,
   marqueeLastTimestamp = 0,
   marqueePaused = false,
@@ -693,6 +709,7 @@ function removeCurrentOrder() {
   if (!currentOrder) return;
 
   currentOrder = null;
+  currentOrderId = null;
   updateCart();
 }
 
@@ -749,8 +766,8 @@ function updateCart() {
       <span class="cart-order-label">${orderLabel}</span>
 
       <div class="cart-order-meta">
-        <span>${currentOrder.boxName}</span>
-        <strong>${currentOrder.boxSize} cookies</strong>
+        <span>${currentOrder.boxName} · ${currentOrder.boxSize} cookies</span>
+        <strong>${formatMoney(getOrderSubtotal())}</strong>
       </div>
     </div>
 
@@ -773,6 +790,31 @@ function updateCart() {
   $("removeCartOrder").addEventListener("click", removeCurrentOrder);
 }
 
+
+function formatMoney(amount) {
+  return `RM${Number(amount).toFixed(2)}`;
+}
+
+function getOrderSubtotal() {
+  return currentOrder ? GOOKIE_PRICING[currentOrder.boxSize] || 0 : 0;
+}
+
+function getOrderTotal() {
+  return getOrderSubtotal() + GOOKIE_DELIVERY_FEE;
+}
+
+function generateOrderId() {
+  if (currentOrderId) return currentOrderId;
+
+  const storageKey = "gookieOrderSequence";
+  let nextNumber = Number.parseInt(localStorage.getItem(storageKey) || "0", 10) + 1;
+
+  if (!Number.isFinite(nextNumber) || nextNumber < 1) nextNumber = 1;
+
+  localStorage.setItem(storageKey, String(nextNumber));
+  currentOrderId = `GK${String(nextNumber).padStart(6, "0")}`;
+  return currentOrderId;
+}
 
 /* =========================================================
    CHECKOUT: CUSTOMER DETAILS & ORDER REVIEW
@@ -895,6 +937,7 @@ function renderCheckoutReview() {
     <div class="checkout-order-header">
       <strong>${currentOrder.boxName}</strong>
       <span>${currentOrder.collectionName || currentOrder.type}</span>
+      <span class="checkout-order-price">${formatMoney(getOrderSubtotal())}</span>
     </div>
     <div class="checkout-review-flavours">
       ${flavourRows}
@@ -936,9 +979,66 @@ function handleCustomerDetailsSubmit(event) {
   showCheckoutReviewStep();
 }
 
-function acknowledgePaymentNextStep() {
-  checkoutNextStepNote.hidden = false;
-  checkoutNextStepNote.scrollIntoView({ behavior: "smooth", block: "nearest" });
+function renderPaymentStep() {
+  if (!currentOrder || !customerDetails) return;
+
+  paymentOrderId.textContent = generateOrderId();
+  paymentTotal.textContent = formatMoney(getOrderTotal());
+  paymentBoxSummary.textContent = `${currentOrder.boxName} · ${currentOrder.boxSize} cookies`;
+  paymentProofSaved.checked = false;
+  continueToWhatsAppButton.disabled = true;
+}
+
+function openPaymentStep() {
+  if (!currentOrder || !customerDetails) return;
+
+  renderPaymentStep();
+  closeModal(checkoutModal);
+  openModal(paymentModal);
+}
+
+function getWhatsAppMessage() {
+  const counts = {};
+  currentOrder.cookies.forEach((id) => {
+    counts[id] = (counts[id] || 0) + 1;
+  });
+
+  const itemLines = Object.entries(counts)
+    .map(([id, quantity]) => `• ${getCookieById(id).name} ×${quantity}`)
+    .join("\n");
+
+  const notesLine = customerDetails.notes
+    ? `\nOrder notes: ${customerDetails.notes}`
+    : "";
+
+  return [
+    "Hello Gookie! I have made payment for my order 🍪",
+    "",
+    `Order ID: ${generateOrderId()}`,
+    "Status: ✅ PAID",
+    "",
+    `Name: ${customerDetails.name}`,
+    `Phone: ${customerDetails.phone}`,
+    `Delivery address: ${customerDetails.address}, ${customerDetails.postcode}${notesLine}`,
+    "",
+    `${currentOrder.type} — ${currentOrder.boxName}`,
+    itemLines,
+    "",
+    `Subtotal: ${formatMoney(getOrderSubtotal())}`,
+    GOOKIE_DELIVERY_FEE > 0
+      ? `Delivery: ${formatMoney(GOOKIE_DELIVERY_FEE)}`
+      : "Delivery: To be confirmed",
+    `Total paid now: ${formatMoney(getOrderTotal())}`,
+    "",
+    "I have saved my payment proof and will attach it to this WhatsApp message.",
+  ].join("\n");
+}
+
+function continueToWhatsApp() {
+  if (!paymentProofSaved.checked) return;
+
+  const whatsappUrl = `https://wa.me/${GOOKIE_WHATSAPP_NUMBER}?text=${encodeURIComponent(getWhatsAppMessage())}`;
+  window.location.href = whatsappUrl;
 }
 
 menuButton.addEventListener("click", () => openDrawer(menuDrawer, menuButton));
@@ -987,7 +1087,12 @@ checkoutButton.addEventListener("click", openCheckout);
 checkoutModalClose.addEventListener("click", () => closeModal(checkoutModal));
 customerDetailsForm.addEventListener("submit", handleCustomerDetailsSubmit);
 editCustomerDetails.addEventListener("click", showCustomerDetailsStep);
-proceedToPaymentButton.addEventListener("click", acknowledgePaymentNextStep);
+proceedToPaymentButton.addEventListener("click", openPaymentStep);
+paymentModalClose.addEventListener("click", () => closeModal(paymentModal));
+paymentProofSaved.addEventListener("change", () => {
+  continueToWhatsAppButton.disabled = !paymentProofSaved.checked;
+});
+continueToWhatsAppButton.addEventListener("click", continueToWhatsApp);
 
 [customerName, customerPhone, deliveryAddress, deliveryPostcode].forEach((input) => {
   input.addEventListener("input", () => setFieldError(input, ""));

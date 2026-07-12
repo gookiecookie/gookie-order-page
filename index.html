@@ -11,7 +11,7 @@
       href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=League+Spartan:wght@700;800;900&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css?v=5.6" />
+    <link rel="stylesheet" href="style.css?v=7.0" />
   </head>
   <body>
     <button
@@ -251,7 +251,7 @@
             data-box-name="Treat Box"
           >
             <span class="box-size-number">4</span
-            ><span><strong>TREAT BOX</strong><small>4 cookies</small></span>
+            ><span><strong>TREAT BOX</strong><small>4 cookies · RM39</small></span>
           </button>
           <button
             class="box-size-card"
@@ -260,7 +260,7 @@
             data-box-name="Chunky Box"
           >
             <span class="box-size-number">6</span
-            ><span><strong>CHUNKY BOX</strong><small>6 cookies</small></span>
+            ><span><strong>CHUNKY BOX</strong><small>6 cookies · RM56</small></span>
           </button>
           <button
             class="box-size-card"
@@ -269,7 +269,7 @@
             data-box-name="Cookie Feast"
           >
             <span class="box-size-number">12</span
-            ><span><strong>COOKIE FEAST</strong><small>12 cookies</small></span>
+            ><span><strong>COOKIE FEAST</strong><small>12 cookies · RM108</small></span>
           </button>
         </div>
         <div class="cookie-box-panel">
@@ -336,7 +336,7 @@
               data-box-name="Treat Box"
             >
               <span class="box-size-number">4</span
-              ><span><strong>TREAT BOX</strong><small>4 cookies</small></span>
+              ><span><strong>TREAT BOX</strong><small>4 cookies · RM39</small></span>
             </button>
             <button
               class="box-size-card"
@@ -345,7 +345,7 @@
               data-box-name="Chunky Box"
             >
               <span class="box-size-number">6</span
-              ><span><strong>CHUNKY BOX</strong><small>6 cookies</small></span>
+              ><span><strong>CHUNKY BOX</strong><small>6 cookies · RM56</small></span>
             </button>
             <button
               class="box-size-card"
@@ -355,7 +355,7 @@
             >
               <span class="box-size-number">12</span
               ><span
-                ><strong>COOKIE FEAST</strong><small>12 cookies</small></span
+                ><strong>COOKIE FEAST</strong><small>12 cookies · RM108</small></span
               >
             </button>
           </div>
@@ -589,15 +589,94 @@
             <button class="primary-button" id="proceedToPaymentButton" type="button">
               CONTINUE TO PAYMENT
             </button>
-            <p class="checkout-next-step-note" id="checkoutNextStepNote" hidden>
-              Customer details saved. The QR payment screen will be connected
-              in the next step.
-            </p>
+            <p class="checkout-next-step-note" id="checkoutNextStepNote" hidden></p>
           </div>
         </div>
       </div>
     </section>
 
-    <script src="script.js?v=5.6"></script>
+
+    <!-- =========================================================
+         STEP 7: PAYMENT
+         ========================================================= -->
+    <section
+      class="modal"
+      id="paymentModal"
+      aria-hidden="true"
+      aria-label="Pay for your Gookie order"
+    >
+      <div class="modal-card payment-modal-card">
+        <div class="modal-sticky-header">
+          <div>
+            <p class="drawer-eyebrow">STEP 7 · PAYMENT</p>
+            <h2>Pay for your Gookies</h2>
+          </div>
+          <button
+            class="modal-close-button"
+            id="paymentModalClose"
+            type="button"
+            aria-label="Close payment"
+          >
+            ×
+          </button>
+        </div>
+
+        <div class="payment-modal-body">
+          <div class="payment-order-id-row">
+            <span>Order ID</span>
+            <strong id="paymentOrderId">—</strong>
+          </div>
+
+          <div class="payment-total-card">
+            <p>AMOUNT TO PAY</p>
+            <strong id="paymentTotal">RM0.00</strong>
+            <span id="paymentBoxSummary"></span>
+          </div>
+
+          <div class="payment-qr-card">
+            <p class="mini-heading">SCAN TO PAY WITH DUITNOW</p>
+            <div class="payment-qr-wrap">
+              <img
+                id="paymentQrImage"
+                src="qrcode.png"
+                alt="Gookie DuitNow QR code"
+              />
+            </div>
+            <p class="payment-qr-help">
+              Open your banking app, scan the QR code and complete the payment.
+            </p>
+          </div>
+
+          <div class="payment-reminder" role="note">
+            <span aria-hidden="true">!</span>
+            <div>
+              <strong>Save your payment proof.</strong>
+              <p>You will need to attach it in WhatsApp after continuing.</p>
+            </div>
+          </div>
+
+          <label class="payment-proof-check" for="paymentProofSaved">
+            <input id="paymentProofSaved" type="checkbox" />
+            <span class="payment-checkmark" aria-hidden="true"></span>
+            <span>I have saved my payment proof</span>
+          </label>
+
+          <button
+            class="primary-button"
+            id="continueToWhatsAppButton"
+            type="button"
+            disabled
+          >
+            CONTINUE TO WHATSAPP
+          </button>
+          <p class="payment-whatsapp-note">
+            WhatsApp will open with your order details ready to send. Attach
+            your saved payment proof before sending the message.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <script src="script.js?v=7.0"></script>
   </body>
 </html>
