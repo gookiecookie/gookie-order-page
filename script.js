@@ -653,28 +653,107 @@ function saveGookieChoiceOrder() {
   updateCart();
   openDrawer(cartDrawer, cartButton);
 }
+function editCurrentOrder() {
+  if (!currentOrder) return;
+
+  closeDrawer(cartDrawer);
+
+  if (currentOrder.type === "Build Your Box") {
+    showOrderSection(buildYourBoxSection, gookiesChoiceSection);
+    setTimeout(() => {
+      openBuildFlavourSelector();
+    }, 380);
+    return;
+  }
+
+  showOrderSection(gookiesChoiceSection, buildYourBoxSection);
+  setTimeout(() => {
+    scrollToSection(gookieChoicePreview);
+  }, 380);
+}
+
+function removeCurrentOrder() {
+  if (!currentOrder) return;
+
+  currentOrder = null;
+  updateCart();
+}
+
 function updateCart() {
   const total = currentOrder ? currentOrder.cookies.length : 0;
+
   cartCount.textContent = String(total);
   cartSelectedCount.textContent = String(total);
+
   if (!currentOrder) {
     cartEmptyState.hidden = false;
     cartContent.hidden = true;
     checkoutButton.disabled = true;
+    cartOrderSummary.innerHTML = "";
     return;
   }
+
   cartEmptyState.hidden = true;
   cartContent.hidden = false;
   checkoutButton.disabled = false;
+
   const counts = {};
-  currentOrder.cookies.forEach((id) => (counts[id] = (counts[id] || 0) + 1));
-  const summary = Object.entries(counts)
-    .map(([id, q]) => {
-      const c = getCookieById(id);
-      return `<div class="cart-summary-item"><strong>${c.name} ×${q}</strong><span>${c.subtitle}</span></div>`;
+  currentOrder.cookies.forEach((id) => {
+    counts[id] = (counts[id] || 0) + 1;
+  });
+
+  const flavourSummary = Object.entries(counts)
+    .map(([id, quantity]) => {
+      const cookie = getCookieById(id);
+
+      return `
+        <div class="cart-flavour-row">
+          <div class="cart-flavour-image">
+            <img src="${cookie.image}" alt="${cookie.name}">
+          </div>
+
+          <div class="cart-flavour-copy">
+            <strong>${cookie.name}</strong>
+            <span>${cookie.subtitle}</span>
+          </div>
+
+          <span class="cart-flavour-quantity">×${quantity}</span>
+        </div>
+      `;
     })
     .join("");
-  cartOrderSummary.innerHTML = `<div class="cart-summary-item"><strong>${currentOrder.type}</strong><span>${currentOrder.collectionName || currentOrder.boxName}</span></div><div class="cart-summary-item"><strong>${currentOrder.boxName}</strong><span>${currentOrder.boxSize} cookies</span></div>${summary}`;
+
+  const orderLabel = currentOrder.collectionName || currentOrder.boxName;
+
+  cartOrderSummary.innerHTML = `
+    <div class="cart-order-card">
+      <p class="cart-order-kicker">CURRENT SELECTION</p>
+      <strong class="cart-order-title">${currentOrder.type}</strong>
+      <span class="cart-order-label">${orderLabel}</span>
+
+      <div class="cart-order-meta">
+        <span>${currentOrder.boxName}</span>
+        <strong>${currentOrder.boxSize} cookies</strong>
+      </div>
+    </div>
+
+    <div class="cart-flavour-list">
+      ${flavourSummary}
+    </div>
+
+    <div class="cart-action-row">
+      <button class="cart-edit-button" id="editCartOrder" type="button">
+        EDIT BOX
+      </button>
+
+      <button class="cart-remove-button" id="removeCartOrder" type="button">
+        REMOVE
+      </button>
+    </div>
+  `;
+
+  $("editCartOrder").addEventListener("click", editCurrentOrder);
+  $("removeCartOrder").addEventListener("click", removeCurrentOrder);
 }
 menuButton.addEventListener("click", () => openDrawer(menuDrawer, menuButton));
 cartButton.addEventListener("click", () => openDrawer(cartDrawer, cartButton));
