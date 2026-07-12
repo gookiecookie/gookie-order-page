@@ -231,7 +231,7 @@
             aria-controls="gookies-choice"
             data-order-tab="choice"
           >
-            GOOKIE'S CHOICE
+            GOOKIE'S PICKS
           </button>
         </div>
 
@@ -311,61 +311,77 @@
             </div>
           </section>
 
-          <section class="order-section order-builder-panel is-hidden" id="gookies-choice" data-order-panel="choice">
-            <div class="collection-grid" id="collectionGrid"></div>
-            <div class="gookie-choice-box-size is-hidden" id="gookieChoiceBoxArea">
-              <p class="mini-heading">CHOOSE YOUR BOX SIZE</p>
-              <div class="box-size-options" id="gookieChoiceSizeOptions">
-                <button
-                  class="box-size-card"
-                  type="button"
-                  data-box-size="4"
-                  data-box-name="Treat Box"
-                >
-                  <span class="box-size-number">4</span
-                  ><span><strong>TREAT BOX</strong><small>4 cookies · RM39</small></span>
-                </button>
-                <button
-                  class="box-size-card"
-                  type="button"
-                  data-box-size="6"
-                  data-box-name="Chunky Box"
-                >
-                  <span class="box-size-number">6</span
-                  ><span><strong>CHUNKY BOX</strong><small>6 cookies · RM56</small></span>
-                </button>
-                <button
-                  class="box-size-card"
-                  type="button"
-                  data-box-size="12"
-                  data-box-name="Cookie Feast"
-                >
-                  <span class="box-size-number">12</span
-                  ><span
-                    ><strong>COOKIE FEAST</strong><small>12 cookies · RM108</small></span
-                  >
-                </button>
-              </div>
-            </div>
-            <div class="cookie-box-panel is-hidden" id="gookieChoicePreview">
-              <div class="cookie-box-header">
-                <div>
-                  <p class="cookie-box-label">YOUR CURATED BOX</p>
-                  <h3 id="gookieChoiceTitle">Gookie's Choice</h3>
-                </div>
-                <button class="secondary-button" id="reshuffleChoice" type="button">
-                  RESHUFFLE
-                </button>
-              </div>
-              <div class="cookie-box-slots" id="gookieChoiceSlots"></div>
-              <p class="box-helper-text" id="gookieChoiceSummary"></p>
-              <button class="primary-button" id="keepGookieChoice" type="button">
-                KEEP THESE GOOKIES
-              </button>
-            </div>
-          </section>
-        </div>
-      </section>
+         <section
+  class="order-section order-builder-panel is-hidden"
+  id="gookies-choice"
+  data-order-panel="choice"
+>
+  <div class="gookies-picks-intro">
+    <p class="section-kicker">THE EASY, DELICIOUS WAY</p>
+    <h2>GOOKIE'S PICKS</h2>
+    <p>We'll pick. You enjoy.</p>
+  </div>
+
+  <div class="gookies-picks-grid" id="collectionGrid">
+    <button
+      class="gookies-pick-card"
+      type="button"
+      data-pick-id="first-timer"
+    >
+      <span class="gookies-pick-badge">START HERE</span>
+      <strong>FIRST-TIMER</strong>
+      <p>Perfect for your very first bite.</p>
+      <span>4 Cookies · RM36</span>
+    </button>
+
+    <button
+      class="gookies-pick-card"
+      type="button"
+      data-pick-id="the-classics"
+    >
+      <strong>THE CLASSICS</strong>
+      <p>Six Wonder Chips. Simple, timeless and always a good idea.</p>
+      <span>6 Cookies · RM52</span>
+    </button>
+
+    <button
+      class="gookies-pick-card"
+      type="button"
+      data-pick-id="surprise-box"
+    >
+      <strong>SURPRISE BOX</strong>
+      <p>A surprise mix, picked by Team Gookie.</p>
+      <span>6 Cookies · RM52</span>
+    </button>
+
+    <button
+      class="gookies-pick-card"
+      type="button"
+      data-pick-id="full-wonder"
+    >
+      <strong>FULL WONDER</strong>
+      <p>A little bit of everything we love.</p>
+      <span>12 Cookies · RM99</span>
+    </button>
+  </div>
+
+  <div class="cookie-box-panel is-hidden" id="gookieChoicePreview">
+    <div class="cookie-box-header">
+      <div>
+        <p class="cookie-box-label">YOUR GOOKIE PICK</p>
+        <h3 id="gookieChoiceTitle">Choose a box</h3>
+      </div>
+    </div>
+
+    <div class="cookie-box-slots" id="gookieChoiceSlots"></div>
+
+    <p class="box-helper-text" id="gookieChoiceSummary"></p>
+
+    <button class="primary-button" id="keepGookieChoice" type="button">
+      ADD TO CART
+    </button>
+  </div>
+</section>
     </main>
 
     <section
