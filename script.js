@@ -155,6 +155,9 @@ const $ = (id) => document.getElementById(id),
   buildSelectedBoxName = $("buildSelectedBoxName"),
   buildSelectedCount = $("buildSelectedCount"),
   buildBoxCapacity = $("buildBoxCapacity"),
+  buildBoxProgress = $("buildBoxProgress"),
+  buildBoxProgressFill = $("buildBoxProgressFill"),
+  buildBoxProgressText = $("buildBoxProgressText"),
   buildCookieSlots = $("buildCookieSlots"),
   buildBoxHelper = $("buildBoxHelper"),
   openFlavourSelector = $("openFlavourSelector"),
@@ -290,6 +293,31 @@ function renderCookieSlots(container, capacity, selection) {
     container.appendChild(slot);
   }
 }
+function updateBuildBoxProgress() {
+  const selectedCount = buildSelection.length;
+  const percentage = buildBoxSize > 0
+    ? Math.round((selectedCount / buildBoxSize) * 100)
+    : 0;
+
+  buildBoxProgressFill.style.width = `${percentage}%`;
+  buildBoxProgress.setAttribute("aria-valuemax", String(buildBoxSize));
+  buildBoxProgress.setAttribute("aria-valuenow", String(selectedCount));
+  buildBoxProgress.classList.toggle(
+    "is-complete",
+    buildBoxSize > 0 && selectedCount === buildBoxSize,
+  );
+
+  if (buildBoxSize === 0) {
+    buildBoxProgressText.textContent = "Choose a box size to begin";
+    return;
+  }
+
+  buildBoxProgressText.textContent =
+    selectedCount === buildBoxSize
+      ? "100% complete — your box is ready!"
+      : `${percentage}% complete`;
+}
+
 function selectBuildBox(button) {
   buildBoxSizeOptions
     .querySelectorAll(".box-size-card")
@@ -304,6 +332,7 @@ function selectBuildBox(button) {
   buildBoxHelper.textContent = `Pick ${buildBoxSize} cookies to complete your ${buildBoxName}.`;
   openFlavourSelector.disabled = false;
   renderCookieSlots(buildCookieSlots, buildBoxSize, buildSelection);
+  updateBuildBoxProgress();
 }
 const getBuildQuantity = (id) => buildSelection.filter((x) => x === id).length;
 function addBuildCookie(id) {
@@ -341,6 +370,8 @@ function updateFlavourSelector() {
   renderFlavourList();
   renderCookieSlots(buildCookieSlots, buildBoxSize, buildSelection);
   buildSelectedCount.textContent = String(buildSelection.length);
+  updateBuildBoxProgress();
+
   const r = buildBoxSize - buildSelection.length;
   buildBoxHelper.textContent =
     r === 0
@@ -501,4 +532,5 @@ document.addEventListener("keydown", (e) => {
 renderMarquee();
 renderCollections();
 renderCookieSlots(buildCookieSlots, 0, []);
+updateBuildBoxProgress();
 updateCart();
