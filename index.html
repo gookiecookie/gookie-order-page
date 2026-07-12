@@ -328,9 +328,11 @@
       type="button"
       data-pick-id="first-timer"
     >
-      <span class="gookies-pick-badge">START HERE</span>
+      <div class="gookies-pick-image">
+        <img src="first-timer-box.png" alt="First-Timer box" />
+        <span class="gookies-pick-badge">START HERE</span>
+      </div>
       <strong>FIRST-TIMER</strong>
-      <p>Perfect for your very first bite.</p>
       <span>4 Cookies · RM36</span>
     </button>
 
@@ -339,8 +341,10 @@
       type="button"
       data-pick-id="the-classics"
     >
+      <div class="gookies-pick-image">
+        <img src="the-classics-box.png" alt="The Classics box" />
+      </div>
       <strong>THE CLASSICS</strong>
-      <p>Six Wonder Chips. Simple, timeless and always a good idea.</p>
       <span>6 Cookies · RM52</span>
     </button>
 
@@ -349,8 +353,10 @@
       type="button"
       data-pick-id="surprise-box"
     >
+      <div class="gookies-pick-image">
+        <img src="surprise-box.png" alt="Surprise Box" />
+      </div>
       <strong>SURPRISE BOX</strong>
-      <p>A surprise mix, picked by Team Gookie.</p>
       <span>6 Cookies · RM52</span>
     </button>
 
@@ -359,26 +365,11 @@
       type="button"
       data-pick-id="full-wonder"
     >
-      <strong>FULL WONDER</strong>
-      <p>A little bit of everything we love.</p>
-      <span>12 Cookies · RM99</span>
-    </button>
-  </div>
-
-  <div class="cookie-box-panel is-hidden" id="gookieChoicePreview">
-    <div class="cookie-box-header">
-      <div>
-        <p class="cookie-box-label">YOUR GOOKIE PICK</p>
-        <h3 id="gookieChoiceTitle">Choose a box</h3>
+      <div class="gookies-pick-image">
+        <img src="full-wonder-box.png" alt="Full Wonder box" />
       </div>
-    </div>
-
-    <div class="cookie-box-slots" id="gookieChoiceSlots"></div>
-
-    <p class="box-helper-text" id="gookieChoiceSummary"></p>
-
-    <button class="primary-button" id="keepGookieChoice" type="button">
-      ADD TO CART
+      <strong>FULL WONDER</strong>
+      <span>12 Cookies · RM99</span>
     </button>
   </div>
 </section>
@@ -683,5 +674,52 @@
     </section>
 
     <script src="script.js?v=7.0"></script>
+
+<section
+  class="modal"
+  id="gookiePickModal"
+  aria-hidden="true"
+  aria-label="Gookie's Pick details"
+>
+  <div class="modal-card gookie-pick-modal-card">
+    <button
+      class="modal-close-button"
+      id="gookiePickModalClose"
+      type="button"
+      aria-label="Close Gookie's Pick details"
+    >
+      ×
+    </button>
+
+    <div class="gookie-pick-modal-image">
+      <img id="gookiePickModalImage" src="" alt="" />
+    </div>
+
+    <div class="gookie-pick-modal-content">
+      <p class="section-kicker" id="gookiePickModalKicker"></p>
+      <h2 id="gookiePickModalTitle"></h2>
+      <p id="gookiePickModalDescription"></p>
+
+      <div class="gookie-pick-included">
+        <p class="mini-heading">WHAT'S INSIDE</p>
+        <div id="gookiePickModalIncluded"></div>
+      </div>
+
+      <div class="gookie-pick-modal-meta">
+        <span id="gookiePickModalQuantity"></span>
+        <strong id="gookiePickModalPrice"></strong>
+      </div>
+
+      <button
+        class="primary-button"
+        id="addGookiePickToCart"
+        type="button"
+      >
+        ADD TO CART
+      </button>
+    </div>
+  </div>
+</section>
+        
   </body>
 </html>
