@@ -90,9 +90,7 @@
       </div>
       <nav class="drawer-nav" aria-label="Primary navigation">
         <a href="#meet-the-gookies">MEET THE GOOKIES</a>
-        <a href="#choose-your-way">GET YOUR GOOKIES</a>
-        <a href="#build-your-box">BUILD YOUR BOX</a>
-        <a href="#gookies-choice">GOOKIE'S CHOICE</a>
+        <a href="#order-builder">GET YOUR GOOKIES</a>
       </nav>
       <div class="drawer-footer">
         <p>Less sweet. Extra chunky.</p>
@@ -197,183 +195,175 @@
           </button>
         </div>
         <p class="marquee-hint">
-           </p>
+          Auto-scrolling. Swipe or use the arrows — tap any cookie to explore.
+        </p>
       </section>
 
-      <section class="choice-section" id="choose-your-way">
-        <div class="section-heading">
+      <section class="order-builder" id="order-builder">
+        <div class="section-heading order-builder-heading">
           <p class="section-kicker">NOW FOR THE FUN PART</p>
-          <h2>HOW DO YOU WANT YOUR GOOKIES?</h2>
-          <p>Pick every flavour yourself, or let Gookie do the choosing.</p>
+          <h2>GET YOUR GOOKIES</h2>
+          <p>Build your own box, or let Gookie choose the mix for you.</p>
         </div>
-        <div class="choice-grid">
+
+        <div
+          class="order-builder-tabs"
+          role="tablist"
+          aria-label="Choose your ordering style"
+        >
           <button
-            class="choice-card choice-card-light"
+            class="order-builder-tab is-active"
             id="showBuildYourBox"
             type="button"
+            role="tab"
+            aria-selected="true"
+            aria-controls="build-your-box"
+            data-order-tab="build"
           >
-            <span class="choice-card-number">01</span>
-            <span class="choice-card-copy"
-              ><small>YOUR BOX. YOUR RULES.</small
-              ><strong>BUILD YOUR BOX</strong
-              ><span>Choose every flavour yourself.</span></span
-            >
-            <span class="choice-card-arrow">→</span>
+            BUILD YOUR BOX
           </button>
           <button
-            class="choice-card choice-card-red"
+            class="order-builder-tab"
             id="showGookiesChoice"
             type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="gookies-choice"
+            data-order-tab="choice"
           >
-            <span class="choice-card-number">02</span>
-            <span class="choice-card-copy"
-              ><small>LET US DO THE MIXING.</small
-              ><strong>GOOKIE'S CHOICE</strong
-              ><span>Pick a collection and leave the rest to us.</span></span
-            >
-            <span class="choice-card-arrow">→</span>
+            GOOKIE'S CHOICE
           </button>
         </div>
-      </section>
 
-      <section class="order-section is-hidden" id="build-your-box">
-        <div class="section-heading">
-          <p class="section-kicker">YOUR BOX. YOUR RULES.</p>
-          <h2>BUILD YOUR BOX</h2>
-          <p>Choose a box size, then pick your Gookies in one simple list.</p>
-        </div>
-        <div class="box-size-options" id="buildBoxSizeOptions">
-          <button
-            class="box-size-card"
-            type="button"
-            data-box-size="4"
-            data-box-name="Treat Box"
-          >
-            <span class="box-size-number">4</span
-            ><span><strong>TREAT BOX</strong><small>4 cookies · RM39</small></span>
-          </button>
-          <button
-            class="box-size-card"
-            type="button"
-            data-box-size="6"
-            data-box-name="Chunky Box"
-          >
-            <span class="box-size-number">6</span
-            ><span><strong>CHUNKY BOX</strong><small>6 cookies · RM56</small></span>
-          </button>
-          <button
-            class="box-size-card"
-            type="button"
-            data-box-size="12"
-            data-box-name="Cookie Feast"
-          >
-            <span class="box-size-number">12</span
-            ><span><strong>COOKIE FEAST</strong><small>12 cookies · RM108</small></span>
-          </button>
-        </div>
-        <div class="cookie-box-panel">
-          <div class="cookie-box-header">
-            <div>
-              <p class="cookie-box-label">YOUR BOX</p>
-              <h3 id="buildSelectedBoxName">Choose a box size</h3>
-            </div>
-            <div class="box-counter">
-              <strong id="buildSelectedCount">0</strong><span>/</span
-              ><strong id="buildBoxCapacity">0</strong>
-            </div>
-          </div>
-
-          <!-- ==================== BUILD BOX PROGRESS ==================== -->
-          <div
-            class="box-progress"
-            id="buildBoxProgress"
-            role="progressbar"
-            aria-label="Build Your Box progress"
-            aria-valuemin="0"
-            aria-valuemax="0"
-            aria-valuenow="0"
-          >
-            <div class="box-progress-track">
-              <div class="box-progress-fill" id="buildBoxProgressFill"></div>
-            </div>
-            <span class="box-progress-text" id="buildBoxProgressText">
-              Choose a box size to begin
-            </span>
-          </div>
-
-          <div class="cookie-box-slots" id="buildCookieSlots"></div>
-          <p class="box-helper-text" id="buildBoxHelper">
-            Choose your box size to start building.
-          </p>
-          <button
-            class="primary-button"
-            id="openFlavourSelector"
-            type="button"
-            disabled
-          >
-            CHOOSE MY GOOKIES
-          </button>
-        </div>
-      </section>
-
-      <section class="order-section is-hidden" id="gookies-choice">
-        <div class="section-heading">
-          <p class="section-kicker">THE EASY, DELICIOUS WAY</p>
-          <h2>GOOKIE'S CHOICE</h2>
-          <p>
-            Choose a collection, choose a box size, and we will curate the mix.
-          </p>
-        </div>
-        <div class="collection-grid" id="collectionGrid"></div>
-        <div class="gookie-choice-box-size is-hidden" id="gookieChoiceBoxArea">
-          <p class="mini-heading">CHOOSE YOUR BOX SIZE</p>
-          <div class="box-size-options" id="gookieChoiceSizeOptions">
-            <button
-              class="box-size-card"
-              type="button"
-              data-box-size="4"
-              data-box-name="Treat Box"
-            >
-              <span class="box-size-number">4</span
-              ><span><strong>TREAT BOX</strong><small>4 cookies · RM39</small></span>
-            </button>
-            <button
-              class="box-size-card"
-              type="button"
-              data-box-size="6"
-              data-box-name="Chunky Box"
-            >
-              <span class="box-size-number">6</span
-              ><span><strong>CHUNKY BOX</strong><small>6 cookies · RM56</small></span>
-            </button>
-            <button
-              class="box-size-card"
-              type="button"
-              data-box-size="12"
-              data-box-name="Cookie Feast"
-            >
-              <span class="box-size-number">12</span
-              ><span
-                ><strong>COOKIE FEAST</strong><small>12 cookies · RM108</small></span
+        <div class="order-builder-content">
+          <section class="order-section order-builder-panel" id="build-your-box" data-order-panel="build">
+            <div class="box-size-options" id="buildBoxSizeOptions">
+              <button
+                class="box-size-card"
+                type="button"
+                data-box-size="4"
+                data-box-name="Treat Box"
               >
-            </button>
-          </div>
-        </div>
-        <div class="cookie-box-panel is-hidden" id="gookieChoicePreview">
-          <div class="cookie-box-header">
-            <div>
-              <p class="cookie-box-label">YOUR CURATED BOX</p>
-              <h3 id="gookieChoiceTitle">Gookie's Choice</h3>
+                <span class="box-size-number">4</span
+                ><span><strong>TREAT BOX</strong><small>4 cookies · RM39</small></span>
+              </button>
+              <button
+                class="box-size-card"
+                type="button"
+                data-box-size="6"
+                data-box-name="Chunky Box"
+              >
+                <span class="box-size-number">6</span
+                ><span><strong>CHUNKY BOX</strong><small>6 cookies · RM56</small></span>
+              </button>
+              <button
+                class="box-size-card"
+                type="button"
+                data-box-size="12"
+                data-box-name="Cookie Feast"
+              >
+                <span class="box-size-number">12</span
+                ><span><strong>COOKIE FEAST</strong><small>12 cookies · RM108</small></span>
+              </button>
             </div>
-            <button class="secondary-button" id="reshuffleChoice" type="button">
-              RESHUFFLE
-            </button>
-          </div>
-          <div class="cookie-box-slots" id="gookieChoiceSlots"></div>
-          <p class="box-helper-text" id="gookieChoiceSummary"></p>
-          <button class="primary-button" id="keepGookieChoice" type="button">
-            KEEP THESE GOOKIES
-          </button>
+            <div class="cookie-box-panel">
+              <div class="cookie-box-header">
+                <div>
+                  <p class="cookie-box-label">YOUR BOX</p>
+                  <h3 id="buildSelectedBoxName">Choose a box size</h3>
+                </div>
+                <div class="box-counter">
+                  <strong id="buildSelectedCount">0</strong><span>/</span
+                  ><strong id="buildBoxCapacity">0</strong>
+                </div>
+              </div>
+
+              <!-- ==================== BUILD BOX PROGRESS ==================== -->
+              <div
+                class="box-progress"
+                id="buildBoxProgress"
+                role="progressbar"
+                aria-label="Build Your Box progress"
+                aria-valuemin="0"
+                aria-valuemax="0"
+                aria-valuenow="0"
+              >
+                <div class="box-progress-track">
+                  <div class="box-progress-fill" id="buildBoxProgressFill"></div>
+                </div>
+                <span class="box-progress-text" id="buildBoxProgressText">
+                  Choose a box size to begin
+                </span>
+              </div>
+
+              <div class="cookie-box-slots" id="buildCookieSlots"></div>
+              <p class="box-helper-text" id="buildBoxHelper">
+                Choose your box size to start building.
+              </p>
+              <button
+                class="primary-button"
+                id="openFlavourSelector"
+                type="button"
+                disabled
+              >
+                CHOOSE MY GOOKIES
+              </button>
+            </div>
+          </section>
+
+          <section class="order-section order-builder-panel is-hidden" id="gookies-choice" data-order-panel="choice">
+            <div class="collection-grid" id="collectionGrid"></div>
+            <div class="gookie-choice-box-size is-hidden" id="gookieChoiceBoxArea">
+              <p class="mini-heading">CHOOSE YOUR BOX SIZE</p>
+              <div class="box-size-options" id="gookieChoiceSizeOptions">
+                <button
+                  class="box-size-card"
+                  type="button"
+                  data-box-size="4"
+                  data-box-name="Treat Box"
+                >
+                  <span class="box-size-number">4</span
+                  ><span><strong>TREAT BOX</strong><small>4 cookies · RM39</small></span>
+                </button>
+                <button
+                  class="box-size-card"
+                  type="button"
+                  data-box-size="6"
+                  data-box-name="Chunky Box"
+                >
+                  <span class="box-size-number">6</span
+                  ><span><strong>CHUNKY BOX</strong><small>6 cookies · RM56</small></span>
+                </button>
+                <button
+                  class="box-size-card"
+                  type="button"
+                  data-box-size="12"
+                  data-box-name="Cookie Feast"
+                >
+                  <span class="box-size-number">12</span
+                  ><span
+                    ><strong>COOKIE FEAST</strong><small>12 cookies · RM108</small></span
+                  >
+                </button>
+              </div>
+            </div>
+            <div class="cookie-box-panel is-hidden" id="gookieChoicePreview">
+              <div class="cookie-box-header">
+                <div>
+                  <p class="cookie-box-label">YOUR CURATED BOX</p>
+                  <h3 id="gookieChoiceTitle">Gookie's Choice</h3>
+                </div>
+                <button class="secondary-button" id="reshuffleChoice" type="button">
+                  RESHUFFLE
+                </button>
+              </div>
+              <div class="cookie-box-slots" id="gookieChoiceSlots"></div>
+              <p class="box-helper-text" id="gookieChoiceSummary"></p>
+              <button class="primary-button" id="keepGookieChoice" type="button">
+                KEEP THESE GOOKIES
+              </button>
+            </div>
+          </section>
         </div>
       </section>
     </main>
