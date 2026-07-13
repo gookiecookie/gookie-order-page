@@ -719,17 +719,18 @@ img {
 }
 
 .box-size-card {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  min-height: 106px;
-  padding: 18px 20px;
+  display: block;
+  min-height: 0;
+  padding: 0;
+
   border: 2px solid transparent;
   border-radius: 24px;
+
   background: var(--white);
   color: var(--ink);
   text-align: left;
-  cursor: pointer;
+
+  overflow: hidden;
   box-shadow: 0 10px 35px rgba(55, 26, 12, 0.07);
 }
 
@@ -769,6 +770,106 @@ img {
 
 .box-size-card small {
   color: var(--muted);
+}
+
+/* ========================================
+   BUILD YOUR BOX ACCORDION
+======================================== */
+
+.box-accordion {
+  overflow: hidden;
+  transition: all .3s ease;
+}
+
+.box-accordion-header {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  padding: 22px;
+
+  background: transparent;
+  border: 0;
+
+  cursor: pointer;
+}
+
+.box-accordion-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  flex: 1;
+}
+
+.box-accordion-copy strong {
+  font-family: "League Spartan", sans-serif;
+  font-size: 1.65rem;
+  font-weight: 800;
+}
+
+.box-accordion-copy small {
+  margin-top: 4px;
+  color: var(--muted);
+}
+
+.box-accordion-arrow {
+  font-size: 1.6rem;
+  transition: transform .25s ease;
+}
+
+.box-accordion.is-open .box-accordion-arrow {
+  transform: rotate(180deg);
+}
+
+.box-accordion-body {
+  padding: 22px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.box-accordion-body[hidden] {
+  display: none;
+}
+
+.box-accordion-helper{
+    text-align:center;
+    color:var(--muted);
+    margin:18px 0;
+}
+
+.box-accordion-action{
+    width:100%;
+}
+
+.box-mini-slots{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
+    margin-top:22px;
+}
+
+/* Feast Box = 4 columns */
+.box-accordion[data-box-size="12"] .box-mini-slots {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.box-mini-slot{
+    aspect-ratio:1;
+    border-radius:18px;
+    background:#FFF7EA;
+    border:2px dashed rgba(187,25,26,.20);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.box-mini-slot img{
+
+    width:74%;
+    object-fit:contain;
+
 }
 
 .cookie-box-panel {
