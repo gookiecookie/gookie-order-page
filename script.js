@@ -1152,7 +1152,6 @@ window.addEventListener("resize", () => {
 
 renderMarquee();
 startMarqueeAnimation();
-renderCollections();
 renderCookieSlots(buildCookieSlots, 0, []);
 updateBuildBoxProgress();
 updateCart();
