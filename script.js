@@ -94,8 +94,7 @@ const gookiePicks = {
     id: "first-timer",
     name: "First-Timer",
     kicker: "START HERE",
-    description:
-      "A friendly introduction to four different sides of Gookie.",
+    description: "A friendly introduction to four different sides of Gookie.",
     quantity: 4,
     price: 36,
     image: "first-timer-box.png",
@@ -108,13 +107,11 @@ const gookiePicks = {
     ],
     revealFlavours: true,
   },
-
   "the-classics": {
     id: "the-classics",
     name: "The Classics",
     kicker: "SIMPLE. TIMELESS. GOOD.",
-    description:
-      "Six Wonder Chips for anyone who knows exactly what they love.",
+    description: "Six Wonder Chips for anyone who knows exactly what they love.",
     quantity: 6,
     price: 52,
     image: "the-classics-box.png",
@@ -122,7 +119,6 @@ const gookiePicks = {
     cookies: Array(6).fill("wonder-chip"),
     revealFlavours: true,
   },
-
   "surprise-box": {
     id: "surprise-box",
     name: "Surprise Box",
@@ -143,17 +139,15 @@ const gookiePicks = {
     ],
     revealFlavours: false,
   },
-
   "full-wonder": {
     id: "full-wonder",
     name: "Full Wonder",
     kicker: "THE FULL EXPERIENCE",
-    description:
-      "A full-sized tour through the colourful world of Gookie.",
+    description: "A full-sized tour through the colourful world of Gookie.",
     quantity: 12,
     price: 99,
     image: "full-wonder-box.png",
-    fallbackImage: "biscoff-boom.png",
+    fallbackImage: "monthly-wonder.png",
     cookies: [
       "wonder-chip",
       "wonder-chip",
@@ -222,11 +216,16 @@ const $ = (id) => document.getElementById(id),
   flavourNameList = $("flavourNameList"),
   saveFlavourSelection = $("saveFlavourSelection"),
   collectionGrid = $("collectionGrid"),
-  gookieChoicePreview = $("gookieChoicePreview"),
-  gookieChoiceTitle = $("gookieChoiceTitle"),
-  gookieChoiceSlots = $("gookieChoiceSlots"),
-  gookieChoiceSummary = $("gookieChoiceSummary"),
-  keepGookieChoice = $("keepGookieChoice"),
+  gookiePickModal = $("gookiePickModal"),
+  gookiePickModalClose = $("gookiePickModalClose"),
+  gookiePickModalImage = $("gookiePickModalImage"),
+  gookiePickModalKicker = $("gookiePickModalKicker"),
+  gookiePickModalTitle = $("gookiePickModalTitle"),
+  gookiePickModalDescription = $("gookiePickModalDescription"),
+  gookiePickModalIncluded = $("gookiePickModalIncluded"),
+  gookiePickModalQuantity = $("gookiePickModalQuantity"),
+  gookiePickModalPrice = $("gookiePickModalPrice"),
+  addGookiePickToCart = $("addGookiePickToCart"),
   cartCount = $("cartCount"),
   cartSelectedCount = $("cartSelectedCount"),
   cartEmptyState = $("cartEmptyState"),
@@ -259,9 +258,7 @@ const $ = (id) => document.getElementById(id),
 let buildBoxSize = 0,
   buildBoxName = "",
   buildSelection = [],
-  selectedCollection = null,
-  gookieChoiceSize = 0,
-  gookieChoiceSelection = [],
+  activeGookiePick = null,
   currentOrder = null,
   customerDetails = null,
   currentOrderId = null,
@@ -274,23 +271,7 @@ let buildBoxSize = 0,
   marqueeDragDistance = 0,
   marqueeResumeTimer = null,
   marqueeAutoPosition = 0;
-
-const gookiePickModal = $("gookiePickModal");
-const gookiePickModalClose = $("gookiePickModalClose");
-const gookiePickModalImage = $("gookiePickModalImage");
-const gookiePickModalKicker = $("gookiePickModalKicker");
-const gookiePickModalTitle = $("gookiePickModalTitle");
-const gookiePickModalDescription = $("gookiePickModalDescription");
-const gookiePickModalIncluded = $("gookiePickModalIncluded");
-const gookiePickModalQuantity = $("gookiePickModalQuantity");
-const gookiePickModalPrice = $("gookiePickModalPrice");
-const addGookiePickToCart = $("addGookiePickToCart");
-
-let activeGookiePick = null;
-
-const getCookieById = (id) =>
-  gookieCatalogue.find((c) => c.id === id);
-
+const getCookieById = (id) => gookieCatalogue.find((c) => c.id === id);
 function openOverlay() {
   pageOverlay.hidden = false;
   requestAnimationFrame(() => pageOverlay.classList.add("is-visible"));
@@ -363,7 +344,6 @@ function createMarqueeCard(c) {
   return b;
 }
 function renderMarquee() {
-  if (!marqueeTrack || !marqueeShell) return;
   marqueeTrack.innerHTML = "";
 
   [...gookieCatalogue, ...gookieCatalogue].forEach((cookie) => {
@@ -405,9 +385,9 @@ function animateMarquee(timestamp) {
 }
 
 function startMarqueeAnimation() {
-  if (!marqueeShell || !marqueeTrack || marqueeAnimationFrame) return;
+  if (marqueeAnimationFrame) return;
 
-  marqueeAutoPosition = marqueeShell?.scrollLeft || 0;
+  marqueeAutoPosition = marqueeShell.scrollLeft;
   marqueeLastTimestamp = 0;
   marqueeAnimationFrame = requestAnimationFrame(animateMarquee);
 }
@@ -493,27 +473,6 @@ function showOrderSection(show, hide) {
   show.classList.remove("is-hidden");
   setTimeout(() => scrollToSection(show), 20);
 }
-
-function switchOrderTab(tab) {
-  const showBuild = tab === "build";
-
-  showBuildYourBox.classList.toggle("is-active", showBuild);
-  showGookiesChoice.classList.toggle("is-active", !showBuild);
-
-  showBuildYourBox.setAttribute(
-    "aria-selected",
-    showBuild ? "true" : "false"
-  );
-
-  showGookiesChoice.setAttribute(
-    "aria-selected",
-    showBuild ? "false" : "true"
-  );
-
-  buildYourBoxSection.classList.toggle("is-hidden", !showBuild);
-  gookiesChoiceSection.classList.toggle("is-hidden", showBuild);
-}
-
 function renderCookieSlots(
   container,
   capacity,
@@ -695,13 +654,15 @@ function saveBuildOrder() {
   openDrawer(cartDrawer, cartButton);
 }
 function renderGookiePickIncluded(pick) {
+  if (!gookiePickModalIncluded) return;
+
   gookiePickModalIncluded.innerHTML = "";
 
   if (!pick.revealFlavours) {
     const row = document.createElement("div");
     row.className = "gookie-pick-included-row";
     row.innerHTML = `
-      <strong>6 mixed Gookies</strong>
+      <strong>${pick.quantity} mixed Gookies</strong>
       <span>Flavours are a surprise</span>
     `;
     gookiePickModalIncluded.appendChild(row);
@@ -709,7 +670,6 @@ function renderGookiePickIncluded(pick) {
   }
 
   const counts = {};
-
   pick.cookies.forEach((cookieId) => {
     counts[cookieId] = (counts[cookieId] || 0) + 1;
   });
@@ -724,22 +684,20 @@ function renderGookiePickIncluded(pick) {
       <strong>${cookie.name}</strong>
       <span>×${quantity}</span>
     `;
-
     gookiePickModalIncluded.appendChild(row);
   });
 }
 
 function openGookiePickDetails(pickId) {
   const pick = gookiePicks[pickId];
-  if (!pick) return;
 
   if (
+    !pick ||
     !gookiePickModal ||
     !gookiePickModalImage ||
     !gookiePickModalKicker ||
     !gookiePickModalTitle ||
     !gookiePickModalDescription ||
-    !gookiePickModalIncluded ||
     !gookiePickModalQuantity ||
     !gookiePickModalPrice
   ) {
@@ -749,27 +707,21 @@ function openGookiePickDetails(pickId) {
 
   activeGookiePick = pick;
 
-  document
-    .querySelectorAll(".gookies-pick-card")
-    .forEach((card) => {
-      card.classList.toggle(
-        "is-selected",
-        card.dataset.pickId === pickId,
-      );
-    });
+  document.querySelectorAll(".gookies-pick-card").forEach((card) => {
+    card.classList.toggle("is-selected", card.dataset.pickId === pickId);
+  });
 
-  gookiePickModalImage.src = pick.image;
-  gookiePickModalImage.alt = `${pick.name} Gookie box`;
   gookiePickModalImage.onerror = () => {
     gookiePickModalImage.onerror = null;
     gookiePickModalImage.src = pick.fallbackImage;
   };
+  gookiePickModalImage.src = pick.image;
+  gookiePickModalImage.alt = `${pick.name} Gookie box`;
   gookiePickModalKicker.textContent = pick.kicker;
   gookiePickModalTitle.textContent = pick.name;
   gookiePickModalDescription.textContent = pick.description;
-  gookiePickModalQuantity.textContent =
-    `${pick.quantity} Cookies`;
-  gookiePickModalPrice.textContent = `RM${pick.price}`;
+  gookiePickModalQuantity.textContent = `${pick.quantity} Cookies`;
+  gookiePickModalPrice.textContent = formatMoney(pick.price);
 
   renderGookiePickIncluded(pick);
   openModal(gookiePickModal);
@@ -788,6 +740,7 @@ function addSelectedGookiePickToCart() {
     cookies: [...activeGookiePick.cookies],
   };
 
+  currentOrderId = null;
   updateCart();
   closeModal(gookiePickModal);
   openDrawer(cartDrawer, cartButton);
@@ -799,15 +752,19 @@ function editCurrentOrder() {
   closeDrawer(cartDrawer);
 
   if (currentOrder.type === "Build Your Box") {
-    switchOrderTab("build");
-    setTimeout(() => openBuildFlavourSelector(), 250);
+    showOrderSection(buildYourBoxSection, gookiesChoiceSection);
+    setTimeout(() => {
+      openBuildFlavourSelector();
+    }, 380);
     return;
   }
 
-  switchOrderTab("choice");
+  showOrderSection(gookiesChoiceSection, buildYourBoxSection);
 
   if (currentOrder.pickId) {
-    setTimeout(() => openGookiePickDetails(currentOrder.pickId), 250);
+    setTimeout(() => {
+      openGookiePickDetails(currentOrder.pickId);
+    }, 380);
   }
 }
 
@@ -903,7 +860,9 @@ function formatMoney(amount) {
 
 function getOrderSubtotal() {
   if (!currentOrder) return 0;
-  return Number(currentOrder.price ?? GOOKIE_PRICING[currentOrder.boxSize] ?? 0);
+  return Number.isFinite(currentOrder.price)
+    ? currentOrder.price
+    : GOOKIE_PRICING[currentOrder.boxSize] || 0;
 }
 
 function getOrderTotal() {
@@ -1148,25 +1107,40 @@ function continueToWhatsApp() {
   window.location.href = whatsappUrl;
 }
 
-menuButton.addEventListener("click", () => openDrawer(menuDrawer, menuButton));
-cartButton.addEventListener("click", () => openDrawer(cartDrawer, cartButton));
-menuCloseButton.addEventListener("click", () => closeDrawer(menuDrawer));
-cartCloseButton.addEventListener("click", () => closeDrawer(cartDrawer));
-pageOverlay.addEventListener("click", () => {
+menuButton?.addEventListener("click", () => openDrawer(menuDrawer, menuButton));
+cartButton?.addEventListener("click", () => openDrawer(cartDrawer, cartButton));
+menuCloseButton?.addEventListener("click", () => closeDrawer(menuDrawer));
+cartCloseButton?.addEventListener("click", () => closeDrawer(cartDrawer));
+pageOverlay?.addEventListener("click", () => {
   closeAllDrawers();
   closeAllModals();
   resumeMarquee();
 });
-cookieModalClose.addEventListener("click", () => closeCookieDetails(true));
-getYourGookiesButton.addEventListener("click", () => {
+cookieModalClose?.addEventListener("click", () => closeCookieDetails(true));
+getYourGookiesButton?.addEventListener("click", () => {
   closeCookieDetails(false);
   scrollToSection($("choose-your-way"));
   setTimeout(resumeMarquee, 800);
 });
+showBuildYourBox?.addEventListener("click", () => {
+  showBuildYourBox.classList.add("is-active");
+  showGookiesChoice?.classList.remove("is-active");
+  showBuildYourBox.setAttribute("aria-selected", "true");
+  showGookiesChoice?.setAttribute("aria-selected", "false");
+  showOrderSection(buildYourBoxSection, gookiesChoiceSection);
+});
+
+showGookiesChoice?.addEventListener("click", () => {
+  showGookiesChoice.classList.add("is-active");
+  showBuildYourBox?.classList.remove("is-active");
+  showGookiesChoice.setAttribute("aria-selected", "true");
+  showBuildYourBox?.setAttribute("aria-selected", "false");
+  showOrderSection(gookiesChoiceSection, buildYourBoxSection);
+});
 buildBoxSizeOptions
-  .querySelectorAll(".box-size-card")
+  ?.querySelectorAll(".box-size-card")
   .forEach((b) => b.addEventListener("click", () => selectBuildBox(b)));
-openFlavourSelector.addEventListener("click", () => {
+openFlavourSelector?.addEventListener("click", () => {
   const isComplete =
     buildBoxSize > 0 && buildSelection.length === buildBoxSize;
 
@@ -1177,26 +1151,52 @@ openFlavourSelector.addEventListener("click", () => {
 
   openBuildFlavourSelector();
 });
-flavourModalClose.addEventListener("click", () => closeModal(flavourModal));
-saveFlavourSelection.addEventListener("click", saveBuildOrder);
-checkoutButton.addEventListener("click", openCheckout);
-checkoutModalClose.addEventListener("click", () => closeModal(checkoutModal));
-customerDetailsForm.addEventListener("submit", handleCustomerDetailsSubmit);
-editCustomerDetails.addEventListener("click", showCustomerDetailsStep);
-proceedToPaymentButton.addEventListener("click", openPaymentStep);
-paymentModalClose.addEventListener("click", () => closeModal(paymentModal));
-paymentProofSaved.addEventListener("change", () => {
+flavourModalClose?.addEventListener("click", () => closeModal(flavourModal));
+saveFlavourSelection?.addEventListener("click", saveBuildOrder);
+
+checkoutButton?.addEventListener("click", openCheckout);
+checkoutModalClose?.addEventListener("click", () => closeModal(checkoutModal));
+customerDetailsForm?.addEventListener("submit", handleCustomerDetailsSubmit);
+editCustomerDetails?.addEventListener("click", showCustomerDetailsStep);
+proceedToPaymentButton?.addEventListener("click", openPaymentStep);
+paymentModalClose?.addEventListener("click", () => closeModal(paymentModal));
+paymentProofSaved?.addEventListener("change", () => {
   continueToWhatsAppButton.disabled = !paymentProofSaved.checked;
 });
-continueToWhatsAppButton.addEventListener("click", continueToWhatsApp);
+continueToWhatsAppButton?.addEventListener("click", continueToWhatsApp);
 
 [customerName, customerPhone, deliveryAddress, deliveryPostcode].forEach((input) => {
   input.addEventListener("input", () => setFieldError(input, ""));
 });
 
-deliveryPostcode.addEventListener("input", () => {
+deliveryPostcode?.addEventListener("input", () => {
   deliveryPostcode.value = deliveryPostcode.value.replace(/\D/g, "").slice(0, 5);
 });
+
+document.querySelectorAll(".gookies-pick-card").forEach((card) => {
+  const pick = gookiePicks[card.dataset.pickId];
+  const image = card.querySelector("img");
+
+  if (pick && image) {
+    image.onerror = () => {
+      image.onerror = null;
+      image.src = pick.fallbackImage;
+    };
+  }
+
+  card.addEventListener("click", () => {
+    openGookiePickDetails(card.dataset.pickId);
+  });
+});
+
+gookiePickModalClose?.addEventListener("click", () => {
+  closeModal(gookiePickModal);
+});
+
+addGookiePickToCart?.addEventListener(
+  "click",
+  addSelectedGookiePickToCart,
+);
 
 marqueePrev?.addEventListener("click", () => scrollMarqueeByCard(-1));
 marqueeNext?.addEventListener("click", () => scrollMarqueeByCard(1));
@@ -1206,24 +1206,24 @@ marqueeShell?.addEventListener("pointerup", endMarqueeDrag);
 marqueeShell?.addEventListener("pointercancel", endMarqueeDrag);
 const supportsRealHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
-if (supportsRealHover && marqueeShell) {
-  marqueeShell.addEventListener("mouseenter", pauseMarquee);
-  marqueeShell.addEventListener("mouseleave", () => {
+if (supportsRealHover) {
+  marqueeShell?.addEventListener("mouseenter", pauseMarquee);
+  marqueeShell?.addEventListener("mouseleave", () => {
     if (!marqueeDragging) resumeMarquee(500);
   });
 }
-if (supportsRealHover && marqueeShell) {
-  marqueeShell.addEventListener("focusin", pauseMarquee);
-  marqueeShell.addEventListener("focusout", () => resumeMarquee(500));
+if (supportsRealHover) {
+  marqueeShell?.addEventListener("focusin", pauseMarquee);
+  marqueeShell?.addEventListener("focusout", () => resumeMarquee(500));
 }
 marqueeShell?.addEventListener("touchstart", pauseMarquee, { passive: true });
 marqueeShell?.addEventListener("touchend", () => {
-  marqueeAutoPosition = marqueeShell?.scrollLeft || 0;
+  marqueeAutoPosition = marqueeShell.scrollLeft;
   resumeMarquee(1200);
 }, { passive: true });
 marqueeShell?.addEventListener("scroll", () => {
   if (marqueePaused || marqueeDragging) {
-    marqueeAutoPosition = marqueeShell?.scrollLeft || 0;
+    marqueeAutoPosition = marqueeShell.scrollLeft;
   }
 }, { passive: true });
 document
@@ -1240,57 +1240,15 @@ document.addEventListener("visibilitychange", () => {
   marqueeLastTimestamp = 0;
 
   if (!document.hidden) {
-    marqueeAutoPosition = marqueeShell?.scrollLeft || 0;
+    marqueeAutoPosition = marqueeShell.scrollLeft;
     resumeMarquee(150);
   }
 });
 
 window.addEventListener("resize", () => {
-  marqueeAutoPosition = marqueeShell?.scrollLeft || 0;
+  marqueeAutoPosition = marqueeShell.scrollLeft;
   marqueeLastTimestamp = 0;
 });
-
-showBuildYourBox.addEventListener("click", () => {
-  switchOrderTab("build");
-});
-
-showGookiesChoice.addEventListener("click", () => {
-  switchOrderTab("choice");
-});
-
-document
-  .querySelectorAll(".gookies-pick-card")
-  .forEach((card) => {
-    const pick = gookiePicks[card.dataset.pickId];
-    const image = card.querySelector("img");
-
-    if (pick && image) {
-      image.onerror = () => {
-        image.onerror = null;
-        image.src = pick.fallbackImage;
-      };
-    }
-
-    card.addEventListener("click", () => {
-      openGookiePickDetails(card.dataset.pickId);
-    });
-  });
-
-gookiePickModalClose?.addEventListener("click", () => {
-  closeModal(gookiePickModal);
-});
-
-addGookiePickToCart?.addEventListener(
-  "click",
-  addSelectedGookiePickToCart,
-);
-
-switchOrderTab("build");
-
-addGookiePickToCart.addEventListener(
-  "click",
-  addSelectedGookiePickToCart,
-);
 
 renderMarquee();
 startMarqueeAnimation();
