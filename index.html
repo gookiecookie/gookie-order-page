@@ -237,34 +237,117 @@
         <div class="order-builder-content">
           <section class="order-section order-builder-panel" id="build-your-box" data-order-panel="build">
             <div class="box-size-options" id="buildBoxSizeOptions">
-              <button
-                class="box-size-card"
-                type="button"
-                data-box-size="4"
-                data-box-name="Treat Box"
-              >
-                <span class="box-size-number">4</span
-                ><span><strong>TREAT BOX</strong><small>4 cookies · RM39</small></span>
-              </button>
-              <button
-                class="box-size-card"
-                type="button"
-                data-box-size="6"
-                data-box-name="Chunky Box"
-              >
-                <span class="box-size-number">6</span
-                ><span><strong>CHUNKY BOX</strong><small>6 cookies · RM56</small></span>
-              </button>
-              <button
-                class="box-size-card"
-                type="button"
-                data-box-size="12"
-                data-box-name="Cookie Feast"
-              >
-                <span class="box-size-number">12</span
-                ><span><strong>COOKIE FEAST</strong><small>12 cookies · RM108</small></span>
-              </button>
-            </div>
+  <article
+    class="box-size-card box-accordion"
+    data-box-size="4"
+    data-box-name="Treat Box"
+  >
+    <button
+      class="box-accordion-header"
+      type="button"
+      aria-expanded="false"
+    >
+      <span class="box-size-number">4</span>
+
+      <span class="box-accordion-copy">
+        <strong>TREAT BOX</strong>
+        <small>4 cookies · RM39</small>
+      </span>
+
+      <span class="box-accordion-arrow" aria-hidden="true">⌄</span>
+    </button>
+
+    <div class="box-accordion-body" hidden>
+      <div class="box-mini-slots" data-box-slots="4"></div>
+
+      <p class="box-accordion-helper">
+        Pick 4 cookies to complete your Treat Box.
+      </p>
+
+      <button
+        class="primary-button box-accordion-action"
+        type="button"
+        data-box-action="4"
+      >
+        CHOOSE MY GOOKIES
+      </button>
+    </div>
+  </article>
+
+  <article
+    class="box-size-card box-accordion"
+    data-box-size="6"
+    data-box-name="Chunky Box"
+  >
+    <button
+      class="box-accordion-header"
+      type="button"
+      aria-expanded="false"
+    >
+      <span class="box-size-number">6</span>
+
+      <span class="box-accordion-copy">
+        <strong>CHUNKY BOX</strong>
+        <small>6 cookies · RM56</small>
+      </span>
+
+      <span class="box-accordion-arrow" aria-hidden="true">⌄</span>
+    </button>
+
+    <div class="box-accordion-body" hidden>
+      <div class="box-mini-slots" data-box-slots="6"></div>
+
+      <p class="box-accordion-helper">
+        Pick 6 cookies to complete your Chunky Box.
+      </p>
+
+      <button
+        class="primary-button box-accordion-action"
+        type="button"
+        data-box-action="6"
+      >
+        CHOOSE MY GOOKIES
+      </button>
+    </div>
+  </article>
+
+  <article
+    class="box-size-card box-accordion"
+    data-box-size="12"
+    data-box-name="Cookie Feast"
+  >
+    <button
+      class="box-accordion-header"
+      type="button"
+      aria-expanded="false"
+    >
+      <span class="box-size-number">12</span>
+
+      <span class="box-accordion-copy">
+        <strong>COOKIE FEAST</strong>
+        <small>12 cookies · RM108</small>
+      </span>
+
+      <span class="box-accordion-arrow" aria-hidden="true">⌄</span>
+    </button>
+
+    <div class="box-accordion-body" hidden>
+      <div class="box-mini-slots" data-box-slots="12"></div>
+
+      <p class="box-accordion-helper">
+        Pick 12 cookies to complete your Cookie Feast.
+      </p>
+
+      <button
+        class="primary-button box-accordion-action"
+        type="button"
+        data-box-action="12"
+      >
+        CHOOSE MY GOOKIES
+      </button>
+    </div>
+  </article>
+</div>
             <div class="cookie-box-panel">
               <div class="cookie-box-header">
                 <div>
