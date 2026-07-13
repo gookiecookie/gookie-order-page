@@ -1287,6 +1287,23 @@ addGookiePickToCart?.addEventListener(
 
 switchOrderTab("build");
 
+document
+  .querySelectorAll(".gookies-pick-card")
+  .forEach((card) => {
+    card.addEventListener("click", () => {
+      openGookiePickDetails(card.dataset.pickId);
+    });
+  });
+
+gookiePickModalClose.addEventListener("click", () => {
+  closeModal(gookiePickModal);
+});
+
+addGookiePickToCart.addEventListener(
+  "click",
+  addSelectedGookiePickToCart,
+);
+
 renderMarquee();
 startMarqueeAnimation();
 renderCookieSlots(buildCookieSlots, 0, []);
