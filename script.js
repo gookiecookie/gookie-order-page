@@ -1198,6 +1198,39 @@ addGookiePickToCart?.addEventListener(
   addSelectedGookiePickToCart,
 );
 
+/* =========================================
+   BUILD YOUR BOX ACCORDION
+========================================= */
+
+function toggleBuildAccordion(card) {
+  document.querySelectorAll(".box-accordion").forEach((item) => {
+    const body = item.querySelector(".box-accordion-body");
+    const header = item.querySelector(".box-accordion-header");
+
+    if (!body || !header) return;
+
+    if (item === card) {
+      const isOpen = item.classList.contains("is-open");
+
+      item.classList.toggle("is-open", !isOpen);
+      body.hidden = isOpen;
+      header.setAttribute("aria-expanded", String(!isOpen));
+    } else {
+      item.classList.remove("is-open");
+      body.hidden = true;
+      header.setAttribute("aria-expanded", "false");
+    }
+  });
+}
+
+document.querySelectorAll(".box-accordion").forEach((card) => {
+  const header = card.querySelector(".box-accordion-header");
+
+  header?.addEventListener("click", () => {
+    toggleBuildAccordion(card);
+  });
+});
+
 marqueePrev?.addEventListener("click", () => scrollMarqueeByCard(-1));
 marqueeNext?.addEventListener("click", () => scrollMarqueeByCard(1));
 marqueeShell?.addEventListener("pointerdown", beginMarqueeDrag);
