@@ -793,9 +793,9 @@ function updateCart() {
   cartSelectedCount.textContent = String(total);
 
   if (!currentOrder) {
-    cartEmptyState.hidden = false;
-    cartContent.hidden = true;
-    checkoutButton.disabled = true;
+   cartEmptyState.hidden = true;
+  cartContent.hidden = false;
+  checkoutButton.disabled = false;
     cartOrderSummary.innerHTML = "";
     return;
   }
