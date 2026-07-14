@@ -387,7 +387,7 @@ function animateMarquee(timestamp) {
 function startMarqueeAnimation() {
   if (marqueeAnimationFrame) return;
 
-  marqueeAutoPosition = marqueeShell.scrollLeft;
+ marqueeAutoPosition = marqueeShell?.scrollLeft || 0;
   marqueeLastTimestamp = 0;
   marqueeAnimationFrame = requestAnimationFrame(animateMarquee);
 }
@@ -630,6 +630,7 @@ function updateFlavourSelector() {
   updateBuildBoxProgress();
   updateBuildActionButton();
   renderMiniSlots(buildBoxSize);
+  updateAccordionAction();
 
   const r = buildBoxSize - buildSelection.length;
   buildBoxHelper.textContent =
@@ -1253,6 +1254,47 @@ function renderMiniSlots(boxSize) {
   }
 }
 
+function updateAccordionAction() {
+  const activeCard = document.querySelector(
+    `.box-accordion[data-box-size="${buildBoxSize}"]`,
+  );
+
+  if (!activeCard) return;
+
+  const actionButton = activeCard.querySelector(
+    ".box-accordion-action",
+  );
+
+  const helper = activeCard.querySelector(
+    ".box-accordion-helper",
+  );
+
+  if (!actionButton || !helper) return;
+
+  const selectedCount = buildSelection.length;
+  const remaining = buildBoxSize - selectedCount;
+  const isComplete =
+    buildBoxSize > 0 && selectedCount === buildBoxSize;
+
+  if (isComplete) {
+    actionButton.textContent = "EDIT MY GOOKIES";
+    actionButton.classList.add("is-ready");
+    helper.textContent = `${selectedCount} / ${buildBoxSize} selected · Box complete!`;
+    return;
+  }
+
+  actionButton.classList.remove("is-ready");
+
+  if (selectedCount > 0) {
+    actionButton.textContent = "CONTINUE CHOOSING";
+    helper.textContent = `${selectedCount} / ${buildBoxSize} selected · Pick ${remaining} more`;
+    return;
+  }
+
+  actionButton.textContent = "CHOOSE MY GOOKIES";
+  helper.textContent = `Pick ${buildBoxSize} cookies to complete your ${buildBoxName}.`;
+}
+
 document.querySelectorAll(".box-accordion").forEach((card) => {
   const header = card.querySelector(".box-accordion-header");
 
@@ -1263,19 +1305,24 @@ document.querySelectorAll(".box-accordion").forEach((card) => {
 
 document.querySelectorAll(".box-accordion-action").forEach((button) => {
   button.addEventListener("click", () => {
-    buildBoxSize = Number(button.dataset.boxAction);
+    const selectedSize = Number(button.dataset.boxAction);
 
-    buildBoxName =
-      buildBoxSize === 4
-        ? "Treat Box"
-        : buildBoxSize === 6
-          ? "Chunky Box"
-          : "Cookie Feast";
+    if (buildBoxSize !== selectedSize) {
+      buildBoxSize = selectedSize;
 
-    buildSelection = [];
+      buildBoxName =
+        buildBoxSize === 4
+          ? "Treat Box"
+          : buildBoxSize === 6
+            ? "Chunky Box"
+            : "Cookie Feast";
+
+      buildSelection = [];
+    }
 
     updateBuildBoxProgress();
     renderMiniSlots(buildBoxSize);
+    updateAccordionAction();
     openBuildFlavourSelector();
   });
 });
@@ -1300,12 +1347,12 @@ if (supportsRealHover) {
 }
 marqueeShell?.addEventListener("touchstart", pauseMarquee, { passive: true });
 marqueeShell?.addEventListener("touchend", () => {
-  marqueeAutoPosition = marqueeShell.scrollLeft;
+  marqueeAutoPosition = marqueeShell?.scrollLeft || 0;
   resumeMarquee(1200);
 }, { passive: true });
 marqueeShell?.addEventListener("scroll", () => {
   if (marqueePaused || marqueeDragging) {
-    marqueeAutoPosition = marqueeShell.scrollLeft;
+    marqueeAutoPosition = marqueeShell?.scrollLeft || 0;
   }
 }, { passive: true });
 document
@@ -1322,13 +1369,13 @@ document.addEventListener("visibilitychange", () => {
   marqueeLastTimestamp = 0;
 
   if (!document.hidden) {
-    marqueeAutoPosition = marqueeShell.scrollLeft;
+    marqueeAutoPosition = marqueeShell?.scrollLeft || 0;
     resumeMarquee(150);
   }
 });
 
 window.addEventListener("resize", () => {
-  marqueeAutoPosition = marqueeShell.scrollLeft;
+  marqueeAutoPosition = marqueeShell?.scrollLeft || 0;
   marqueeLastTimestamp = 0;
 });
 
