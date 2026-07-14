@@ -872,6 +872,18 @@ img {
 
 }
 
+.box-mini-slot > span {
+  font-size: 2rem;
+  opacity: 0.18;
+  filter: grayscale(1);
+}
+
+.box-mini-slot.has-cookie {
+  border-style: solid;
+  border-color: rgba(187, 25, 26, 0.12);
+  background: var(--white);
+}
+
 .cookie-box-panel {
   width: min(100%, 920px);
   margin: 0 auto;
