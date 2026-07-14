@@ -629,6 +629,7 @@ function updateFlavourSelector() {
   buildSelectedCount.textContent = String(buildSelection.length);
   updateBuildBoxProgress();
   updateBuildActionButton();
+  renderMiniSlots(buildBoxSize);
 
   const r = buildBoxSize - buildSelection.length;
   buildBoxHelper.textContent =
@@ -1235,7 +1236,18 @@ function renderMiniSlots(boxSize) {
   for (let i = 0; i < boxSize; i++) {
     const slot = document.createElement("div");
     slot.className = "box-mini-slot";
-    slot.innerHTML = "🍪";
+
+    const cookieId = buildSelection[i];
+    const cookie = cookieId ? getCookieById(cookieId) : null;
+
+    if (cookie) {
+      slot.classList.add("has-cookie");
+      slot.innerHTML = `
+        <img src="${cookie.image}" alt="${cookie.name}">
+      `;
+    } else {
+      slot.innerHTML = `<span aria-hidden="true">🍪</span>`;
+    }
 
     container.appendChild(slot);
   }
