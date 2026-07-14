@@ -1223,6 +1223,24 @@ function toggleBuildAccordion(card) {
   });
 }
 
+function renderMiniSlots(boxSize) {
+  const container = document.querySelector(
+    `.box-accordion[data-box-size="${boxSize}"] .box-mini-slots`,
+  );
+
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  for (let i = 0; i < boxSize; i++) {
+    const slot = document.createElement("div");
+    slot.className = "box-mini-slot";
+    slot.innerHTML = "🍪";
+
+    container.appendChild(slot);
+  }
+}
+
 document.querySelectorAll(".box-accordion").forEach((card) => {
   const header = card.querySelector(".box-accordion-header");
 
@@ -1233,20 +1251,19 @@ document.querySelectorAll(".box-accordion").forEach((card) => {
 
 document.querySelectorAll(".box-accordion-action").forEach((button) => {
   button.addEventListener("click", () => {
-
     buildBoxSize = Number(button.dataset.boxAction);
 
     buildBoxName =
       buildBoxSize === 4
         ? "Treat Box"
         : buildBoxSize === 6
-        ? "Chunky Box"
-        : "Cookie Feast";
+          ? "Chunky Box"
+          : "Cookie Feast";
 
     buildSelection = [];
 
     updateBuildBoxProgress();
-
+    renderMiniSlots(buildBoxSize);
     openBuildFlavourSelector();
   });
 });
