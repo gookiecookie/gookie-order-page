@@ -855,6 +855,10 @@ img {
     grid-template-columns: repeat(4, 1fr);
 }
 
+.build-legacy-panel {
+  display: none;
+}
+
 .box-mini-slot{
     aspect-ratio:1;
     border-radius:18px;
