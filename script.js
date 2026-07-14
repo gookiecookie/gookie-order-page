@@ -1231,6 +1231,26 @@ document.querySelectorAll(".box-accordion").forEach((card) => {
   });
 });
 
+document.querySelectorAll(".box-accordion-action").forEach((button) => {
+  button.addEventListener("click", () => {
+
+    buildBoxSize = Number(button.dataset.boxAction);
+
+    buildBoxName =
+      buildBoxSize === 4
+        ? "Treat Box"
+        : buildBoxSize === 6
+        ? "Chunky Box"
+        : "Cookie Feast";
+
+    buildSelection = [];
+
+    updateBuildBoxProgress();
+
+    openBuildFlavourSelector();
+  });
+});
+
 marqueePrev?.addEventListener("click", () => scrollMarqueeByCard(-1));
 marqueeNext?.addEventListener("click", () => scrollMarqueeByCard(1));
 marqueeShell?.addEventListener("pointerdown", beginMarqueeDrag);
