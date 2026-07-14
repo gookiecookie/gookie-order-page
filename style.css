@@ -1243,6 +1243,11 @@ img {
   text-align: center;
 }
 
+.cart-empty-state[hidden],
+.cart-content[hidden] {
+  display: none !important;
+}
+
 .cookie-placeholder {
   display: grid;
   place-items: center;
