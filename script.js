@@ -645,16 +645,24 @@ function openBuildFlavourSelector() {
 }
 function saveBuildOrder() {
   if (buildSelection.length !== buildBoxSize) return;
+
   currentOrder = {
     type: "Build Your Box",
     boxName: buildBoxName,
     boxSize: buildBoxSize,
     cookies: [...buildSelection],
   };
+
+  currentOrderId = null;
+
   updateCart();
+  renderMiniSlots(buildBoxSize);
+  updateAccordionAction();
+
   closeModal(flavourModal);
   openDrawer(cartDrawer, cartButton);
 }
+
 function renderGookiePickIncluded(pick) {
   if (!gookiePickModalIncluded) return;
 
