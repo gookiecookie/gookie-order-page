@@ -1110,11 +1110,58 @@ function getWhatsAppMessage() {
   ].join("\n");
 }
 
-function continueToWhatsApp() {
+async function continueToWhatsApp() {
+
   if (!paymentProofSaved.checked) return;
 
-  const whatsappUrl = `https://wa.me/${GOOKIE_WHATSAPP_NUMBER}?text=${encodeURIComponent(getWhatsAppMessage())}`;
-  window.location.href = whatsappUrl;
+  continueToWhatsAppButton.disabled = true;
+  continueToWhatsAppButton.textContent = "Creating Order...";
+
+  try {
+
+    const payload = buildOrderPayload();
+
+    const response = await fetch(
+      GOOGLE_SCRIPT_URL,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: "createOrder",
+          payload
+        })
+      }
+    );
+
+    const result = await response.json();
+
+    if (!result.ok) {
+      throw new Error(result.message || "Unable to create order.");
+    }
+
+    currentOrder.orderId = result.orderId;
+    currentOrder.paymentStatus = result.paymentStatus;
+
+    const whatsappUrl =
+      `https://wa.me/${GOOKIE_WHATSAPP_NUMBER}?text=` +
+      encodeURIComponent(getWhatsAppMessage());
+
+    window.location.href = whatsappUrl;
+
+  } catch (err) {
+
+    alert(err.message);
+
+  } finally {
+
+    continueToWhatsAppButton.disabled = false;
+    continueToWhatsAppButton.textContent =
+      "Continue to WhatsApp";
+
+  }
+
 }
 
 menuButton?.addEventListener("click", () => openDrawer(menuDrawer, menuButton));
