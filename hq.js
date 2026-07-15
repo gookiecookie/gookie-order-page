@@ -14,7 +14,7 @@
 
 const GOOKIE_HQ_CONFIG = {
   API_URL:
-    "https://script.google.com/macros/s/AKfycbw0cK0xWTgan6YFzLfGta7Mc5qFQkhwzSBO4iwgWGcbXBiNrgAtHKjursf1B_FQPY%CE%B139w/exec",
+    "https://script.google.com/macros/s/AKfycbw0cK0xWTgan6YFzLfGta7Mc5qFQkhwzSBO4iwgWGcbXBiNrgAtHKjursf1B_FQPYa39w/exec",
 
   VERIFIED_BY: "GOOKIE HQ",
 
