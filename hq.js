@@ -680,6 +680,19 @@ function renderVerifyColumn() {
 
     });
 
+verifyOrderList
+  .querySelectorAll("[data-action='open-whatsapp']")
+  .forEach(function(button){
+
+      button.addEventListener("click", function(){
+
+          openCustomerWhatsApp(
+              button.dataset.orderId
+          );
+
+      });
+
+  }); 
 
   verifyOrderList
     .querySelectorAll("[data-action='view-order']")
@@ -756,6 +769,36 @@ function createVerifyOrderCard(order) {
         >
           Verify Payment
         </button>
+
+<div class="verify-card-actions">
+
+  <button
+    class="whatsapp-button"
+    data-action="open-whatsapp"
+    data-order-id="${escapeHTML(order.orderId)}"
+    title="Open WhatsApp"
+  >
+    🟢 WhatsApp
+  </button>
+
+  <button
+    class="receipt-button"
+    data-action="view-order"
+    data-order-id="${escapeHTML(order.orderId)}"
+    title="View Order"
+  >
+    🧾
+  </button>
+
+</div>
+
+<button
+  class="card-primary-button"
+  data-action="open-verify"
+  data-order-id="${escapeHTML(order.orderId)}"
+>
+  Verify Payment
+</button>
 
         <button
           class="card-secondary-button"
@@ -2320,4 +2363,56 @@ function escapeHTML(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+/* =========================================================
+   40. HELPER — WHATSAPP
+========================================================= */
+
+function normaliseWhatsAppPhone(phone) {
+
+  let number = String(phone || "")
+    .replace(/\D/g, "");
+
+  if (!number) {
+    return "";
+  }
+
+  if (number.startsWith("0")) {
+    number = "60" + number.slice(1);
+  }
+
+  if (!number.startsWith("60")) {
+    number = "60" + number;
+  }
+
+  return number;
+}
+
+
+function openCustomerWhatsApp(orderId) {
+
+  const order =
+    state.orders.find(function (o) {
+      return o.orderId === orderId;
+    });
+
+  if (!order) {
+    alert("Order not found.");
+    return;
+  }
+
+  const phone =
+    normaliseWhatsAppPhone(order.phone);
+
+  if (!phone) {
+    alert("Customer phone not found.");
+    return;
+  }
+
+  window.open(
+    "https://wa.me/" + phone,
+    "_blank"
+  );
+
 }
