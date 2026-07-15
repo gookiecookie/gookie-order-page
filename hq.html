@@ -690,21 +690,42 @@
       </div>
 
 
-      <footer class="modal-footer">
+     <footer class="modal-footer">
 
-        <button
-          class="secondary-button"
-          id="cancelVerifyPaymentButton"
-          type="button"
-        >
-          Cancel
-        </button>
+  <button
+    class="whatsapp-proof-button"
+    id="openVerifyWhatsAppButton"
+    type="button"
+  >
+    🟢 Payment Proof
+  </button>
 
-        <button
-          class="primary-button"
-          id="confirmVerifyPaymentButton"
-          type="button"
-        >
+  <button
+    class="secondary-button"
+    id="cancelVerifyPaymentButton"
+    type="button"
+  >
+    Cancel
+  </button>
+
+  <button
+    class="primary-button"
+    id="confirmVerifyPaymentButton"
+    type="button"
+  >
+    <span id="verifyButtonText">
+      Verify Payment
+    </span>
+
+    <span
+      class="button-spinner"
+      id="verifyButtonSpinner"
+      hidden
+    ></span>
+
+  </button>
+
+</footer>
           <span id="verifyButtonText">Verify Payment</span>
           <span
             class="button-spinner"
