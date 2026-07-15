@@ -759,7 +759,34 @@ function createVerifyOrderCard(order) {
       </div>
 
 
-      <div class="order-actions">
+         <div class="order-actions">
+
+        <div class="verify-card-tools">
+
+          <button
+            class="whatsapp-proof-button"
+            type="button"
+            data-action="open-whatsapp"
+            data-order-id="${escapeHTML(order.orderId)}"
+            aria-label="Open customer WhatsApp"
+            title="Open customer WhatsApp"
+          >
+            <span aria-hidden="true">◉</span>
+            <span>Payment Proof</span>
+          </button>
+
+          <button
+            class="receipt-button"
+            type="button"
+            data-action="view-order"
+            data-order-id="${escapeHTML(order.orderId)}"
+            aria-label="View order details"
+            title="View order details"
+          >
+            🧾
+          </button>
+
+        </div>
 
         <button
           class="card-primary-button"
@@ -768,45 +795,6 @@ function createVerifyOrderCard(order) {
           data-order-id="${escapeHTML(order.orderId)}"
         >
           Verify Payment
-        </button>
-
-<div class="verify-card-actions">
-
-  <button
-    class="whatsapp-button"
-    data-action="open-whatsapp"
-    data-order-id="${escapeHTML(order.orderId)}"
-    title="Open WhatsApp"
-  >
-    🟢 WhatsApp
-  </button>
-
-  <button
-    class="receipt-button"
-    data-action="view-order"
-    data-order-id="${escapeHTML(order.orderId)}"
-    title="View Order"
-  >
-    🧾
-  </button>
-
-</div>
-
-<button
-  class="card-primary-button"
-  data-action="open-verify"
-  data-order-id="${escapeHTML(order.orderId)}"
->
-  Verify Payment
-</button>
-
-        <button
-          class="card-secondary-button"
-          type="button"
-          data-action="view-order"
-          data-order-id="${escapeHTML(order.orderId)}"
-        >
-          View Order
         </button>
 
       </div>
