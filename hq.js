@@ -18,7 +18,9 @@ const GOOKIE_HQ_CONFIG = {
 
   VERIFIED_BY: "GOOKIE HQ",
 
-  AUTO_REFRESH_MS: 30000
+  AUTO_REFRESH_MS: 30000,
+
+  OVEN_CAPACITY: 24
 };
 
 
@@ -31,6 +33,8 @@ const hqState = {
   selectedOrder: null,
   isLoading: false,
   isVerifying: false,
+  isStartingBaking: false,
+  selectedBakeProductIds: new Set(),
   autoRefreshTimer: null,
   toastTimer: null
 };
@@ -780,12 +784,12 @@ function renderBakeQueueColumn() {
       return total + safeNumber(item.qty);
     }, 0);
 
-
   bakeQueueCount.textContent =
     String(totalQuantity);
 
-
   if (queue.length === 0) {
+    hqState.selectedBakeProductIds.clear();
+
     bakeQueueOrderList.innerHTML =
       createEmptyState(
         "No order waiting to bake."
@@ -794,52 +798,292 @@ function renderBakeQueueColumn() {
     return;
   }
 
-
-  bakeQueueOrderList.innerHTML =
+  /* Remove selections that are no longer in the live queue. */
+  const liveProductIds = new Set(
     queue.map(function (item) {
+      return item.productId;
+    })
+  );
 
-      return `
-        <article class="order-card">
+  Array.from(hqState.selectedBakeProductIds)
+    .forEach(function (productId) {
+      if (!liveProductIds.has(productId)) {
+        hqState.selectedBakeProductIds.delete(productId);
+      }
+    });
 
-          <div class="order-card-top">
+  const cardsHTML = queue.map(function (item) {
+    const productId = String(item.productId || "");
+    const isChecked =
+      hqState.selectedBakeProductIds.has(productId);
 
-            <strong class="order-id-button">
+    return `
+      <article class="order-card">
+
+        <div class="order-card-top">
+
+          <label
+            class="order-id-button"
+            style="display:flex;align-items:center;gap:10px;cursor:pointer;"
+          >
+            <input
+              type="checkbox"
+              data-action="select-bake-product"
+              data-product-id="${escapeHTML(productId)}"
+              ${isChecked ? "checked" : ""}
+              ${hqState.isStartingBaking ? "disabled" : ""}
+            >
+
+            <span>
               ${escapeHTML(
                 item.displayName ||
                 item.menuCode ||
                 item.productId
               )}
-            </strong>
-
-            <span class="order-status-badge is-paid">
-              READY
             </span>
+          </label>
 
-          </div>
+          <span class="order-status-badge is-paid">
+            READY
+          </span>
 
-          <div class="order-items-preview">
-            <p>
-              Product ID:
-              ${escapeHTML(item.productId || "—")}
-            </p>
-          </div>
+        </div>
 
-          <div class="order-meta-row">
+        <div class="order-items-preview">
+          <p>
+            Product ID:
+            ${escapeHTML(item.productId || "—")}
+          </p>
+        </div>
 
-            <strong class="order-total">
-              ×${safeNumber(item.qty)}
-            </strong>
+        <div class="order-meta-row">
 
-            <span class="order-time">
-              Cookies
-            </span>
+          <strong class="order-total">
+            ×${safeNumber(item.qty)}
+          </strong>
 
-          </div>
+          <span class="order-time">
+            Cookies
+          </span>
 
-        </article>
-      `;
+        </div>
 
-    }).join("");
+      </article>
+    `;
+  }).join("");
+
+  const selectedQuantity =
+    getSelectedBakeQuantity(queue);
+
+  const isOverCapacity =
+    selectedQuantity > GOOKIE_HQ_CONFIG.OVEN_CAPACITY;
+
+  const canStart =
+    selectedQuantity > 0 &&
+    !isOverCapacity &&
+    !hqState.isStartingBaking;
+
+  const actionHTML = `
+    <article class="order-card">
+
+      <div class="order-card-top">
+        <strong class="order-id-button">
+          Selected
+        </strong>
+
+        <span class="order-status-badge">
+          ${selectedQuantity} / ${GOOKIE_HQ_CONFIG.OVEN_CAPACITY}
+        </span>
+      </div>
+
+      <div class="order-items-preview">
+        <p>
+          ${isOverCapacity
+            ? "Oven capacity exceeded. Remove one or more flavours."
+            : selectedQuantity > 0
+              ? selectedQuantity + " cookies selected for this batch."
+              : "Select the flavours to place in the oven."
+          }
+        </p>
+      </div>
+
+      <div class="order-actions">
+        <button
+          class="card-primary-button"
+          id="startBakingButton"
+          type="button"
+          ${canStart ? "" : "disabled"}
+        >
+          ${hqState.isStartingBaking
+            ? "Starting Batch..."
+            : "START BAKING"
+          }
+        </button>
+      </div>
+
+    </article>
+  `;
+
+  bakeQueueOrderList.innerHTML =
+    cardsHTML + actionHTML;
+
+  bakeQueueOrderList
+    .querySelectorAll(
+      "[data-action='select-bake-product']"
+    )
+    .forEach(function (checkbox) {
+      checkbox.addEventListener("change", function () {
+        const productId = checkbox.dataset.productId;
+
+        if (checkbox.checked) {
+          hqState.selectedBakeProductIds.add(productId);
+        } else {
+          hqState.selectedBakeProductIds.delete(productId);
+        }
+
+        renderBakeQueueColumn();
+      });
+    });
+
+  const startBakingButton =
+    document.getElementById("startBakingButton");
+
+  if (startBakingButton) {
+    startBakingButton.addEventListener(
+      "click",
+      confirmStartBaking
+    );
+  }
+}
+
+
+function getSelectedBakeQuantity(queue) {
+  return queue.reduce(function (total, item) {
+    return hqState.selectedBakeProductIds.has(
+      String(item.productId || "")
+    )
+      ? total + safeNumber(item.qty)
+      : total;
+  }, 0);
+}
+
+
+async function confirmStartBaking() {
+  if (
+    hqState.isStartingBaking ||
+    !hqState.data
+  ) {
+    return;
+  }
+
+  const selectedItems =
+    hqState.data.productionQueue
+      .filter(function (item) {
+        return hqState.selectedBakeProductIds.has(
+          String(item.productId || "")
+        );
+      })
+      .map(function (item) {
+        return {
+          productId: item.productId,
+          qty: safeNumber(item.qty)
+        };
+      });
+
+  if (selectedItems.length === 0) {
+    showToast(
+      "Nothing selected",
+      "Select at least one flavour before starting a batch.",
+      "error"
+    );
+    return;
+  }
+
+  const selectedQuantity =
+    selectedItems.reduce(function (total, item) {
+      return total + safeNumber(item.qty);
+    }, 0);
+
+  if (
+    selectedQuantity >
+    GOOKIE_HQ_CONFIG.OVEN_CAPACITY
+  ) {
+    showToast(
+      "Oven capacity exceeded",
+      "Maximum capacity is " +
+        GOOKIE_HQ_CONFIG.OVEN_CAPACITY +
+        " cookies.",
+      "error"
+    );
+    return;
+  }
+
+  hqState.isStartingBaking = true;
+  renderBakeQueueColumn();
+
+  try {
+    const payload = {
+      action: "startBaking",
+      startedBy: GOOKIE_HQ_CONFIG.VERIFIED_BY,
+      items: selectedItems
+    };
+
+    const response = await fetch(
+      GOOKIE_HQ_CONFIG.API_URL,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type":
+            "text/plain;charset=utf-8"
+        },
+        body: JSON.stringify(payload),
+        redirect: "follow"
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        "Start Baking request failed. HTTP " +
+        response.status
+      );
+    }
+
+    const result = await response.json();
+
+    if (!result || result.ok !== true) {
+      throw new Error(
+        result && result.message
+          ? result.message
+          : "Production batch could not be started."
+      );
+    }
+
+    hqState.selectedBakeProductIds.clear();
+
+    showToast(
+      "Batch started",
+      result.batchId + " moved to In Oven.",
+      "success"
+    );
+
+    await loadHQData({
+      showLoadingScreen: false
+    });
+  } catch (error) {
+    console.error(
+      "GOOKIE HQ start baking error:",
+      error
+    );
+
+    showToast(
+      "Start Baking failed",
+      error.message,
+      "error"
+    );
+  } finally {
+    hqState.isStartingBaking = false;
+    renderBakeQueueColumn();
+  }
 }
 
 
@@ -1969,7 +2213,8 @@ function startAutoRefresh() {
       if (
         document.hidden ||
         hqState.isLoading ||
-        hqState.isVerifying
+        hqState.isVerifying ||
+        hqState.isStartingBaking
       ) {
         return;
       }
