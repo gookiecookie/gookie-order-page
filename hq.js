@@ -2392,27 +2392,31 @@ function normaliseWhatsAppPhone(phone) {
 
 function openCustomerWhatsApp(orderId) {
 
-  const order =
-    state.orders.find(function (o) {
-      return o.orderId === orderId;
-    });
+  const order = findVerificationOrder(orderId);
 
   if (!order) {
-    alert("Order not found.");
+    showToast(
+      "Order not found",
+      "Customer details are unavailable.",
+      "error"
+    );
     return;
   }
 
-  const phone =
-    normaliseWhatsAppPhone(order.phone);
+  const phone = normaliseWhatsAppPhone(order.phone);
 
   if (!phone) {
-    alert("Customer phone not found.");
+    showToast(
+      "Phone unavailable",
+      "This order does not have a valid phone number.",
+      "error"
+    );
     return;
   }
 
   window.open(
     "https://wa.me/" + phone,
-    "_blank"
+    "_blank",
+    "noopener,noreferrer"
   );
-
 }
