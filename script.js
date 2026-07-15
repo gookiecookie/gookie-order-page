@@ -1,4 +1,4 @@
-"use strict";
+ } finally {"use strict";
 const gookieCatalogue = [
   {
     id: "wonder-chip",
