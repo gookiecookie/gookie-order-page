@@ -52,6 +52,10 @@ const refreshHQButton =
 const lastUpdatedText =
   document.getElementById("lastUpdatedText");
 
+const openVerifyWhatsAppButton =
+  document.getElementById(
+    "openVerifyWhatsAppButton");
+
 
 /* Summary */
 
@@ -1181,6 +1185,11 @@ function openVerifyPaymentModal(orderId) {
 
   verifyModalOrderID.textContent =
     order.orderId || "—";
+
+   openVerifyWhatsAppButton.onclick =
+  function () {
+    openCustomerWhatsApp(orderId);
+  };
 
   verifyModalCustomerName.textContent =
     order.customerName || "—";
