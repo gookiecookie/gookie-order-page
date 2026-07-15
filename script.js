@@ -1111,57 +1111,71 @@ function getWhatsAppMessage() {
 }
 
 async function continueToWhatsApp() {
-
   if (!paymentProofSaved.checked) return;
+  if (!currentOrder || !customerDetails) return;
 
   continueToWhatsAppButton.disabled = true;
   continueToWhatsAppButton.textContent = "Creating Order...";
 
   try {
-
     const payload = buildOrderPayload();
 
-    const response = await fetch(
-      GOOGLE_SCRIPT_URL,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          action: "createOrder",
-          payload
-        })
-      }
-    );
+    const response = await fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8",
+      },
+      body: JSON.stringify({
+        action: "createOrder",
+        ...payload,
+      }),
+      redirect: "follow",
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        "Unable to create order. HTTP " + response.status,
+      );
+    }
 
     const result = await response.json();
 
-    if (!result.ok) {
-      throw new Error(result.message || "Unable to create order.");
+    if (!result || result.ok !== true) {
+      throw new Error(
+        result?.message || "Unable to create order.",
+      );
     }
 
+    currentOrderId = result.orderId;
     currentOrder.orderId = result.orderId;
     currentOrder.paymentStatus = result.paymentStatus;
+    currentOrder.workflow = result.workflow;
+    currentOrder.serverQuote = result.quote;
+
+    paymentOrderId.textContent = result.orderId;
+    paymentTotal.textContent = formatMoney(
+      result.quote.grandTotal,
+    );
 
     const whatsappUrl =
       `https://wa.me/${GOOKIE_WHATSAPP_NUMBER}?text=` +
       encodeURIComponent(getWhatsAppMessage());
 
     window.location.href = whatsappUrl;
+  } catch (error) {
+    console.error("GOOKIE create order error:", error);
 
-  } catch (err) {
-
-    alert(err.message);
-
+    alert(
+      error.message ||
+        "Unable to create your order. Please try again.",
+    );
   } finally {
+    continueToWhatsAppButton.disabled =
+      !paymentProofSaved.checked;
 
-    continueToWhatsAppButton.disabled = false;
     continueToWhatsAppButton.textContent =
       "Continue to WhatsApp";
-
   }
-
 }
 
 menuButton?.addEventListener("click", () => openDrawer(menuDrawer, menuButton));
