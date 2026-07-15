@@ -371,7 +371,6 @@ async function loadHQData(options = {}) {
   const showSuccessToast =
     options.showSuccessToast === true;
 
-
   hqState.isLoading = true;
 
   setConnectionStatus(
@@ -379,42 +378,17 @@ async function loadHQData(options = {}) {
     "Connecting..."
   );
 
-
   if (showLoadingScreen) {
     showHQLoadingScreen(
       "Connecting to Mission Control..."
     );
   }
 
-
   setRefreshButtonLoading(true);
-
 
   try {
 
-    const requestURL =
-      GOOKIE_HQ_CONFIG.API_URL +
-      "?action=hqData" +
-      "&timestamp=" +
-      Date.now();
-
-
-    const response = await fetch(requestURL, {
-      method: "GET",
-      cache: "no-store",
-      redirect: "follow"
-    });
-
-
-    if (!response.ok) {
-      throw new Error(
-        "HQ request failed. HTTP " + response.status
-      );
-    }
-
-
-    const result = await response.json();
-
+    const result = await loadHQDataViaJSONP();
 
     if (!result || result.ok !== true) {
       throw new Error(
@@ -423,7 +397,6 @@ async function loadHQData(options = {}) {
           : "HQ data could not be loaded."
       );
     }
-
 
     hqState.data = normaliseHQData(result);
 
@@ -436,7 +409,6 @@ async function loadHQData(options = {}) {
 
     updateLastUpdated(result.generatedAt);
 
-
     if (showSuccessToast) {
       showToast(
         "HQ refreshed",
@@ -447,14 +419,19 @@ async function loadHQData(options = {}) {
 
   } catch (error) {
 
-    console.error("GOOKIE HQ load error:", error);
+    console.error(
+      "GOOKIE HQ load error:",
+      error
+    );
 
     setConnectionStatus(
       "error",
       "Connection Error"
     );
 
-    showHQConnectionError(error.message);
+    showHQConnectionError(
+      error.message
+    );
 
     showToast(
       "Connection failed",
@@ -472,6 +449,83 @@ async function loadHQData(options = {}) {
   }
 }
 
+function loadHQDataViaJSONP() {
+
+  return new Promise(function (resolve, reject) {
+
+    const callbackName =
+      "gookieHQCallback_" +
+      Date.now() +
+      "_" +
+      Math.floor(Math.random() * 100000);
+
+    const script =
+      document.createElement("script");
+
+    const timeout =
+      setTimeout(function () {
+
+        cleanup();
+
+        reject(
+          new Error(
+            "HQ connection timed out."
+          )
+        );
+
+      }, 15000);
+
+
+    function cleanup() {
+
+      clearTimeout(timeout);
+
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
+
+      try {
+        delete window[callbackName];
+      } catch (error) {
+        window[callbackName] = undefined;
+      }
+    }
+
+
+    window[callbackName] =
+      function (result) {
+
+        cleanup();
+
+        resolve(result);
+      };
+
+
+    script.onerror =
+      function () {
+
+        cleanup();
+
+        reject(
+          new Error(
+            "Unable to load HQ data."
+          )
+        );
+      };
+
+
+    script.src =
+      GOOKIE_HQ_CONFIG.API_URL +
+      "?action=hqData" +
+      "&callback=" +
+      encodeURIComponent(callbackName) +
+      "&timestamp=" +
+      Date.now();
+
+
+    document.body.appendChild(script);
+  });
+}
 
 /* =========================================================
    7. NORMALISE HQ DATA
