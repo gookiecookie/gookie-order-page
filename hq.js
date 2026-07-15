@@ -680,20 +680,6 @@ function renderVerifyColumn() {
 
     });
 
-verifyOrderList
-  .querySelectorAll("[data-action='open-whatsapp']")
-  .forEach(function(button){
-
-      button.addEventListener("click", function(){
-
-          openCustomerWhatsApp(
-              button.dataset.orderId
-          );
-
-      });
-
-  }); 
-
   verifyOrderList
     .querySelectorAll("[data-action='view-order']")
     .forEach(function (button) {
@@ -760,33 +746,6 @@ function createVerifyOrderCard(order) {
 
 
          <div class="order-actions">
-
-        <div class="verify-card-tools">
-
-          <button
-            class="whatsapp-proof-button"
-            type="button"
-            data-action="open-whatsapp"
-            data-order-id="${escapeHTML(order.orderId)}"
-            aria-label="Open customer WhatsApp"
-            title="Open customer WhatsApp"
-          >
-            <span aria-hidden="true">◉</span>
-            <span>Payment Proof</span>
-          </button>
-
-          <button
-            class="receipt-button"
-            type="button"
-            data-action="view-order"
-            data-order-id="${escapeHTML(order.orderId)}"
-            aria-label="View order details"
-            title="View order details"
-          >
-            🧾
-          </button>
-
-        </div>
 
         <button
           class="card-primary-button"
