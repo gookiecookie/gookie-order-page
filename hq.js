@@ -1193,6 +1193,94 @@ function renderInOvenColumn() {
     }).join("");
 }
 
+/* =========================================================
+   12A. DONE BAKING
+========================================================= */
+
+async function confirmDoneBaking(batchId) {
+  const cleanBatchId = String(batchId || "").trim();
+
+  if (!cleanBatchId) {
+    return;
+  }
+
+  const button = inOvenOrderList.querySelector(
+    `.done-baking-button[data-batch-id="${cleanBatchId}"]`
+  );
+
+  if (button && button.disabled) {
+    return;
+  }
+
+  if (button) {
+    button.disabled = true;
+    button.textContent = "MOVING TO COOLING...";
+  }
+
+  try {
+    const payload = {
+      action: "doneBaking",
+      batchId: cleanBatchId,
+      completedBy: GOOKIE_HQ_CONFIG.VERIFIED_BY
+    };
+
+    const response = await fetch(
+      GOOKIE_HQ_CONFIG.API_URL,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8"
+        },
+        body: JSON.stringify(payload),
+        redirect: "follow"
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        "Done Baking request failed. HTTP " +
+          response.status
+      );
+    }
+
+    const result = await response.json();
+
+    if (!result || result.ok !== true) {
+      throw new Error(
+        result && result.message
+          ? result.message
+          : "Unable to move batch to Cooling."
+      );
+    }
+
+    showToast(
+      "Baking completed",
+      cleanBatchId + " moved to Cooling.",
+      "success"
+    );
+
+    await loadHQData({
+      showLoadingScreen: false
+    });
+  } catch (error) {
+    console.error(
+      "GOOKIE HQ done baking error:",
+      error
+    );
+
+    showToast(
+      "Done Baking failed",
+      error.message ||
+        "Unable to move batch to Cooling.",
+      "error"
+    );
+
+    if (button) {
+      button.disabled = false;
+      button.textContent = "DONE BAKING";
+    }
+  }
+}
 
 /* =========================================================
    13. COOLING COLUMN
