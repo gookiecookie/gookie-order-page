@@ -11,7 +11,7 @@
       href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=League+Spartan:wght@700;800;900&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css?v=7.0" />
+    <link rel="stylesheet" href="style.css?v=8.0" />
   </head>
   <body>
     <button
@@ -699,12 +699,7 @@
         </div>
 
         <div class="payment-modal-body">
-          <div class="payment-order-id-row">
-            <span>Order ID</span>
-            <strong id="paymentOrderId">—</strong>
-          </div>
-
-          <div class="payment-total-card">
+<div class="payment-total-card">
             <p>AMOUNT TO PAY</p>
             <strong id="paymentTotal">RM0.00</strong>
             <span id="paymentBoxSummary"></span>
@@ -756,6 +751,50 @@
 
 
 
+    <!-- =========================================================
+         GOOKIE ORDER CREATION LOADER
+         ========================================================= -->
+    <div
+      class="order-creation-loader"
+      id="orderCreationLoader"
+      role="status"
+      aria-live="polite"
+      aria-hidden="true"
+      hidden
+    >
+      <div class="order-creation-loader-card">
+        <p class="order-creation-kicker">YOUR GOOKIES ARE GETTING READY</p>
+
+        <div
+          class="gookie-loader-box"
+          id="orderCreationBox"
+          aria-hidden="true"
+        >
+          <div class="gookie-loader-lid">
+            <span>GOOKIE</span>
+          </div>
+
+          <div class="gookie-loader-box-base">
+            <span class="loader-cookie loader-cookie-1"></span>
+            <span class="loader-cookie loader-cookie-2"></span>
+            <span class="loader-cookie loader-cookie-3"></span>
+            <span class="loader-cookie loader-cookie-4"></span>
+            <span class="loader-cookie loader-cookie-5"></span>
+            <span class="loader-cookie loader-cookie-6"></span>
+          </div>
+
+          <span class="gookie-loader-check">✓</span>
+        </div>
+
+        <h2>Creating your order</h2>
+        <p id="orderCreationStatus">Preparing your cookie box...</p>
+
+        <div class="order-creation-progress" aria-hidden="true">
+          <span></span>
+        </div>
+      </div>
+    </div>
+
 <section
   class="modal"
   id="gookiePickModal"
@@ -803,7 +842,7 @@
 </section>
 
 <script src="order-engine.js"></script>
-<script src="script.js"></script>
+<script src="script.js?v=8.0"></script>
         
   </body>
 </html>

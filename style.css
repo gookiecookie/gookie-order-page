@@ -2876,3 +2876,272 @@ button.cookie-slot {
     min-height: 300px;
   }
 }
+
+/* =========================================================
+   GOOKIE ORDER CREATION LOADER
+   ========================================================= */
+
+.order-creation-loader[hidden] {
+  display: none !important;
+}
+
+.order-creation-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 180;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(23, 21, 21, 0.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.order-creation-loader-card {
+  width: min(100%, 420px);
+  padding: 34px 26px 28px;
+  border-radius: 30px;
+  background: var(--cream-soft);
+  box-shadow: 0 30px 90px rgba(23, 21, 21, 0.34);
+  text-align: center;
+  animation: orderLoaderCardIn 300ms ease both;
+}
+
+.order-creation-kicker {
+  margin: 0 0 24px;
+  color: var(--gookie-red);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+}
+
+.order-creation-loader-card h2 {
+  margin: 24px 0 7px;
+  font-family: "League Spartan", sans-serif;
+  font-size: 2rem;
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+
+.order-creation-loader-card > p:not(.order-creation-kicker) {
+  min-height: 1.45em;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.gookie-loader-box {
+  position: relative;
+  width: 220px;
+  height: 176px;
+  margin: 0 auto;
+  perspective: 700px;
+}
+
+.gookie-loader-box-base {
+  position: absolute;
+  right: 10px;
+  bottom: 0;
+  left: 10px;
+  height: 112px;
+  overflow: hidden;
+  border: 3px solid var(--ink);
+  border-radius: 13px 13px 22px 22px;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.94), rgba(255,241,220,.95));
+  box-shadow: 0 18px 24px rgba(67, 24, 18, 0.15);
+}
+
+.gookie-loader-box-base::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1px dashed rgba(187, 25, 26, 0.25);
+  border-radius: 8px 8px 15px 15px;
+}
+
+.gookie-loader-lid {
+  position: absolute;
+  z-index: 8;
+  top: 12px;
+  right: 2px;
+  left: 2px;
+  display: grid;
+  place-items: center;
+  height: 64px;
+  border: 3px solid var(--ink);
+  border-radius: 17px;
+  background: var(--white);
+  box-shadow: 0 12px 22px rgba(67, 24, 18, 0.12);
+  transform: rotateX(-64deg);
+  transform-origin: center bottom;
+  animation: loaderLidWait 2.15s ease both;
+}
+
+.gookie-loader-lid span {
+  display: grid;
+  place-items: center;
+  min-width: 78px;
+  height: 29px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: var(--gookie-red);
+  color: var(--white);
+  font-family: "League Spartan", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.07em;
+}
+
+.loader-cookie {
+  position: absolute;
+  z-index: 3;
+  display: block;
+  width: 54px;
+  height: 54px;
+  border: 2px solid #9b5426;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 31% 30%, #5f2f19 0 3px, transparent 4px),
+    radial-gradient(circle at 68% 34%, #5f2f19 0 3px, transparent 4px),
+    radial-gradient(circle at 45% 66%, #5f2f19 0 3px, transparent 4px),
+    radial-gradient(circle at 76% 71%, #5f2f19 0 2.5px, transparent 3.5px),
+    radial-gradient(circle at 22% 72%, #5f2f19 0 2.5px, transparent 3.5px),
+    linear-gradient(145deg, #e6a967, #c97837);
+  box-shadow:
+    inset -5px -7px 0 rgba(110, 54, 22, 0.12),
+    0 8px 11px rgba(67, 24, 18, 0.15);
+  opacity: 0;
+  transform: translateY(-150px) rotate(-18deg) scale(0.72);
+}
+
+.loader-cookie-1 { left: 22px; bottom: 11px; animation: cookieDrop 420ms 120ms cubic-bezier(.2,.8,.25,1.2) forwards; }
+.loader-cookie-2 { left: 79px; bottom: 12px; animation: cookieDrop 420ms 410ms cubic-bezier(.2,.8,.25,1.2) forwards; }
+.loader-cookie-3 { right: 20px; bottom: 11px; animation: cookieDrop 420ms 700ms cubic-bezier(.2,.8,.25,1.2) forwards; }
+.loader-cookie-4 { left: 48px; bottom: 48px; animation: cookieDrop 420ms 990ms cubic-bezier(.2,.8,.25,1.2) forwards; }
+.loader-cookie-5 { right: 48px; bottom: 47px; animation: cookieDrop 420ms 1280ms cubic-bezier(.2,.8,.25,1.2) forwards; }
+.loader-cookie-6 { left: 77px; bottom: 53px; animation: cookieDrop 420ms 1570ms cubic-bezier(.2,.8,.25,1.2) forwards; }
+
+.gookie-loader-check {
+  position: absolute;
+  z-index: 12;
+  top: 57px;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: var(--gookie-red);
+  color: var(--white);
+  font-size: 1.65rem;
+  font-weight: 900;
+  box-shadow: 0 12px 26px rgba(187, 25, 26, 0.28);
+  opacity: 0;
+  transform: translateX(-50%) scale(0.3) rotate(-15deg);
+}
+
+.order-creation-loader.is-complete .gookie-loader-lid {
+  animation: none;
+  transform: rotateX(0deg) translateY(51px);
+  transition: transform 420ms cubic-bezier(.2,.8,.25,1.2);
+}
+
+.order-creation-loader.is-complete .gookie-loader-check {
+  opacity: 1;
+  transform: translateX(-50%) scale(1) rotate(0);
+  transition:
+    opacity 220ms 300ms ease,
+    transform 420ms 300ms cubic-bezier(.2,.8,.25,1.25);
+}
+
+.order-creation-loader.is-complete .order-creation-progress span {
+  width: 100%;
+}
+
+.order-creation-loader.is-error .gookie-loader-check {
+  opacity: 1;
+  background: var(--ink);
+  transform: translateX(-50%) scale(1);
+}
+
+.order-creation-progress {
+  height: 8px;
+  margin-top: 24px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(23, 21, 21, 0.1);
+}
+
+.order-creation-progress span {
+  display: block;
+  width: 16%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--gookie-red);
+  animation: orderCreationProgress 2.35s ease-out forwards;
+  transition: width 300ms ease;
+}
+
+@keyframes cookieDrop {
+  0% {
+    opacity: 0;
+    transform: translateY(-150px) rotate(-18deg) scale(0.72);
+  }
+  72% {
+    opacity: 1;
+    transform: translateY(5px) rotate(7deg) scale(1.06);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(0) scale(1);
+  }
+}
+
+@keyframes loaderLidWait {
+  0%, 83% {
+    transform: rotateX(-64deg);
+  }
+  100% {
+    transform: rotateX(-64deg);
+  }
+}
+
+@keyframes orderCreationProgress {
+  from { width: 8%; }
+  to { width: 88%; }
+}
+
+@keyframes orderLoaderCardIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 480px) {
+  .order-creation-loader-card {
+    padding: 30px 18px 25px;
+  }
+
+  .gookie-loader-box {
+    transform: scale(0.9);
+    margin-block: -8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loader-cookie,
+  .gookie-loader-lid,
+  .order-creation-progress span,
+  .order-creation-loader-card {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+  }
+}
+
