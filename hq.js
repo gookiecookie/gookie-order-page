@@ -39,6 +39,11 @@ const hqState = {
   toastTimer: null
 };
 
+/*
+ * Live countdown timer for Cooling column.
+ */
+let coolingCountdownTimer = null;
+
 
 /* =========================================================
    3. DOM REFERENCES
@@ -386,6 +391,14 @@ function bindHQEvents() {
 
   }
 );
+
+if (!coolingCountdownTimer) {
+  coolingCountdownTimer =
+    window.setInterval(
+      updateCoolingCountdowns,
+      1000
+    );
+}
    
 }
 
@@ -1290,10 +1303,8 @@ function renderCoolingColumn() {
   const batches =
     hqState.data.coolingBatches;
 
-
   coolingCount.textContent =
     String(batches.length);
-
 
   if (batches.length === 0) {
     coolingOrderList.innerHTML =
@@ -1304,12 +1315,20 @@ function renderCoolingColumn() {
     return;
   }
 
-
   coolingOrderList.innerHTML =
     batches.map(function (batch) {
+      const coolingState =
+        getCoolingCountdownState(
+          batch.coolingReadyAt
+        );
 
       return `
-        <article class="order-card">
+        <article
+          class="order-card"
+          data-cooling-batch-id="${escapeHTML(
+            batch.batchId
+          )}"
+        >
 
           <div class="order-card-top">
 
@@ -1317,8 +1336,19 @@ function renderCoolingColumn() {
               ${escapeHTML(batch.batchId)}
             </strong>
 
-            <span class="order-status-badge">
-              COOLING
+            <span
+              class="order-status-badge ${
+                coolingState.isReady
+                  ? "is-paid"
+                  : ""
+              }"
+              data-cooling-status
+            >
+              ${
+                coolingState.isReady
+                  ? "READY"
+                  : "COOLING"
+              }
             </span>
 
           </div>
@@ -1340,18 +1370,160 @@ function renderCoolingColumn() {
             <span class="order-time">
               Ready:
               ${escapeHTML(
-                formatOrderTime(batch.coolingReadyAt)
+                formatOrderTime(
+                  batch.coolingReadyAt
+                )
               )}
             </span>
 
           </div>
 
-</article>
-      `;
+          <div
+            class="cooling-countdown"
+            data-cooling-countdown
+            data-cooling-ready-at="${escapeHTML(
+              batch.coolingReadyAt
+            )}"
+          >
+            ${escapeHTML(
+              coolingState.label
+            )}
+          </div>
 
-    }).join("");
+          <button
+            class="secondary-button ready-to-pack-button"
+            type="button"
+            data-batch-id="${escapeHTML(
+              batch.batchId
+            )}"
+            ${
+              coolingState.isReady
+                ? ""
+                : "hidden"
+            }
+          >
+            READY TO PACK
+          </button>
+
+        </article>
+      `;
+    })
+    .join("");
 }
 
+/* =========================================================
+   COOLING COUNTDOWN
+========================================================= */
+
+function getCoolingCountdownState(
+  coolingReadyAt
+) {
+  const readyTime =
+    new Date(coolingReadyAt).getTime();
+
+  if (!Number.isFinite(readyTime)) {
+    return {
+      isReady: false,
+      label: "Cooling time unavailable"
+    };
+  }
+
+  const remainingMs =
+    readyTime - Date.now();
+
+  if (remainingMs <= 0) {
+    return {
+      isReady: true,
+      label: "Ready to pack"
+    };
+  }
+
+  const totalSeconds =
+    Math.ceil(remainingMs / 1000);
+
+  const hours =
+    Math.floor(totalSeconds / 3600);
+
+  const minutes =
+    Math.floor(
+      (totalSeconds % 3600) / 60
+    );
+
+  const seconds =
+    totalSeconds % 60;
+
+  let label = "Ready in ";
+
+  if (hours > 0) {
+    label += hours + "h ";
+  }
+
+  label +=
+    String(minutes).padStart(2, "0") +
+    "m " +
+    String(seconds).padStart(2, "0") +
+    "s";
+
+  return {
+    isReady: false,
+    label: label
+  };
+}
+
+
+function updateCoolingCountdowns() {
+  const countdownElements =
+    coolingOrderList.querySelectorAll(
+      "[data-cooling-countdown]"
+    );
+
+  countdownElements.forEach(
+    function (countdownElement) {
+      const card =
+        countdownElement.closest(
+          "[data-cooling-batch-id]"
+        );
+
+      if (!card) return;
+
+      const coolingState =
+        getCoolingCountdownState(
+          countdownElement.dataset
+            .coolingReadyAt
+        );
+
+      countdownElement.textContent =
+        coolingState.label;
+
+      const statusBadge =
+        card.querySelector(
+          "[data-cooling-status]"
+        );
+
+      const readyButton =
+        card.querySelector(
+          ".ready-to-pack-button"
+        );
+
+      if (statusBadge) {
+        statusBadge.textContent =
+          coolingState.isReady
+            ? "READY"
+            : "COOLING";
+
+        statusBadge.classList.toggle(
+          "is-paid",
+          coolingState.isReady
+        );
+      }
+
+      if (readyButton) {
+        readyButton.hidden =
+          !coolingState.isReady;
+      }
+    }
+  );
+}
 
 /* =========================================================
    14. PACKING COLUMN
