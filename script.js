@@ -1050,11 +1050,30 @@ function handleCustomerDetailsSubmit(event) {
 function renderPaymentStep() {
   if (!currentOrder || !customerDetails) return;
 
+  const quote = currentOrder.serverQuote;
+
+  if (
+    !quote ||
+    !Number.isFinite(Number(quote.grandTotal))
+  ) {
+    throw new Error(
+      "Order total has not been calculated.",
+    );
+  }
+
   currentOrderId = null;
 
-  paymentTotal.textContent = formatMoney(getOrderTotal());
+  /*
+   * Payment amount must always use the backend grand total,
+   * including delivery charge.
+   */
+  paymentTotal.textContent = formatMoney(
+    quote.grandTotal,
+  );
+
   paymentBoxSummary.textContent =
-    `${currentOrder.boxName} · ${currentOrder.boxSize} cookies`;
+    `${currentOrder.boxName} · ` +
+    `${currentOrder.boxSize} cookies`;
 
   paymentProofSaved.checked = false;
   continueToWhatsAppButton.disabled = true;
@@ -1062,22 +1081,114 @@ function renderPaymentStep() {
   hideOrderCreationLoader();
 }
 
-function openPaymentStep() {
+async function openPaymentStep() {
   if (!currentOrder || !customerDetails) return;
 
-  renderPaymentStep();
-  closeModal(checkoutModal);
-  openModal(paymentModal);
+  try {
+    const payload = buildOrderPayload();
+
+    const response = await fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8",
+      },
+      body: JSON.stringify({
+        action: "quoteOrder",
+        postcode: payload.customer.postcode,
+        boxes: payload.boxes,
+      }),
+      redirect: "follow",
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        "Unable to calculate delivery charge. HTTP " +
+          response.status,
+      );
+    }
+
+    const result = await response.json();
+
+    if (!result || result.ok !== true) {
+      throw new Error(
+        result?.message ||
+          "Unable to calculate delivery charge.",
+      );
+    }
+
+    if (
+      !result.totals ||
+      !Number.isFinite(
+        Number(result.totals.grandTotal),
+      )
+    ) {
+      throw new Error(
+        "The server returned an invalid order total.",
+      );
+    }
+
+    /*
+     * Save the backend quote before opening payment.
+     * This does not create an order.
+     */
+    currentOrder.serverQuote = {
+      subtotal: Number(result.totals.subtotal),
+      discount: Number(
+        result.totals.discount || 0,
+      ),
+      shippingCharge: Number(
+        result.totals.shippingCharge,
+      ),
+      grandTotal: Number(
+        result.totals.grandTotal,
+      ),
+      parcelWeightG: Number(
+        result.totals.parcelWeightG || 0,
+      ),
+      zoneId: result.zone?.zoneId || "",
+    };
+
+    renderPaymentStep();
+
+    closeModal(checkoutModal);
+    openModal(paymentModal);
+  } catch (error) {
+    console.error(
+      "GOOKIE quote order error:",
+      error,
+    );
+
+    alert(
+      error.message ||
+        "Unable to calculate delivery charge. Please try again.",
+    );
+  }
 }
 
 function getWhatsAppMessage() {
+  const quote = currentOrder?.serverQuote;
+
+  if (
+    !quote ||
+    !Number.isFinite(Number(quote.grandTotal))
+  ) {
+    throw new Error(
+      "Order quote is unavailable.",
+    );
+  }
+
   const counts = {};
+
   currentOrder.cookies.forEach((id) => {
     counts[id] = (counts[id] || 0) + 1;
   });
 
   const itemLines = Object.entries(counts)
-    .map(([id, quantity]) => `• ${getCookieById(id).name} ×${quantity}`)
+    .map(([id, quantity]) => {
+      return (
+        `• ${getCookieById(id).name} ×${quantity}`
+      );
+    })
     .join("\n");
 
   const notesLine = customerDetails.notes
@@ -1097,11 +1208,9 @@ function getWhatsAppMessage() {
     `${currentOrder.type} — ${currentOrder.boxName}`,
     itemLines,
     "",
-    `Subtotal: ${formatMoney(getOrderSubtotal())}`,
-    GOOKIE_DELIVERY_FEE > 0
-      ? `Delivery: ${formatMoney(GOOKIE_DELIVERY_FEE)}`
-      : "Delivery: To be confirmed",
-    `Total paid now: ${formatMoney(getOrderTotal())}`,
+    `Subtotal: ${formatMoney(quote.subtotal)}`,
+    `Delivery: ${formatMoney(quote.shippingCharge)}`,
+    `Total paid: ${formatMoney(quote.grandTotal)}`,
     "",
     "I have saved my payment proof and will attach it to this WhatsApp message.",
   ].join("\n");
