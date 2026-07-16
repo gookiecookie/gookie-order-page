@@ -1223,7 +1223,15 @@ function renderCoolingColumn() {
 
           </div>
 
-        </article>
+<button
+  class="secondary-button done-baking-button"
+  type="button"
+  data-batch-id="${escapeHTML(batch.batchId)}"
+>
+  DONE BAKING
+</button>
+
+</article>
       `;
 
     }).join("");
