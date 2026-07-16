@@ -1857,11 +1857,39 @@ function buildPaymentConfirmedWhatsAppUrl(
       amountReceived
     );
 
+  const encodedMessage =
+    encodeURIComponent(message);
+
+  const isMobileDevice =
+    /Android|iPhone|iPad|iPod/i.test(
+      navigator.userAgent
+    );
+
+  /*
+   * Mobile:
+   * Use wa.me so the phone can hand over to the
+   * installed WhatsApp application.
+   */
+  if (isMobileDevice) {
+    return (
+      "https://wa.me/" +
+      whatsappPhone +
+      "?text=" +
+      encodedMessage
+    );
+  }
+
+  /*
+   * Desktop:
+   * Open WhatsApp Web directly and bypass the
+   * intermediate "Share on WhatsApp" page.
+   */
   return (
-    "https://wa.me/" +
+    "https://web.whatsapp.com/send" +
+    "?phone=" +
     whatsappPhone +
-    "?text=" +
-    encodeURIComponent(message)
+    "&text=" +
+    encodedMessage
   );
 }
 
