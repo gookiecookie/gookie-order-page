@@ -1049,7 +1049,9 @@ async function confirmStartBaking() {
     }
 
     const result = await response.json();
-
+     
+console.log(result);
+     
     if (!result || result.ok !== true) {
       throw new Error(
         result && result.message
