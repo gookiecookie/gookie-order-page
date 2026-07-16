@@ -273,6 +273,7 @@ function initialiseHQ() {
   bindHQEvents();
   loadHQData({ showLoadingScreen: true });
   startAutoRefresh();
+   
 }
 
 
@@ -360,6 +361,32 @@ function bindHQEvents() {
     closeVerifyPaymentModal();
     closeOrderDetailsModal();
   });
+
+   inOvenOrderList.addEventListener(
+  "click",
+  function (event) {
+
+    const button =
+      event.target.closest(
+        ".done-baking-button"
+      );
+
+    if (!button) {
+      return;
+    }
+
+    const batchId =
+      button.dataset.batchId;
+
+    if (!batchId) {
+      return;
+    }
+
+    confirmDoneBaking(batchId);
+
+  }
+);
+   
 }
 
 
