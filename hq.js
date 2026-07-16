@@ -1884,6 +1884,37 @@ async function confirmVerifyPayment() {
 
   setVerifyButtonLoading(true);
 
+  /*
+   * Open a new tab immediately while the Verify Payment
+   * button click is still considered a direct user action.
+   *
+   * This helps prevent desktop and mobile browsers from
+   * blocking the WhatsApp tab after the async API request.
+   */
+  const whatsappWindow = window.open(
+    "about:blank",
+    "_blank"
+  );
+
+  if (whatsappWindow) {
+    whatsappWindow.opener = null;
+
+    whatsappWindow.document.title =
+      "Opening WhatsApp";
+
+    whatsappWindow.document.body.innerHTML = `
+      <p
+        style="
+          padding: 24px;
+          font-family: Arial, sans-serif;
+          line-height: 1.5;
+        "
+      >
+        Preparing the GOOKIE payment confirmation...
+      </p>
+    `;
+  }
+
   try {
     const payload = {
       action: "verifyPayment",
@@ -1960,27 +1991,51 @@ async function confirmVerifyPayment() {
     );
 
     /*
-     * Do not wait for HQ refresh before opening WhatsApp.
-     * A page refresh here can interrupt the navigation.
-     *
-     * Opening in the current tab also avoids popup blocking.
+     * Refresh GOOKIE HQ in its existing tab.
      */
-    window.location.assign(whatsappUrl);
+    await loadHQData({
+      showLoadingScreen: false
+    });
 
-    return;
-
+    /*
+     * Send the pre-opened tab to WhatsApp.
+     * GOOKIE HQ remains open in the original tab.
+     */
+    if (
+      whatsappWindow &&
+      !whatsappWindow.closed
+    ) {
+      whatsappWindow.location.replace(
+        whatsappUrl
+      );
+    } else {
+      /*
+       * Fallback when the browser blocked the new tab.
+       */
+      showToast(
+        "WhatsApp blocked",
+        "Please allow pop-ups for GOOKIE HQ and verify the next order.",
+        "error"
+      );
+    }
   } catch (error) {
     console.error(
       "GOOKIE HQ verify error:",
       error
     );
 
+    if (
+      whatsappWindow &&
+      !whatsappWindow.closed
+    ) {
+      whatsappWindow.close();
+    }
+
     showToast(
       "Verification failed",
       error.message,
       "error"
     );
-
   } finally {
     hqState.isVerifying = false;
 
@@ -1989,6 +2044,7 @@ async function confirmVerifyPayment() {
     updateBodyLock();
   }
 }
+
 /* =========================================================
    18. ORDER DETAILS
 ========================================================= */
