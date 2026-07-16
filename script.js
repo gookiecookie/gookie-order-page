@@ -260,6 +260,7 @@ let buildBoxSize = 0,
   buildSelection = [],
   activeGookiePick = null,
   currentOrder = null,
+  isCreatingOrder = false,
   customerDetails = null,
   currentOrderId = null,
   marqueeAnimationFrame = null,
@@ -879,19 +880,6 @@ function getOrderTotal() {
   return getOrderSubtotal() + GOOKIE_DELIVERY_FEE;
 }
 
-function generateOrderId() {
-  if (currentOrderId) return currentOrderId;
-
-  const storageKey = "gookieOrderSequence";
-  let nextNumber = Number.parseInt(localStorage.getItem(storageKey) || "0", 10) + 1;
-
-  if (!Number.isFinite(nextNumber) || nextNumber < 1) nextNumber = 1;
-
-  localStorage.setItem(storageKey, String(nextNumber));
-  currentOrderId = `GK${String(nextNumber).padStart(6, "0")}`;
-  return currentOrderId;
-}
-
 /* =========================================================
    CHECKOUT: CUSTOMER DETAILS & ORDER REVIEW
    ========================================================= */
@@ -1058,19 +1046,172 @@ function handleCustomerDetailsSubmit(event) {
 function renderPaymentStep() {
   if (!currentOrder || !customerDetails) return;
 
-  paymentOrderId.textContent = generateOrderId();
-  paymentTotal.textContent = formatMoney(getOrderTotal());
-  paymentBoxSummary.textContent = `${currentOrder.boxName} · ${currentOrder.boxSize} cookies`;
+  paymentOrderId.textContent =
+    currentOrderId || "Creating order...";
+
+  const serverGrandTotal =
+    currentOrder &&
+    currentOrder.serverQuote &&
+    Number.isFinite(
+      Number(currentOrder.serverQuote.grandTotal)
+    )
+      ? Number(currentOrder.serverQuote.grandTotal)
+      : getOrderTotal();
+
+  paymentTotal.textContent =
+    formatMoney(serverGrandTotal);
+
+  paymentBoxSummary.textContent =
+    `${currentOrder.boxName} · ${currentOrder.boxSize} cookies`;
+
   paymentProofSaved.checked = false;
   continueToWhatsAppButton.disabled = true;
 }
 
-function openPaymentStep() {
-  if (!currentOrder || !customerDetails) return;
+async function createCurrentOrderOnServer() {
+  if (!currentOrder || !customerDetails) {
+    throw new Error(
+      "Order and customer details are required."
+    );
+  }
 
-  renderPaymentStep();
-  closeModal(checkoutModal);
-  openModal(paymentModal);
+  /*
+   * Prevent duplicate orders if the payment modal
+   * is opened again for the same cart.
+   */
+  if (currentOrderId) {
+    return {
+      orderId: currentOrderId,
+      paymentStatus:
+        currentOrder.paymentStatus || "PENDING",
+      workflow:
+        currentOrder.workflow || "NEW",
+      quote:
+        currentOrder.serverQuote || null,
+    };
+  }
+
+  if (isCreatingOrder) {
+    throw new Error(
+      "Your order is already being created."
+    );
+  }
+
+  isCreatingOrder = true;
+
+  proceedToPaymentButton.disabled = true;
+  proceedToPaymentButton.textContent =
+    "Creating Order...";
+
+  try {
+    const payload = buildOrderPayload();
+
+    const response = await fetch(
+      GOOGLE_SCRIPT_URL,
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type":
+            "text/plain;charset=utf-8",
+        },
+
+        body: JSON.stringify({
+          action: "createOrder",
+          ...payload,
+        }),
+
+        redirect: "follow",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        "Unable to create order. HTTP " +
+          response.status
+      );
+    }
+
+    const result = await response.json();
+
+    if (!result || result.ok !== true) {
+      throw new Error(
+        result && result.message
+          ? result.message
+          : "Unable to create order."
+      );
+    }
+
+    currentOrderId = result.orderId;
+
+    currentOrder.orderId =
+      result.orderId;
+
+    currentOrder.paymentStatus =
+      result.paymentStatus;
+
+    currentOrder.workflow =
+      result.workflow;
+
+    currentOrder.serverQuote =
+      result.quote;
+
+    return result;
+  } finally {
+    isCreatingOrder = false;
+
+    proceedToPaymentButton.disabled = false;
+
+    proceedToPaymentButton.textContent =
+      "Proceed to Payment";
+  }
+}
+
+async function openPaymentStep() {
+  if (
+    !currentOrder ||
+    !customerDetails ||
+    isCreatingOrder
+  ) {
+    return;
+  }
+
+  try {
+    const result =
+      await createCurrentOrderOnServer();
+
+    currentOrderId =
+      result.orderId;
+
+    paymentOrderId.textContent =
+      result.orderId;
+
+    const grandTotal =
+      result.quote &&
+      Number.isFinite(
+        Number(result.quote.grandTotal)
+      )
+        ? Number(result.quote.grandTotal)
+        : getOrderTotal();
+
+    paymentTotal.textContent =
+      formatMoney(grandTotal);
+
+    renderPaymentStep();
+
+    closeModal(checkoutModal);
+    openModal(paymentModal);
+  } catch (error) {
+    console.error(
+      "GOOKIE create order error:",
+      error
+    );
+
+    alert(
+      error.message ||
+        "Unable to create your order. Please try again."
+    );
+  }
 }
 
 function getWhatsAppMessage() {
@@ -1090,7 +1231,7 @@ function getWhatsAppMessage() {
   return [
     "Hello Gookie! I have made payment for my order 🍪",
     "",
-    `Order ID: ${generateOrderId()}`,
+    `Order ID: ${currentOrderId}`,
     "Status: ✅ PAID",
     "",
     `Name: ${customerDetails.name}`,
@@ -1104,39 +1245,66 @@ function getWhatsAppMessage() {
     GOOKIE_DELIVERY_FEE > 0
       ? `Delivery: ${formatMoney(GOOKIE_DELIVERY_FEE)}`
       : "Delivery: To be confirmed",
-    `Total paid now: ${formatMoney(getOrderTotal())}`,
+    `Total paid now: ${formatMoney(
+  currentOrder.serverQuote &&
+  Number.isFinite(
+    Number(currentOrder.serverQuote.grandTotal)
+  )
+    ? Number(currentOrder.serverQuote.grandTotal)
+    : getOrderTotal()
+)}`,
     "",
     "I have saved my payment proof and will attach it to this WhatsApp message.",
   ].join("\n");
 }
 
-async function continueToWhatsApp() {
-  if (!paymentProofSaved.checked) return;
-  if (!currentOrder || !customerDetails) return;
+function continueToWhatsApp() {
+  if (!paymentProofSaved.checked) {
+    return;
+  }
+
+  if (
+    !currentOrder ||
+    !customerDetails ||
+    !currentOrderId
+  ) {
+    alert(
+      "Order ID is unavailable. Please return to checkout and try again."
+    );
+
+    return;
+  }
 
   continueToWhatsAppButton.disabled = true;
-  continueToWhatsAppButton.textContent = "Creating Order...";
+  continueToWhatsAppButton.textContent =
+    "Opening WhatsApp...";
 
   try {
-    const payload = buildOrderPayload();
-
-    const response = await fetch(GOOGLE_SCRIPT_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "text/plain;charset=utf-8",
-      },
-      body: JSON.stringify({
-        action: "createOrder",
-        ...payload,
-      }),
-      redirect: "follow",
-    });
-
-    if (!response.ok) {
-      throw new Error(
-        "Unable to create order. HTTP " + response.status,
+    const whatsappUrl =
+      `https://wa.me/${GOOKIE_WHATSAPP_NUMBER}?text=` +
+      encodeURIComponent(
+        getWhatsAppMessage()
       );
-    }
+
+    window.location.href =
+      whatsappUrl;
+  } catch (error) {
+    console.error(
+      "GOOKIE WhatsApp error:",
+      error
+    );
+
+    alert(
+      "Unable to open WhatsApp. Please try again."
+    );
+
+    continueToWhatsAppButton.disabled =
+      false;
+
+    continueToWhatsAppButton.textContent =
+      "Continue to WhatsApp";
+  }
+}
 
     const result = await response.json();
 
