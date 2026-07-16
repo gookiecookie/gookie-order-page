@@ -700,10 +700,25 @@
 
         <div class="payment-modal-body">
 <div class="payment-total-card">
-            <p>AMOUNT TO PAY</p>
-            <strong id="paymentTotal">RM0.00</strong>
-            <span id="paymentBoxSummary"></span>
-          </div>
+  <span id="paymentBoxSummary"></span>
+
+  <div class="payment-breakdown">
+    <div class="payment-breakdown-row">
+      <span>Subtotal</span>
+      <strong id="paymentSubtotal">RM0.00</strong>
+    </div>
+
+    <div class="payment-breakdown-row">
+      <span>Delivery</span>
+      <strong id="paymentDelivery">RM0.00</strong>
+    </div>
+  </div>
+
+  <div class="payment-total-divider"></div>
+
+  <p>AMOUNT TO PAY</p>
+  <strong id="paymentTotal">RM0.00</strong>
+</div>
 
           <div class="payment-qr-card">
             <p class="mini-heading">SCAN TO PAY WITH DUITNOW</p>
