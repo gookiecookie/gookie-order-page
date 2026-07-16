@@ -1471,13 +1471,105 @@ function closeVerifyPaymentModal() {
   updateBodyLock();
 }
 
+/* =========================================================
+   16A. PAYMENT CONFIRMATION WHATSAPP
+========================================================= */
+
+/**
+ * Converts a Malaysian customer phone number into the
+ * international digit-only format required by wa.me.
+ *
+ * Examples:
+ * 0172787879   -> 60172787879
+ * 60172787879  -> 60172787879
+ * +60172787879 -> 60172787879
+ */
+function normalizeWhatsAppPhone(phone) {
+  let digits = String(phone || "")
+    .replace(/\D/g, "");
+
+  if (!digits) {
+    throw new Error(
+      "Customer phone number is missing."
+    );
+  }
+
+  if (digits.startsWith("0")) {
+    digits = "60" + digits.slice(1);
+  }
+
+  if (!digits.startsWith("60")) {
+    digits = "60" + digits;
+  }
+
+  if (!/^60\d{8,11}$/.test(digits)) {
+    throw new Error(
+      "Customer phone number is invalid."
+    );
+  }
+
+  return digits;
+}
+
+
+/**
+ * Builds the customer-facing payment confirmation message.
+ */
+function buildPaymentConfirmedMessage(
+  orderId,
+  amountReceived
+) {
+  const amount = Number(amountReceived);
+
+  if (!Number.isFinite(amount)) {
+    throw new Error(
+      "Payment amount is invalid."
+    );
+  }
+
+  return [
+    "Payment Confirmed ✅",
+    "",
+    "Order ID: " + orderId,
+    "Amount Received: RM" + amount.toFixed(2),
+    "",
+    "Your Gookies are now in our bake queue.",
+    "",
+    "We'll notify you again when your order has been shipped."
+  ].join("\n");
+}
+
+
+/**
+ * Creates the final wa.me URL.
+ */
+function buildPaymentConfirmedWhatsAppUrl(
+  phone,
+  orderId,
+  amountReceived
+) {
+  const whatsappPhone =
+    normalizeWhatsAppPhone(phone);
+
+  const message =
+    buildPaymentConfirmedMessage(
+      orderId,
+      amountReceived
+    );
+
+  return (
+    "https://wa.me/" +
+    whatsappPhone +
+    "?text=" +
+    encodeURIComponent(message)
+  );
+}
 
 /* =========================================================
    17. CONFIRM VERIFY PAYMENT
 ========================================================= */
 
 async function confirmVerifyPayment() {
-
   if (
     hqState.isVerifying ||
     !hqState.selectedOrder
@@ -1485,24 +1577,44 @@ async function confirmVerifyPayment() {
     return;
   }
 
-
   const orderId =
     hqState.selectedOrder.orderId;
-
 
   hqState.isVerifying = true;
 
   setVerifyButtonLoading(true);
 
+  /*
+   * Open the WhatsApp tab immediately during the staff click.
+   *
+   * Browsers may block window.open() when it is called only
+   * after an asynchronous fetch has completed.
+   */
+  const whatsappWindow = window.open(
+    "",
+    "_blank"
+  );
+
+  if (whatsappWindow) {
+    whatsappWindow.opener = null;
+
+    whatsappWindow.document.title =
+      "GOOKIE Payment Confirmation";
+
+    whatsappWindow.document.body.innerHTML =
+      "<p style=\"font-family:Arial,sans-serif;" +
+      "padding:24px;\">" +
+      "Preparing WhatsApp payment confirmation..." +
+      "</p>";
+  }
 
   try {
-
     const payload = {
       action: "verifyPayment",
       orderId: orderId,
-      verifiedBy: GOOKIE_HQ_CONFIG.VERIFIED_BY
+      verifiedBy:
+        GOOKIE_HQ_CONFIG.VERIFIED_BY
     };
-
 
     const response = await fetch(
       GOOKIE_HQ_CONFIG.API_URL,
@@ -1524,17 +1636,14 @@ async function confirmVerifyPayment() {
       }
     );
 
-
     if (!response.ok) {
       throw new Error(
         "Verification request failed. HTTP " +
-        response.status
+          response.status
       );
     }
 
-
     const result = await response.json();
-
 
     if (!result || result.ok !== true) {
       throw new Error(
@@ -1544,39 +1653,77 @@ async function confirmVerifyPayment() {
       );
     }
 
+    if (!result.customerPhone) {
+      throw new Error(
+        "Payment was verified, but the customer phone number was not returned."
+      );
+    }
+
+    if (
+      result.amountReceived === "" ||
+      result.amountReceived === null ||
+      result.amountReceived === undefined
+    ) {
+      throw new Error(
+        "Payment was verified, but the payment amount was not returned."
+      );
+    }
+
+    const whatsappUrl =
+      buildPaymentConfirmedWhatsAppUrl(
+        result.customerPhone,
+        result.orderId,
+        result.amountReceived
+      );
 
     verifyPaymentModal.hidden = true;
 
     hqState.selectedOrder = null;
 
-
     showToast(
       "Payment verified",
-      orderId + " moved to Bake Queue.",
+      orderId +
+        " moved to Bake Queue. Opening WhatsApp.",
       "success"
     );
-
 
     await loadHQData({
       showLoadingScreen: false
     });
 
+    /*
+     * Use the pre-opened tab when available.
+     * Fall back to the current tab if the browser blocked it.
+     */
+    if (
+      whatsappWindow &&
+      !whatsappWindow.closed
+    ) {
+      whatsappWindow.location.href =
+        whatsappUrl;
+    } else {
+      window.location.href =
+        whatsappUrl;
+    }
   } catch (error) {
-
     console.error(
       "GOOKIE HQ verify error:",
       error
     );
 
+    if (
+      whatsappWindow &&
+      !whatsappWindow.closed
+    ) {
+      whatsappWindow.close();
+    }
 
     showToast(
       "Verification failed",
       error.message,
       "error"
     );
-
   } finally {
-
     hqState.isVerifying = false;
 
     setVerifyButtonLoading(false);
@@ -1584,7 +1731,6 @@ async function confirmVerifyPayment() {
     updateBodyLock();
   }
 }
-
 
 /* =========================================================
    18. ORDER DETAILS
