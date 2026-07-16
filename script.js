@@ -251,6 +251,8 @@ const $ = (id) => document.getElementById(id),
   paymentModal = $("paymentModal"),
   paymentModalClose = $("paymentModalClose"),
   paymentOrderId = $("paymentOrderId"),
+  paymentSubtotal = $("paymentSubtotal"),
+  paymentDelivery = $("paymentDelivery"),
   paymentTotal = $("paymentTotal"),
   paymentBoxSummary = $("paymentBoxSummary"),
   paymentProofSaved = $("paymentProofSaved"),
@@ -1054,6 +1056,8 @@ function renderPaymentStep() {
 
   if (
     !quote ||
+    !Number.isFinite(Number(quote.subtotal)) ||
+    !Number.isFinite(Number(quote.shippingCharge)) ||
     !Number.isFinite(Number(quote.grandTotal))
   ) {
     throw new Error(
@@ -1063,17 +1067,21 @@ function renderPaymentStep() {
 
   currentOrderId = null;
 
-  /*
-   * Payment amount must always use the backend grand total,
-   * including delivery charge.
-   */
-  paymentTotal.textContent = formatMoney(
-    quote.grandTotal,
-  );
-
   paymentBoxSummary.textContent =
     `${currentOrder.boxName} · ` +
     `${currentOrder.boxSize} cookies`;
+
+  paymentSubtotal.textContent = formatMoney(
+    quote.subtotal,
+  );
+
+  paymentDelivery.textContent = formatMoney(
+    quote.shippingCharge,
+  );
+
+  paymentTotal.textContent = formatMoney(
+    quote.grandTotal,
+  );
 
   paymentProofSaved.checked = false;
   continueToWhatsAppButton.disabled = true;
