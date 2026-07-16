@@ -1202,21 +1202,172 @@ function hideOrderCreationLoader() {
   }
 }
 
-async function continueToWhatsApp() {
-  if (!paymentProofSaved.checked) return;
-  if (!currentOrder || !customerDetails || isCreatingOrder) return;
+let isOrderSubmissionLocked = false;
 
+
+/**
+ * Generates one unique Client Request ID for the current checkout.
+ *
+ * The ID is stored inside currentOrder so:
+ * - repeated clicks cannot generate another ID;
+ * - retries after a network error reuse the same ID;
+ * - a new order object receives a new ID.
+ */
+function getOrCreateClientRequestId() {
+  if (!currentOrder) {
+    throw new Error("No active order was found.");
+  }
+
+  if (currentOrder.clientRequestId) {
+    return currentOrder.clientRequestId;
+  }
+
+  const randomPart = generateClientRequestRandomPart();
+
+  currentOrder.clientRequestId = `CRQ${randomPart}`;
+
+  return currentOrder.clientRequestId;
+}
+
+
+/**
+ * Produces a secure uppercase alphanumeric value.
+ */
+function generateClientRequestRandomPart(length = 12) {
+  const characters = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  const values = new Uint32Array(length);
+
+  if (
+    window.crypto &&
+    typeof window.crypto.getRandomValues === "function"
+  ) {
+    window.crypto.getRandomValues(values);
+  } else {
+    for (let index = 0; index < length; index += 1) {
+      values[index] = Math.floor(
+        Math.random() * Number.MAX_SAFE_INTEGER,
+      );
+    }
+  }
+
+  return Array.from(values, (value) => {
+    return characters[value % characters.length];
+  }).join("");
+}
+
+
+/**
+ * Blocks attempts to close or interact with the payment modal while
+ * the order request is being processed.
+ */
+function blockOrderSubmissionInteraction(event) {
+  if (!isOrderSubmissionLocked) return;
+
+  if (
+    event.type === "keydown" &&
+    event.key !== "Escape"
+  ) {
+    return;
+  }
+
+  event.preventDefault();
+  event.stopPropagation();
+  event.stopImmediatePropagation();
+}
+
+
+/**
+ * Activates the production submission lock.
+ */
+function lockOrderSubmission() {
+  isOrderSubmissionLocked = true;
   isCreatingOrder = true;
+
   continueToWhatsAppButton.disabled = true;
   paymentProofSaved.disabled = true;
   paymentModalClose.disabled = true;
+
+  document.addEventListener(
+    "keydown",
+    blockOrderSubmissionInteraction,
+    true,
+  );
+
+  document.addEventListener(
+    "pointerdown",
+    blockOrderSubmissionInteraction,
+    true,
+  );
+
+  document.addEventListener(
+    "click",
+    blockOrderSubmissionInteraction,
+    true,
+  );
+}
+
+
+/**
+ * Releases the submission lock only when order creation fails.
+ */
+
+function unlockOrderSubmission() {
+  isOrderSubmissionLocked = false;
+  isCreatingOrder = false;
+
+  paymentProofSaved.disabled = false;
+  paymentModalClose.disabled = false;
+
+  continueToWhatsAppButton.disabled =
+    !paymentProofSaved.checked;
+
+  document.removeEventListener(
+    "keydown",
+    blockOrderSubmissionInteraction,
+    true,
+  );
+
+  document.removeEventListener(
+    "pointerdown",
+    blockOrderSubmissionInteraction,
+    true,
+  );
+
+  document.removeEventListener(
+    "click",
+    blockOrderSubmissionInteraction,
+    true,
+  );
+}
+
+async function continueToWhatsApp() {
+  if (!paymentProofSaved.checked) return;
+  if (!currentOrder || !customerDetails) return;
+
+  /*
+   * The first synchronous check prevents another invocation before
+   * any asynchronous work begins.
+   */
+  if (isCreatingOrder || isOrderSubmissionLocked) {
+    return;
+  }
+
+  /*
+   * Lock immediately before payload creation or fetch().
+   */
+  lockOrderSubmission();
 
   showOrderCreationLoader();
 
   const animationStartedAt = Date.now();
   const minimumAnimationMs = 2300;
 
+  let orderCreatedSuccessfully = false;
+
   try {
+    const clientRequestId =
+      getOrCreateClientRequestId();
+
     const payload = buildOrderPayload();
 
     const response = await fetch(GOOGLE_SCRIPT_URL, {
@@ -1226,6 +1377,7 @@ async function continueToWhatsApp() {
       },
       body: JSON.stringify({
         action: "createOrder",
+        clientRequestId,
         ...payload,
       }),
       redirect: "follow",
@@ -1233,7 +1385,8 @@ async function continueToWhatsApp() {
 
     if (!response.ok) {
       throw new Error(
-        "Unable to create order. HTTP " + response.status,
+        "Unable to create order. HTTP " +
+          response.status,
       );
     }
 
@@ -1241,13 +1394,25 @@ async function continueToWhatsApp() {
 
     if (!result || result.ok !== true) {
       throw new Error(
-        result?.message || "Unable to create order.",
+        result?.message ||
+          "Unable to create order.",
       );
     }
 
+    if (!result.orderId) {
+      throw new Error(
+        "The server did not return an Order ID.",
+      );
+    }
+
+    orderCreatedSuccessfully = true;
+
     currentOrderId = result.orderId;
     currentOrder.orderId = result.orderId;
-    currentOrder.paymentStatus = result.paymentStatus;
+    currentOrder.clientRequestId =
+      result.clientRequestId || clientRequestId;
+    currentOrder.paymentStatus =
+      result.paymentStatus;
     currentOrder.workflow = result.workflow;
     currentOrder.serverQuote = result.quote;
 
@@ -1255,28 +1420,41 @@ async function continueToWhatsApp() {
       result.quote.grandTotal,
     );
 
-    const elapsedMs = Date.now() - animationStartedAt;
+    const elapsedMs =
+      Date.now() - animationStartedAt;
 
     if (elapsedMs < minimumAnimationMs) {
       await wait(minimumAnimationMs - elapsedMs);
     }
 
     completeOrderCreationLoader(result.orderId);
+
     await wait(720);
 
     const whatsappUrl =
       `https://wa.me/${GOOKIE_WHATSAPP_NUMBER}?text=` +
       encodeURIComponent(getWhatsAppMessage());
 
+    /*
+     * Keep the submission lock active.
+     *
+     * Do not unlock here because the order already exists in the
+     * backend. Unlocking would allow another click before WhatsApp opens.
+     */
     window.location.href = whatsappUrl;
   } catch (error) {
-    console.error("GOOKIE create order error:", error);
+    console.error(
+      "GOOKIE create order error:",
+      error,
+    );
 
     showOrderCreationError(
-      error.message || "Unable to create your order.",
+      error.message ||
+        "Unable to create your order.",
     );
 
     await wait(1100);
+
     hideOrderCreationLoader();
 
     alert(
@@ -1284,12 +1462,16 @@ async function continueToWhatsApp() {
         "Unable to create your order. Please try again.",
     );
   } finally {
-    isCreatingOrder = false;
-    paymentProofSaved.disabled = false;
-    paymentModalClose.disabled = false;
-
-    continueToWhatsAppButton.disabled =
-      !paymentProofSaved.checked;
+    /*
+     * Only release the UI when order creation genuinely failed.
+     *
+     * A retry will reuse currentOrder.clientRequestId, allowing the
+     * backend idempotency layer to return the original Order ID if the
+     * first request reached Apps Script but its response was lost.
+     */
+    if (!orderCreatedSuccessfully) {
+      unlockOrderSubmission();
+    }
   }
 }
 
