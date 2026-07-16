@@ -1532,15 +1532,18 @@ function buildPaymentConfirmedMessage(
   return [
     "Payment Confirmed ✅",
     "",
+    "Hello! We've received your payment.",
+    "",
     "Order ID: " + orderId,
     "Amount Received: RM" + amount.toFixed(2),
     "",
-    "Your Gookies are now in our bake queue.",
+    "Your Gookies are now in our bake queue 🍪",
     "",
-    "We'll notify you again when your order has been shipped."
+    "We'll notify you again once your order has been shipped.",
+    "",
+    "Thank you for supporting GOOKIE ❤️"
   ].join("\n");
 }
-
 
 /**
  * Creates the final wa.me URL.
