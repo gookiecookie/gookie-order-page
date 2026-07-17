@@ -31,10 +31,17 @@ const GOOKIE_HQ_CONFIG = {
 const hqState = {
   data: null,
   selectedOrder: null,
+
+  selectedPackingBox: null,
+  packingCheckedItems: new Set(),
+  isFinishingPacking: false,
+
   isLoading: false,
   isVerifying: false,
   isStartingBaking: false,
+
   selectedBakeProductIds: new Set(),
+
   autoRefreshTimer: null,
   toastTimer: null
 };
@@ -242,6 +249,82 @@ const orderDetailsContent =
 const closeOrderDetailsButton =
   document.getElementById("closeOrderDetailsButton");
 
+/* Packing modal */
+
+const packingModal =
+  document.getElementById(
+    "packingModal"
+  );
+
+const packingModalTitle =
+  document.getElementById(
+    "packingModalTitle"
+  );
+
+const packingModalOrderId =
+  document.getElementById(
+    "packingModalOrderId"
+  );
+
+const packingModalBoxId =
+  document.getElementById(
+    "packingModalBoxId"
+  );
+
+const packingModalBoxName =
+  document.getElementById(
+    "packingModalBoxName"
+  );
+
+const packingModalBoxNumber =
+  document.getElementById(
+    "packingModalBoxNumber"
+  );
+
+const packingModalExpectedQty =
+  document.getElementById(
+    "packingModalExpectedQty"
+  );
+
+const packingChecklist =
+  document.getElementById(
+    "packingChecklist"
+  );
+
+const packingProgressCurrent =
+  document.getElementById(
+    "packingProgressCurrent"
+  );
+
+const packingProgressTotal =
+  document.getElementById(
+    "packingProgressTotal"
+  );
+
+const packingProgressBar =
+  document.getElementById(
+    "packingProgressBar"
+  );
+
+const packingProgressFill =
+  document.getElementById(
+    "packingProgressFill"
+  );
+
+const closePackingModalButton =
+  document.getElementById(
+    "closePackingModalButton"
+  );
+
+const cancelPackingButton =
+  document.getElementById(
+    "cancelPackingButton"
+  );
+
+const finishPackingButton =
+  document.getElementById(
+    "finishPackingButton"
+  );
 
 /* Toast */
 
