@@ -392,6 +392,29 @@ function bindHQEvents() {
   }
 );
 
+coolingOrderList.addEventListener(
+  "click",
+  function (event) {
+    const button =
+      event.target.closest(
+        ".ready-to-pack-button"
+      );
+
+    if (!button) {
+      return;
+    }
+
+    const batchId =
+      button.dataset.batchId;
+
+    if (!batchId) {
+      return;
+    }
+
+    confirmReadyToPack(batchId);
+  }
+);
+
 if (!coolingCountdownTimer) {
   coolingCountdownTimer =
     window.setInterval(
