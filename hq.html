@@ -937,6 +937,206 @@
 
   </div>
 </div>
+
+<!-- =====================================================
+     SHIPPING MODAL
+====================================================== -->
+
+<div
+  class="modal-shell"
+  id="shippingModal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="shippingModalTitle"
+  hidden
+>
+  <div class="modal-card modal-card-large">
+
+    <header class="modal-header">
+
+      <div>
+        <p class="modal-eyebrow">
+          SHIP ORDER
+        </p>
+
+        <h2 id="shippingModalTitle">
+          Shipping
+        </h2>
+      </div>
+
+      <button
+        class="modal-close-button"
+        id="closeShippingModalButton"
+        type="button"
+        aria-label="Close shipping"
+      >
+        ✕
+      </button>
+
+    </header>
+
+    <div class="modal-body">
+
+      <div class="order-reference-box">
+        <span>Order ID</span>
+
+        <strong id="shippingModalOrderId">
+          —
+        </strong>
+      </div>
+
+      <div class="modal-detail-grid">
+
+        <div class="modal-detail">
+          <span>Customer</span>
+
+          <strong id="shippingModalCustomer">
+            —
+          </strong>
+        </div>
+
+        <div class="modal-detail">
+          <span>Total Boxes</span>
+
+          <strong id="shippingModalBoxCount">
+            0
+          </strong>
+        </div>
+
+        <div class="modal-detail">
+          <span>Total Cookies</span>
+
+          <strong id="shippingModalCookieQty">
+            0
+          </strong>
+        </div>
+
+        <div class="modal-detail">
+          <span>Postcode</span>
+
+          <strong id="shippingModalPostcode">
+            —
+          </strong>
+        </div>
+
+      </div>
+
+      <div class="modal-order-items">
+
+        <p class="modal-section-label">
+          Delivery Address
+        </p>
+
+        <div class="shipping-address-box">
+          <p id="shippingModalAddress">
+            —
+          </p>
+        </div>
+
+      </div>
+
+      <div class="shipping-form-grid">
+
+        <label class="shipping-field">
+          <span>Courier</span>
+
+          <select id="shippingCourierSelect">
+            <option value="">
+              Select courier
+            </option>
+
+            <option value="J&T Express">
+              J&T Express
+            </option>
+
+            <option value="Ninja Van">
+              Ninja Van
+            </option>
+
+            <option value="Pos Laju">
+              Pos Laju
+            </option>
+
+            <option value="DHL eCommerce">
+              DHL eCommerce
+            </option>
+
+            <option value="SPX Express">
+              SPX Express
+            </option>
+
+            <option value="Other">
+              Other
+            </option>
+          </select>
+        </label>
+
+        <label class="shipping-field">
+          <span>Tracking Number</span>
+
+          <input
+            id="shippingTrackingNumberInput"
+            type="text"
+            autocomplete="off"
+            placeholder="Example: 630012345678"
+          >
+        </label>
+
+      </div>
+
+      <label class="shipping-field">
+        <span>Tracking Link</span>
+
+        <input
+          id="shippingTrackingLinkInput"
+          type="url"
+          autocomplete="off"
+          placeholder="Tracking link"
+        >
+      </label>
+
+      <div class="shipping-notification-preview">
+
+        <div class="shipping-preview-heading">
+          <span>Customer Notification</span>
+
+          <span class="shipping-preview-badge">
+            WhatsApp
+          </span>
+        </div>
+
+        <p id="shippingNotificationPreview">
+          Enter the courier and tracking number
+          to preview the customer message.
+        </p>
+
+      </div>
+
+    </div>
+
+    <footer class="modal-footer">
+
+      <button
+        class="secondary-button"
+        id="cancelShippingButton"
+        type="button"
+      >
+        Cancel
+      </button>
+
+      <button
+        class="primary-button"
+        id="markAsShippedButton"
+        type="button"
+        disabled
+      >
+        MARK AS SHIPPED
+      </button>
+
+    </footer>
+
+  </div>
+</div>
   
   <!-- =====================================================
        TOAST NOTIFICATION
