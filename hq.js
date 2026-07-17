@@ -558,6 +558,12 @@ cancelPackingButton.addEventListener(
   "click",
   closePackingModal
 );
+
+finishPackingButton.addEventListener(
+  "click",
+  confirmFinishPacking
+);
+   
 if (!coolingCountdownTimer) {
   coolingCountdownTimer =
     window.setInterval(
@@ -2172,6 +2178,182 @@ function updatePackingProgress() {
 }
 
 /* =========================================================
+   14D. FINISH PACKING
+========================================================= */
+
+async function confirmFinishPacking() {
+  if (
+    hqState.isFinishingPacking ||
+    !hqState.selectedPackingBox
+  ) {
+    return;
+  }
+
+  const box =
+    hqState.selectedPackingBox;
+
+  const orderBoxId =
+    String(
+      box.orderBoxId || ""
+    ).trim();
+
+  const orderId =
+    String(
+      box.orderId || ""
+    ).trim();
+
+  const expectedQty =
+    safeNumber(
+      box.expectedCookieQty
+    );
+
+  const checkedQty =
+    hqState.packingCheckedItems.size;
+
+  if (!orderBoxId) {
+    showToast(
+      "Packing box unavailable",
+      "Order Box ID is missing.",
+      "error"
+    );
+
+    return;
+  }
+
+  if (
+    expectedQty <= 0 ||
+    checkedQty !== expectedQty
+  ) {
+    showToast(
+      "Packing incomplete",
+      "Please tick every cookie before finishing.",
+      "error"
+    );
+
+    return;
+  }
+
+  hqState.isFinishingPacking = true;
+
+  setFinishPackingLoading(true);
+
+  try {
+    const payload = {
+      action: "finishPacking",
+
+      orderBoxId: orderBoxId,
+
+      orderId: orderId,
+
+      packedCookieQty: checkedQty,
+
+      completedBy:
+        GOOKIE_HQ_CONFIG.VERIFIED_BY
+    };
+
+    const response = await fetch(
+      GOOKIE_HQ_CONFIG.API_URL,
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type":
+            "text/plain;charset=utf-8"
+        },
+
+        body: JSON.stringify(payload),
+
+        redirect: "follow"
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        "Finish Packing request failed. HTTP " +
+          response.status
+      );
+    }
+
+    const result =
+      await response.json();
+
+    if (
+      !result ||
+      result.ok !== true
+    ) {
+      throw new Error(
+        result && result.message
+          ? result.message
+          : "Packing could not be completed."
+      );
+    }
+
+    packingModal.hidden = true;
+
+    hqState.selectedPackingBox = null;
+    hqState.packingCheckedItems.clear();
+
+    showToast(
+      "Packing completed",
+      orderId +
+        " moved to Shipping.",
+      "success"
+    );
+
+    updateBodyLock();
+
+    await loadHQData({
+      showLoadingScreen: false
+    });
+
+  } catch (error) {
+    console.error(
+      "GOOKIE HQ finish packing error:",
+      error
+    );
+
+    showToast(
+      "Finish Packing failed",
+      error.message ||
+        "Unable to complete packing.",
+      "error"
+    );
+
+  } finally {
+    hqState.isFinishingPacking = false;
+
+    setFinishPackingLoading(false);
+  }
+}
+
+function setFinishPackingLoading(
+  isLoading
+) {
+  finishPackingButton.disabled =
+    isLoading;
+
+  cancelPackingButton.disabled =
+    isLoading;
+
+  closePackingModalButton.disabled =
+    isLoading;
+
+  packingChecklist
+    .querySelectorAll(
+      "[data-packing-check-id]"
+    )
+    .forEach(function (checkbox) {
+      checkbox.disabled =
+        isLoading;
+    });
+
+  finishPackingButton.textContent =
+    isLoading
+      ? "FINISHING..."
+      : "FINISH PACKING";
+}
+
+/* =========================================================
    15. SHIPPING COLUMN
 ========================================================= */
 
@@ -3258,11 +3440,13 @@ function startAutoRefresh() {
     setInterval(function () {
 
       if (
-        document.hidden ||
-        hqState.isLoading ||
-        hqState.isVerifying ||
-        hqState.isStartingBaking
-      ) {
+  document.hidden ||
+  hqState.isLoading ||
+  hqState.isVerifying ||
+  hqState.isStartingBaking ||
+  hqState.selectedPackingBox ||
+  hqState.isFinishingPacking
+) {
         return;
       }
 
