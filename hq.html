@@ -785,7 +785,159 @@
 
   </div>
 
+<!-- =====================================================
+     PACKING MODAL
+====================================================== -->
 
+<div
+  class="modal-shell"
+  id="packingModal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="packingModalTitle"
+  hidden
+>
+  <div class="modal-card modal-card-large">
+
+    <header class="modal-header">
+
+      <div>
+        <p class="modal-eyebrow">PACK ORDER</p>
+
+        <h2 id="packingModalTitle">
+          Packing
+        </h2>
+      </div>
+
+      <button
+        class="modal-close-button"
+        id="closePackingModalButton"
+        type="button"
+        aria-label="Close packing"
+      >
+        ✕
+      </button>
+
+    </header>
+
+    <div class="modal-body">
+
+      <div class="order-reference-box">
+        <span>Order ID</span>
+
+        <strong id="packingModalOrderId">
+          —
+        </strong>
+      </div>
+
+      <div class="modal-detail-grid">
+
+        <div class="modal-detail">
+          <span>Order Box</span>
+
+          <strong id="packingModalBoxId">
+            —
+          </strong>
+        </div>
+
+        <div class="modal-detail">
+          <span>Box</span>
+
+          <strong id="packingModalBoxName">
+            —
+          </strong>
+        </div>
+
+        <div class="modal-detail">
+          <span>Box Number</span>
+
+          <strong id="packingModalBoxNumber">
+            —
+          </strong>
+        </div>
+
+        <div class="modal-detail">
+          <span>Total Cookies</span>
+
+          <strong id="packingModalExpectedQty">
+            0
+          </strong>
+        </div>
+
+      </div>
+
+      <div class="modal-order-items">
+
+        <p class="modal-section-label">
+          Packing Checklist
+        </p>
+
+        <div
+          class="packing-checklist"
+          id="packingChecklist"
+        >
+          <p>No packing items.</p>
+        </div>
+
+      </div>
+
+      <div class="packing-progress-section">
+
+        <div class="packing-progress-heading">
+
+          <span>Packed</span>
+
+          <strong>
+            <span id="packingProgressCurrent">0</span>
+            /
+            <span id="packingProgressTotal">0</span>
+          </strong>
+
+        </div>
+
+        <div
+          class="packing-progress-track"
+          role="progressbar"
+          aria-label="Packing progress"
+          aria-valuemin="0"
+          aria-valuemax="0"
+          aria-valuenow="0"
+          id="packingProgressBar"
+        >
+          <span
+            class="packing-progress-fill"
+            id="packingProgressFill"
+          ></span>
+        </div>
+
+      </div>
+
+    </div>
+
+    <footer class="modal-footer">
+
+      <button
+        class="secondary-button"
+        id="cancelPackingButton"
+        type="button"
+      >
+        Cancel
+      </button>
+
+      <button
+        class="primary-button"
+        id="finishPackingButton"
+        type="button"
+        disabled
+      >
+        Finish Packing
+      </button>
+
+    </footer>
+
+  </div>
+</div>
+  
   <!-- =====================================================
        TOAST NOTIFICATION
   ====================================================== -->
