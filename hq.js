@@ -1804,8 +1804,22 @@ function updateCoolingCountdowns() {
 ========================================================= */
 
 function renderPackingColumn() {
-  const queue =
-    hqState.data.packingQueue;
+ const queue =
+  hqState.data.packingQueue.filter(
+    function (box) {
+      const status =
+        String(
+          box.packingStatus || ""
+        )
+          .trim()
+          .toUpperCase();
+
+      return (
+        status === "READY_TO_PACK" ||
+        status === "PACKING"
+      );
+    }
+  );
 
   packingCount.textContent =
     String(queue.length);
