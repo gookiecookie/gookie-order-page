@@ -37,7 +37,8 @@ const hqState = {
   isFinishingPacking: false,
 
   selectedShippingOrder: null,
-isMarkingShipped: false, 
+shippingTrackingLink: "",
+isMarkingShipped: false,
 
   isLoading: false,
   isVerifying: false,
@@ -381,9 +382,14 @@ const shippingTrackingNumberInput =
     "shippingTrackingNumberInput"
   );
 
-const shippingTrackingLinkInput =
+const shippingOpenTrackingLink =
   document.getElementById(
-    "shippingTrackingLinkInput"
+    "shippingOpenTrackingLink"
+  );
+
+const shippingTrackingUnavailable =
+  document.getElementById(
+    "shippingTrackingUnavailable"
   );
 
 const shippingNotificationPreview =
@@ -686,12 +692,6 @@ shippingTrackingNumberInput.addEventListener(
     updateShippingTrackingLink();
     updateShippingFormState();
   }
-);
-
-
-shippingTrackingLinkInput.addEventListener(
-  "input",
-  updateShippingFormState
 );
 
 
@@ -2664,8 +2664,8 @@ const shippingMetrics =
     order.trackingNumber ||
     "";
 
-  shippingTrackingLinkInput.value =
-    order.trackingLink || "";
+  hqState.shippingTrackingLink =
+  order.trackingLink || "";
 
   updateShippingTrackingLink();
   updateShippingFormState();
@@ -2687,9 +2687,16 @@ function closeShippingModal() {
   hqState.selectedShippingOrder =
     null;
 
+  hqState.shippingTrackingLink = "";
+
   shippingCourierSelect.value = "";
   shippingTrackingNumberInput.value = "";
-  shippingTrackingLinkInput.value = "";
+
+  shippingOpenTrackingLink.href = "#";
+  shippingOpenTrackingLink.hidden = true;
+
+  shippingTrackingUnavailable.hidden =
+    false;
 
   shippingNotificationPreview.textContent =
     "Enter the courier and tracking number to preview the customer message.";
@@ -2786,41 +2793,32 @@ function updateShippingTrackingLink() {
       .value
       .trim();
 
-  const currentLink =
-    shippingTrackingLinkInput
-      .value
-      .trim();
-
   const generatedLink =
     buildTrackingLink(
       courier,
       trackingNumber
     );
 
-  /*
-   * Auto-fill only when the link is empty
-   * or looks like one previously generated.
-   */
-  if (
-    !currentLink ||
-    currentLink.includes(
-      "jtexpress.my"
-    ) ||
-    currentLink.includes(
-      "ninjavan.co"
-    ) ||
-    currentLink.includes(
-      "tracking.pos.com.my"
-    ) ||
-    currentLink.includes(
-      "dhl.com"
-    ) ||
-    currentLink.includes(
-      "spx.com.my"
-    )
-  ) {
-    shippingTrackingLinkInput.value =
+  hqState.shippingTrackingLink =
+    generatedLink;
+
+  if (generatedLink) {
+    shippingOpenTrackingLink.href =
       generatedLink;
+
+    shippingOpenTrackingLink.hidden =
+      false;
+
+    shippingTrackingUnavailable.hidden =
+      true;
+  } else {
+    shippingOpenTrackingLink.href = "#";
+
+    shippingOpenTrackingLink.hidden =
+      true;
+
+    shippingTrackingUnavailable.hidden =
+      false;
   }
 }
 
@@ -2849,9 +2847,9 @@ function createShippingNotificationPreview() {
       .trim();
 
   const trackingLink =
-    shippingTrackingLinkInput
-      .value
-      .trim();
+  String(
+    hqState.shippingTrackingLink || ""
+  ).trim();
 
   if (
     !courier ||
@@ -2898,9 +2896,9 @@ function updateShippingFormState() {
       .trim();
 
   const trackingLink =
-    shippingTrackingLinkInput
-      .value
-      .trim();
+  String(
+    hqState.shippingTrackingLink || ""
+  ).trim();
 
   const isValid =
     Boolean(
