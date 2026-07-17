@@ -525,10 +525,11 @@ function bindHQEvents() {
       return;
     }
 
-  closeMissionControl();
+closeMissionControl();
 closeVerifyPaymentModal();
 closeOrderDetailsModal();
 closePackingModal();
+closeShippingModal();   
   });
 
    inOvenOrderList.addEventListener(
@@ -642,6 +643,67 @@ cancelPackingButton.addEventListener(
 finishPackingButton.addEventListener(
   "click",
   confirmFinishPacking
+);
+
+/* Shipping events */
+
+shippingOrderList.addEventListener(
+  "click",
+  function (event) {
+    const button =
+      event.target.closest(
+        ".open-shipping-button"
+      );
+
+    if (!button) {
+      return;
+    }
+
+    const orderId =
+      button.dataset.orderId;
+
+    if (!orderId) {
+      return;
+    }
+
+    openShippingModal(orderId);
+  }
+);
+
+
+shippingCourierSelect.addEventListener(
+  "change",
+  function () {
+    updateShippingTrackingLink();
+    updateShippingFormState();
+  }
+);
+
+
+shippingTrackingNumberInput.addEventListener(
+  "input",
+  function () {
+    updateShippingTrackingLink();
+    updateShippingFormState();
+  }
+);
+
+
+shippingTrackingLinkInput.addEventListener(
+  "input",
+  updateShippingFormState
+);
+
+
+closeShippingModalButton.addEventListener(
+  "click",
+  closeShippingModal
+);
+
+
+cancelShippingButton.addEventListener(
+  "click",
+  closeShippingModal
 );
    
 if (!coolingCountdownTimer) {
@@ -2448,6 +2510,352 @@ function setFinishPackingLoading(
 }
 
 /* =========================================================
+   SHIPPING MODAL
+========================================================= */
+
+function findShippingOrder(orderId) {
+  if (
+    !hqState.data ||
+    !Array.isArray(
+      hqState.data.shippingQueue
+    )
+  ) {
+    return null;
+  }
+
+  return (
+    hqState.data.shippingQueue.find(
+      function (order) {
+        return (
+          String(
+            order.orderId || ""
+          ) ===
+          String(orderId || "")
+        );
+      }
+    ) || null
+  );
+}
+
+function openShippingModal(orderId) {
+  const order =
+    findShippingOrder(orderId);
+
+  if (!order) {
+    showToast(
+      "Shipping order unavailable",
+      "The Shipping Queue may have changed.",
+      "error"
+    );
+
+    return;
+  }
+
+  hqState.selectedShippingOrder =
+    order;
+
+  shippingModalTitle.textContent =
+    "Ship " + (order.orderId || "Order");
+
+  shippingModalOrderId.textContent =
+    order.orderId || "—";
+
+  shippingModalCustomer.textContent =
+    order.customerName ||
+    order.name ||
+    "—";
+
+  shippingModalBoxCount.textContent =
+    String(
+      safeNumber(
+        order.boxCount ||
+        order.totalBoxes
+      )
+    );
+
+  shippingModalCookieQty.textContent =
+    String(
+      safeNumber(
+        order.cookieQty ||
+        order.totalCookieQty ||
+        order.totalCookies
+      )
+    );
+
+  shippingModalPostcode.textContent =
+    order.postcode ||
+    order.postalCode ||
+    "—";
+
+  shippingModalAddress.textContent =
+    order.deliveryAddress ||
+    order.address ||
+    "No delivery address found.";
+
+  shippingCourierSelect.value =
+    order.courier &&
+    order.courier !== "TEMP COURIER"
+      ? order.courier
+      : "";
+
+  shippingTrackingNumberInput.value =
+    order.trackingNo ||
+    order.trackingNumber ||
+    "";
+
+  shippingTrackingLinkInput.value =
+    order.trackingLink || "";
+
+  updateShippingTrackingLink();
+  updateShippingFormState();
+
+  shippingModal.hidden = false;
+
+  document.body.classList.add(
+    "modal-open"
+  );
+}
+
+function closeShippingModal() {
+  if (hqState.isMarkingShipped) {
+    return;
+  }
+
+  shippingModal.hidden = true;
+
+  hqState.selectedShippingOrder =
+    null;
+
+  shippingCourierSelect.value = "";
+  shippingTrackingNumberInput.value = "";
+  shippingTrackingLinkInput.value = "";
+
+  shippingNotificationPreview.textContent =
+    "Enter the courier and tracking number to preview the customer message.";
+
+  updateBodyLock();
+}
+
+function buildTrackingLink(
+  courier,
+  trackingNumber
+) {
+  const cleanCourier =
+    String(courier || "")
+      .trim()
+      .toLowerCase();
+
+  const cleanTrackingNumber =
+    String(trackingNumber || "")
+      .trim();
+
+  if (!cleanTrackingNumber) {
+    return "";
+  }
+
+  if (
+    cleanCourier ===
+    "j&t express"
+  ) {
+    return (
+      "https://www.jtexpress.my/tracking/" +
+      encodeURIComponent(
+        cleanTrackingNumber
+      )
+    );
+  }
+
+  if (
+    cleanCourier ===
+    "ninja van"
+  ) {
+    return (
+      "https://www.ninjavan.co/en-my/tracking?id=" +
+      encodeURIComponent(
+        cleanTrackingNumber
+      )
+    );
+  }
+
+  if (
+    cleanCourier ===
+    "pos laju"
+  ) {
+    return (
+      "https://tracking.pos.com.my/tracking/" +
+      encodeURIComponent(
+        cleanTrackingNumber
+      )
+    );
+  }
+
+  if (
+    cleanCourier ===
+    "dhl ecommerce"
+  ) {
+    return (
+      "https://www.dhl.com/my-en/home/tracking.html?tracking-id=" +
+      encodeURIComponent(
+        cleanTrackingNumber
+      )
+    );
+  }
+
+  if (
+    cleanCourier ===
+    "spx express"
+  ) {
+    return (
+      "https://spx.com.my/track?tracking_number=" +
+      encodeURIComponent(
+        cleanTrackingNumber
+      )
+    );
+  }
+
+  return "";
+}
+
+function updateShippingTrackingLink() {
+  const courier =
+    shippingCourierSelect.value;
+
+  const trackingNumber =
+    shippingTrackingNumberInput
+      .value
+      .trim();
+
+  const currentLink =
+    shippingTrackingLinkInput
+      .value
+      .trim();
+
+  const generatedLink =
+    buildTrackingLink(
+      courier,
+      trackingNumber
+    );
+
+  /*
+   * Auto-fill only when the link is empty
+   * or looks like one previously generated.
+   */
+  if (
+    !currentLink ||
+    currentLink.includes(
+      "jtexpress.my"
+    ) ||
+    currentLink.includes(
+      "ninjavan.co"
+    ) ||
+    currentLink.includes(
+      "tracking.pos.com.my"
+    ) ||
+    currentLink.includes(
+      "dhl.com"
+    ) ||
+    currentLink.includes(
+      "spx.com.my"
+    )
+  ) {
+    shippingTrackingLinkInput.value =
+      generatedLink;
+  }
+}
+
+function createShippingNotificationPreview() {
+  const order =
+    hqState.selectedShippingOrder;
+
+  if (!order) {
+    return "";
+  }
+
+  const customerName =
+    order.customerName ||
+    order.name ||
+    "there";
+
+  const orderId =
+    order.orderId || "—";
+
+  const courier =
+    shippingCourierSelect.value.trim();
+
+  const trackingNumber =
+    shippingTrackingNumberInput
+      .value
+      .trim();
+
+  const trackingLink =
+    shippingTrackingLinkInput
+      .value
+      .trim();
+
+  if (
+    !courier ||
+    !trackingNumber
+  ) {
+    return (
+      "Enter the courier and tracking number " +
+      "to preview the customer message."
+    );
+  }
+
+  let message =
+    "Hi " +
+    customerName +
+    "! Your Gookies are on the way 🚚🍪\n\n" +
+    "Order ID: " +
+    orderId +
+    "\n" +
+    "Courier: " +
+    courier +
+    "\n" +
+    "Tracking No: " +
+    trackingNumber;
+
+  if (trackingLink) {
+    message +=
+      "\nTracking Link: " +
+      trackingLink;
+  }
+
+  message +=
+    "\n\nThank you for ordering from GOOKIE!";
+
+  return message;
+}
+
+function updateShippingFormState() {
+  const courier =
+    shippingCourierSelect.value.trim();
+
+  const trackingNumber =
+    shippingTrackingNumberInput
+      .value
+      .trim();
+
+  const trackingLink =
+    shippingTrackingLinkInput
+      .value
+      .trim();
+
+  const isValid =
+    Boolean(
+      courier &&
+      trackingNumber &&
+      trackingLink
+    );
+
+  markAsShippedButton.disabled =
+    !isValid;
+
+  shippingNotificationPreview.textContent =
+    createShippingNotificationPreview();
+}
+
+/* =========================================================
    15. SHIPPING COLUMN
 ========================================================= */
 
@@ -2496,7 +2904,7 @@ function renderShippingColumn() {
             </button>
 
             <span class="order-status-badge is-paid">
-              READY
+                READY TO SHIP
             </span>
 
           </div>
@@ -2528,6 +2936,20 @@ function renderShippingColumn() {
             </span>
 
           </div>
+
+<div class="order-actions">
+
+  <button
+    class="card-primary-button open-shipping-button"
+    type="button"
+    data-order-id="${escapeHTML(
+      order.orderId
+    )}"
+  >
+    OPEN SHIPPING
+  </button>
+
+</div>
 
         </article>
       `;
@@ -3127,7 +3549,7 @@ function renderMissionControl() {
   const shippingEntries =
     data.shippingQueue.map(function (order) {
       return {
-        id: order.orderId,
+        id: shippingOrder.orderId,
         type: "order"
       };
     });
@@ -3533,19 +3955,18 @@ function startAutoRefresh() {
   hqState.autoRefreshTimer =
     setInterval(function () {
 
-      if (
+     if (
   document.hidden ||
   hqState.isLoading ||
   hqState.isVerifying ||
   hqState.isStartingBaking ||
   hqState.selectedPackingBox ||
-  hqState.isFinishingPacking
-hqState.selectedShippingOrder ||
-hqState.isMarkingShipped
+  hqState.isFinishingPacking ||
+  hqState.selectedShippingOrder ||
+  hqState.isMarkingShipped
 ) {
-        return;
-      }
-
+  return;
+}
 
       loadHQData({
         showLoadingScreen: false
@@ -3866,7 +4287,7 @@ function createUniqueEntries(entries) {
 ========================================================= */
 
 function updateBodyLock() {
-  const hasOpenModal =
+ const hasOpenModal =
   !verifyPaymentModal.hidden ||
   !orderDetailsModal.hidden ||
   !packingModal.hidden ||
