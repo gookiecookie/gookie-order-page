@@ -36,6 +36,9 @@ const hqState = {
   packingCheckedItems: new Set(),
   isFinishingPacking: false,
 
+  selectedShippingOrder: null,
+isMarkingShipped: false, 
+
   isLoading: false,
   isVerifying: false,
   isStartingBaking: false,
@@ -324,6 +327,83 @@ const cancelPackingButton =
 const finishPackingButton =
   document.getElementById(
     "finishPackingButton"
+  );
+
+/* Shipping modal */
+
+const shippingModal =
+  document.getElementById(
+    "shippingModal"
+  );
+
+const shippingModalTitle =
+  document.getElementById(
+    "shippingModalTitle"
+  );
+
+const shippingModalOrderId =
+  document.getElementById(
+    "shippingModalOrderId"
+  );
+
+const shippingModalCustomer =
+  document.getElementById(
+    "shippingModalCustomer"
+  );
+
+const shippingModalBoxCount =
+  document.getElementById(
+    "shippingModalBoxCount"
+  );
+
+const shippingModalCookieQty =
+  document.getElementById(
+    "shippingModalCookieQty"
+  );
+
+const shippingModalPostcode =
+  document.getElementById(
+    "shippingModalPostcode"
+  );
+
+const shippingModalAddress =
+  document.getElementById(
+    "shippingModalAddress"
+  );
+
+const shippingCourierSelect =
+  document.getElementById(
+    "shippingCourierSelect"
+  );
+
+const shippingTrackingNumberInput =
+  document.getElementById(
+    "shippingTrackingNumberInput"
+  );
+
+const shippingTrackingLinkInput =
+  document.getElementById(
+    "shippingTrackingLinkInput"
+  );
+
+const shippingNotificationPreview =
+  document.getElementById(
+    "shippingNotificationPreview"
+  );
+
+const closeShippingModalButton =
+  document.getElementById(
+    "closeShippingModalButton"
+  );
+
+const cancelShippingButton =
+  document.getElementById(
+    "cancelShippingButton"
+  );
+
+const markAsShippedButton =
+  document.getElementById(
+    "markAsShippedButton"
   );
 
 /* Toast */
@@ -3460,6 +3540,8 @@ function startAutoRefresh() {
   hqState.isStartingBaking ||
   hqState.selectedPackingBox ||
   hqState.isFinishingPacking
+hqState.selectedShippingOrder ||
+hqState.isMarkingShipped
 ) {
         return;
       }
@@ -3785,9 +3867,10 @@ function createUniqueEntries(entries) {
 
 function updateBodyLock() {
   const hasOpenModal =
-    !verifyPaymentModal.hidden ||
-    !orderDetailsModal.hidden ||
-    !packingModal.hidden;
+  !verifyPaymentModal.hidden ||
+  !orderDetailsModal.hidden ||
+  !packingModal.hidden ||
+  !shippingModal.hidden;
 
   document.body.classList.toggle(
     "modal-open",
