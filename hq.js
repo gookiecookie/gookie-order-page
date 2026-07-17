@@ -705,6 +705,11 @@ cancelShippingButton.addEventListener(
   "click",
   closeShippingModal
 );
+
+markAsShippedButton.addEventListener(
+  "click",
+  confirmMarkAsShipped
+);
    
 if (!coolingCountdownTimer) {
   coolingCountdownTimer =
@@ -2912,6 +2917,371 @@ function updateShippingFormState() {
 
   shippingNotificationPreview.textContent =
     createShippingNotificationPreview();
+}
+
+/* =========================================================
+   SHIPPING WHATSAPP
+========================================================= */
+
+function buildShippingMessage(
+  customerName,
+  orderId,
+  courier,
+  trackingNo,
+  trackingLink
+) {
+  const name =
+    String(customerName || "").trim() ||
+    "there";
+
+  return [
+    "Hi " + name + "! 🍪",
+    "",
+    "Your Gookies are officially on their way!",
+    "",
+    "Order ID: " + orderId,
+    "Courier: " + courier,
+    "Tracking Number: " + trackingNo,
+    "",
+    "Track your parcel:",
+    trackingLink,
+    "",
+    "Enjoy your chunky wonders ❤️"
+  ].join("\n");
+}
+
+function buildShippingWhatsAppUrl(
+  phone,
+  customerName,
+  orderId,
+  courier,
+  trackingNo,
+  trackingLink
+) {
+  const whatsappPhone =
+    normalizeWhatsAppPhone(phone);
+
+  const message =
+    buildShippingMessage(
+      customerName,
+      orderId,
+      courier,
+      trackingNo,
+      trackingLink
+    );
+
+  const encodedMessage =
+    encodeURIComponent(message);
+
+  const isMobileDevice =
+    /Android|iPhone|iPad|iPod/i.test(
+      navigator.userAgent
+    );
+
+  if (isMobileDevice) {
+    return (
+      "https://wa.me/" +
+      whatsappPhone +
+      "?text=" +
+      encodedMessage
+    );
+  }
+
+  return (
+    "https://web.whatsapp.com/send" +
+    "?phone=" +
+    whatsappPhone +
+    "&text=" +
+    encodedMessage
+  );
+}
+
+function setMarkAsShippedLoading(
+  isLoading
+) {
+  markAsShippedButton.disabled =
+    isLoading;
+
+  cancelShippingButton.disabled =
+    isLoading;
+
+  closeShippingModalButton.disabled =
+    isLoading;
+
+  shippingCourierSelect.disabled =
+    isLoading;
+
+  shippingTrackingNumberInput.disabled =
+    isLoading;
+
+  markAsShippedButton.textContent =
+    isLoading
+      ? "MARKING AS SHIPPED..."
+      : "MARK AS SHIPPED";
+}
+
+async function confirmMarkAsShipped() {
+  if (
+    hqState.isMarkingShipped ||
+    !hqState.selectedShippingOrder
+  ) {
+    return;
+  }
+
+  const order =
+    hqState.selectedShippingOrder;
+
+  const orderId =
+    String(
+      order.orderId || ""
+    ).trim();
+
+  const courier =
+    shippingCourierSelect
+      .value
+      .trim();
+
+  const trackingNo =
+    shippingTrackingNumberInput
+      .value
+      .trim();
+
+  const trackingLink =
+    String(
+      hqState.shippingTrackingLink || ""
+    ).trim();
+
+  if (!orderId) {
+    showToast(
+      "Shipping order unavailable",
+      "Order ID is missing.",
+      "error"
+    );
+
+    return;
+  }
+
+  if (
+    !courier ||
+    !trackingNo ||
+    !trackingLink
+  ) {
+    showToast(
+      "Shipping details incomplete",
+      "Enter the courier and tracking number.",
+      "error"
+    );
+
+    updateShippingFormState();
+
+    return;
+  }
+
+  hqState.isMarkingShipped = true;
+
+  setMarkAsShippedLoading(true);
+
+  /*
+   * Open an empty tab immediately so the browser
+   * does not block WhatsApp after the API request.
+   */
+  const whatsappWindow =
+    window.open(
+      "about:blank",
+      "_blank"
+    );
+
+  if (whatsappWindow) {
+    whatsappWindow.opener = null;
+
+    whatsappWindow.document.title =
+      "Opening WhatsApp";
+
+    whatsappWindow.document.body.innerHTML = `
+      <p
+        style="
+          padding: 24px;
+          font-family: Arial, sans-serif;
+          line-height: 1.5;
+        "
+      >
+        Preparing the GOOKIE shipping notification...
+      </p>
+    `;
+  }
+
+  try {
+    const payload = {
+      action: "markAsShipped",
+
+      orderId: orderId,
+
+      courier: courier,
+
+      trackingNo: trackingNo,
+
+      trackingLink: trackingLink,
+
+      completedBy:
+        GOOKIE_HQ_CONFIG.VERIFIED_BY
+    };
+
+    const response =
+      await fetch(
+        GOOKIE_HQ_CONFIG.API_URL,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "text/plain;charset=utf-8"
+          },
+
+          body:
+            JSON.stringify(payload),
+
+          redirect: "follow"
+        }
+      );
+
+    if (!response.ok) {
+      throw new Error(
+        "Mark As Shipped request failed. HTTP " +
+        response.status
+      );
+    }
+
+    const result =
+      await response.json();
+
+    console.log(
+      "Mark As Shipped result:",
+      result
+    );
+
+    if (
+      !result ||
+      result.ok !== true
+    ) {
+      throw new Error(
+        result && result.message
+          ? result.message
+          : "Order could not be marked as shipped."
+      );
+    }
+
+    if (!result.customerPhone) {
+      throw new Error(
+        "Order was completed, but the customer phone number was not returned."
+      );
+    }
+
+    const whatsappUrl =
+      buildShippingWhatsAppUrl(
+        result.customerPhone,
+
+        result.customerName ||
+          order.customerName ||
+          order.name,
+
+        result.orderId ||
+          orderId,
+
+        result.courier ||
+          courier,
+
+        result.trackingNo ||
+          trackingNo,
+
+        result.trackingLink ||
+          trackingLink
+      );
+
+    shippingModal.hidden = true;
+
+    hqState.selectedShippingOrder =
+      null;
+
+    hqState.shippingTrackingLink =
+      "";
+
+    shippingCourierSelect.value =
+      "";
+
+    shippingTrackingNumberInput.value =
+      "";
+
+    shippingOpenTrackingLink.href =
+      "#";
+
+    shippingOpenTrackingLink.hidden =
+      true;
+
+    shippingTrackingUnavailable.hidden =
+      false;
+
+    showToast(
+      "Order shipped",
+      orderId +
+        " moved to Completed. Opening WhatsApp.",
+      "success"
+    );
+
+    updateBodyLock();
+
+    /*
+     * Refresh HQ first.
+     */
+    await loadHQData({
+      showLoadingScreen: false
+    });
+
+    /*
+     * Then send the prepared tab to WhatsApp.
+     */
+    if (
+      whatsappWindow &&
+      !whatsappWindow.closed
+    ) {
+      whatsappWindow.location.replace(
+        whatsappUrl
+      );
+    } else {
+      showToast(
+        "WhatsApp blocked",
+        "Please allow pop-ups for GOOKIE HQ.",
+        "error"
+      );
+    }
+
+  } catch (error) {
+    console.error(
+      "GOOKIE HQ Mark As Shipped error:",
+      error
+    );
+
+    if (
+      whatsappWindow &&
+      !whatsappWindow.closed
+    ) {
+      whatsappWindow.close();
+    }
+
+    showToast(
+      "Mark As Shipped failed",
+      error.message ||
+        "Unable to complete shipment.",
+      "error"
+    );
+
+  } finally {
+    hqState.isMarkingShipped =
+      false;
+
+    setMarkAsShippedLoading(false);
+
+    updateBodyLock();
+  }
 }
 
 /* =========================================================
