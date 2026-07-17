@@ -2537,6 +2537,67 @@ function findShippingOrder(orderId) {
   );
 }
 
+function getShippingOrderMetrics(order) {
+  const orderId =
+    String(order.orderId || "").trim();
+
+  if (!orderId || !hqState.data) {
+    return {
+      totalBoxes: 0,
+      totalCookies: 0
+    };
+  }
+
+  /*
+   * Ambil semua box milik order yang sama daripada
+   * Packing Queue. Box READY_TO_SHIP masih berada
+   * dalam data walaupun tidak dipaparkan di Packing column.
+   */
+  const matchingBoxes =
+    Array.isArray(hqState.data.packingQueue)
+      ? hqState.data.packingQueue.filter(
+          function (box) {
+            return (
+              String(box.orderId || "").trim() ===
+              orderId
+            );
+          }
+        )
+      : [];
+
+  const calculatedBoxes =
+    matchingBoxes.length;
+
+  const calculatedCookies =
+    matchingBoxes.reduce(
+      function (total, box) {
+        return (
+          total +
+          safeNumber(
+            box.expectedCookieQty ||
+            box.packedCookieQty
+          )
+        );
+      },
+      0
+    );
+
+  return {
+    totalBoxes:
+      safeNumber(
+        order.totalBoxes ||
+        order.boxCount
+      ) || calculatedBoxes,
+
+    totalCookies:
+      safeNumber(
+        order.totalCookies ||
+        order.cookieQty ||
+        order.totalCookieQty
+      ) || calculatedCookies
+  };
+}
+
 function openShippingModal(orderId) {
   const order =
     findShippingOrder(orderId);
@@ -2551,6 +2612,10 @@ function openShippingModal(orderId) {
     return;
   }
 
+const shippingMetrics =
+    getShippingOrderMetrics(order);
+
+   
   hqState.selectedShippingOrder =
     order;
 
@@ -2573,14 +2638,10 @@ function openShippingModal(orderId) {
       )
     );
 
-  shippingModalCookieQty.textContent =
-    String(
-      safeNumber(
-        order.cookieQty ||
-        order.totalCookieQty ||
-        order.totalCookies
-      )
-    );
+ shippingModalCookieQty.textContent =
+  String(
+    shippingMetrics.totalCookies
+  );
 
   shippingModalPostcode.textContent =
     order.postcode ||
