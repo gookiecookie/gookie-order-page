@@ -445,9 +445,10 @@ function bindHQEvents() {
       return;
     }
 
-    closeMissionControl();
-    closeVerifyPaymentModal();
-    closeOrderDetailsModal();
+  closeMissionControl();
+closeVerifyPaymentModal();
+closeOrderDetailsModal();
+closePackingModal();
   });
 
    inOvenOrderList.addEventListener(
@@ -498,6 +499,65 @@ coolingOrderList.addEventListener(
   }
 );
 
+// 👇 PASTE DI SINI
+
+packingOrderList.addEventListener(
+  "click",
+  function (event) {
+    const button =
+      event.target.closest(
+        ".open-packing-button"
+      );
+
+    if (!button) {
+      return;
+    }
+
+    const orderBoxId =
+      button.dataset.orderBoxId;
+
+    if (!orderBoxId) {
+      return;
+    }
+
+    openPackingModal(orderBoxId);
+  }
+);
+
+packingChecklist.addEventListener(
+  "change",
+  function (event) {
+    const checkbox =
+      event.target.closest(
+        "[data-packing-check-id]"
+      );
+
+    if (!checkbox) {
+      return;
+    }
+
+    const checkId =
+      checkbox.dataset.packingCheckId;
+
+    if (checkbox.checked) {
+      hqState.packingCheckedItems.add(checkId);
+    } else {
+      hqState.packingCheckedItems.delete(checkId);
+    }
+
+    updatePackingProgress();
+  }
+);
+
+closePackingModalButton.addEventListener(
+  "click",
+  closePackingModal
+);
+
+cancelPackingButton.addEventListener(
+  "click",
+  closePackingModal
+);
 if (!coolingCountdownTimer) {
   coolingCountdownTimer =
     window.setInterval(
@@ -1741,10 +1801,8 @@ function renderPackingColumn() {
   const queue =
     hqState.data.packingQueue;
 
-
   packingCount.textContent =
     String(queue.length);
-
 
   if (queue.length === 0) {
     packingOrderList.innerHTML =
@@ -1755,29 +1813,39 @@ function renderPackingColumn() {
     return;
   }
 
-
   packingOrderList.innerHTML =
     queue.map(function (box) {
+      const expectedQty =
+        safeNumber(
+          box.expectedCookieQty
+        );
+
+      const packedQty =
+        safeNumber(
+          box.packedCookieQty
+        );
 
       return `
         <article
           class="order-card"
-          data-order-id="${escapeHTML(box.orderId)}"
+          data-order-id="${escapeHTML(
+            box.orderId
+          )}"
+          data-order-box-id="${escapeHTML(
+            box.orderBoxId
+          )}"
         >
 
           <div class="order-card-top">
 
-            <button
-              class="order-id-button"
-              type="button"
-              data-packing-order-id="${escapeHTML(box.orderId)}"
-            >
+            <strong class="order-id-button">
               ${escapeHTML(box.orderId)}
-            </button>
+            </strong>
 
             <span class="order-status-badge">
               ${escapeHTML(
-                box.packingStatus || "WAITING"
+                box.packingStatus ||
+                "READY_TO_PACK"
               )}
             </span>
 
@@ -1786,14 +1854,17 @@ function renderPackingColumn() {
           <p class="order-customer">
             ${escapeHTML(
               box.boxName ||
-              "Box " + safeNumber(box.boxNumber)
+              "Box " +
+                safeNumber(box.boxNumber)
             )}
           </p>
 
           <div class="order-items-preview">
             <p>
               ${escapeHTML(
-                createItemsPreview(box.items)
+                createItemsPreview(
+                  box.items
+                )
               )}
             </p>
           </div>
@@ -1801,9 +1872,9 @@ function renderPackingColumn() {
           <div class="order-meta-row">
 
             <strong class="order-total">
-              ${safeNumber(box.packedCookieQty)}
+              ${packedQty}
               /
-              ${safeNumber(box.expectedCookieQty)}
+              ${expectedQty}
             </strong>
 
             <span class="order-time">
@@ -1812,12 +1883,293 @@ function renderPackingColumn() {
 
           </div>
 
+          <div class="order-actions">
+
+            <button
+              class="card-primary-button open-packing-button"
+              type="button"
+              data-order-box-id="${escapeHTML(
+                box.orderBoxId
+              )}"
+            >
+              OPEN BOX
+            </button>
+
+          </div>
+
         </article>
       `;
-
-    }).join("");
+    })
+    .join("");
 }
 
+/* =========================================================
+   14A. PACKING MODAL
+========================================================= */
+
+function findPackingBox(orderBoxId) {
+  if (!hqState.data) {
+    return null;
+  }
+
+  return (
+    hqState.data.packingQueue.find(
+      function (box) {
+        return (
+          String(
+            box.orderBoxId || ""
+          ) ===
+          String(orderBoxId || "")
+        );
+      }
+    ) || null
+  );
+}
+
+
+function openPackingModal(orderBoxId) {
+  const box =
+    findPackingBox(orderBoxId);
+
+  if (!box) {
+    showToast(
+      "Packing box unavailable",
+      "The packing queue may have changed.",
+      "error"
+    );
+
+    return;
+  }
+
+  hqState.selectedPackingBox = box;
+
+  hqState.packingCheckedItems =
+    new Set();
+
+  packingModalTitle.textContent =
+    "Pack " + (box.orderId || "Order");
+
+  packingModalOrderId.textContent =
+    box.orderId || "—";
+
+  packingModalBoxId.textContent =
+    box.orderBoxId || "—";
+
+  packingModalBoxName.textContent =
+    box.boxName ||
+    "Box " + safeNumber(box.boxNumber);
+
+  packingModalBoxNumber.textContent =
+    String(
+      safeNumber(box.boxNumber)
+    );
+
+  packingModalExpectedQty.textContent =
+    String(
+      safeNumber(
+        box.expectedCookieQty
+      )
+    );
+
+  renderPackingChecklist(box);
+
+  updatePackingProgress();
+
+  packingModal.hidden = false;
+
+  document.body.classList.add(
+    "modal-open"
+  );
+}
+
+
+function closePackingModal() {
+  if (hqState.isFinishingPacking) {
+    return;
+  }
+
+  packingModal.hidden = true;
+
+  hqState.selectedPackingBox = null;
+
+  hqState.packingCheckedItems.clear();
+
+  updateBodyLock();
+}
+
+
+/* =========================================================
+   14B. PACKING CHECKLIST
+========================================================= */
+
+function createPackingChecklistItems(items) {
+  if (!Array.isArray(items)) {
+    return [];
+  }
+
+  const checklistItems = [];
+
+  items.forEach(function (
+    item,
+    itemIndex
+  ) {
+    const quantity =
+      safeNumber(item.qty);
+
+    const displayName =
+      item.displayName ||
+      item.productName ||
+      item.menuCode ||
+      item.productId ||
+      "Cookie";
+
+    for (
+      let unitIndex = 1;
+      unitIndex <= quantity;
+      unitIndex += 1
+    ) {
+      checklistItems.push({
+        checkId:
+          String(item.productId || itemIndex) +
+          "-" +
+          unitIndex,
+
+        productId:
+          item.productId || "",
+
+        displayName:
+          displayName,
+
+        unitNumber:
+          unitIndex,
+
+        totalUnits:
+          quantity
+      });
+    }
+  });
+
+  return checklistItems;
+}
+
+
+function renderPackingChecklist(box) {
+  const checklistItems =
+    createPackingChecklistItems(
+      box.items
+    );
+
+  if (checklistItems.length === 0) {
+    packingChecklist.innerHTML = `
+      <p class="packing-empty-message">
+        No cookie items found for this box.
+      </p>
+    `;
+
+    return;
+  }
+
+  packingChecklist.innerHTML =
+    checklistItems.map(function (item) {
+      return `
+        <label class="packing-check-item">
+
+          <input
+            type="checkbox"
+            data-packing-check-id="${escapeHTML(
+              item.checkId
+            )}"
+          >
+
+          <span class="packing-check-box">
+            ✓
+          </span>
+
+          <span class="packing-check-copy">
+
+            <strong>
+              ${escapeHTML(
+                item.displayName
+              )}
+            </strong>
+
+            <small>
+              Cookie
+              ${item.unitNumber}
+              of
+              ${item.totalUnits}
+            </small>
+
+          </span>
+
+        </label>
+      `;
+    })
+    .join("");
+}
+
+
+/* =========================================================
+   14C. PACKING PROGRESS
+========================================================= */
+
+function updatePackingProgress() {
+  const box =
+    hqState.selectedPackingBox;
+
+  if (!box) {
+    return;
+  }
+
+  const total =
+    safeNumber(
+      box.expectedCookieQty
+    );
+
+  const current =
+    hqState.packingCheckedItems.size;
+
+  const percentage =
+    total > 0
+      ? Math.min(
+          100,
+          Math.round(
+            (current / total) * 100
+          )
+        )
+      : 0;
+
+  packingProgressCurrent.textContent =
+    String(current);
+
+  packingProgressTotal.textContent =
+    String(total);
+
+  packingProgressFill.style.width =
+    percentage + "%";
+
+  packingProgressBar.setAttribute(
+    "aria-valuemax",
+    String(total)
+  );
+
+  packingProgressBar.setAttribute(
+    "aria-valuenow",
+    String(current)
+  );
+
+  const isComplete =
+    total > 0 &&
+    current === total;
+
+  finishPackingButton.disabled =
+    !isComplete;
+
+  finishPackingButton.textContent =
+    isComplete
+      ? "FINISH PACKING"
+      : "PACK ALL COOKIES";
+}
 
 /* =========================================================
    15. SHIPPING COLUMN
@@ -3234,18 +3586,16 @@ function createUniqueEntries(entries) {
 ========================================================= */
 
 function updateBodyLock() {
-
   const hasOpenModal =
     !verifyPaymentModal.hidden ||
-    !orderDetailsModal.hidden;
-
+    !orderDetailsModal.hidden ||
+    !packingModal.hidden;
 
   document.body.classList.toggle(
     "modal-open",
     hasOpenModal
   );
 }
-
 
 /* =========================================================
    39. HELPER — ESCAPE HTML
