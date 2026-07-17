@@ -3547,12 +3547,12 @@ function renderMissionControl() {
 
 
   const shippingEntries =
-    data.shippingQueue.map(function (order) {
-      return {
-        id: shippingOrder.orderId,
-        type: "order"
-      };
-    });
+  data.shippingQueue.map(function (order) {
+    return {
+      id: order.orderId,
+      type: "order"
+    };
+  });
 
 
   renderDrawerGroup(
