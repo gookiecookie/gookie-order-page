@@ -1319,6 +1319,108 @@ async function confirmDoneBaking(batchId) {
 }
 
 /* =========================================================
+   13A. READY TO PACK
+========================================================= */
+
+async function confirmReadyToPack(batchId) {
+
+  const cleanBatchId =
+    String(batchId || "").trim();
+
+  if (!cleanBatchId) {
+    return;
+  }
+
+  const button =
+    coolingOrderList.querySelector(
+      `.ready-to-pack-button[data-batch-id="${cleanBatchId}"]`
+    );
+
+  if (button && button.disabled) {
+    return;
+  }
+
+  if (button) {
+    button.disabled = true;
+    button.textContent = "MOVING...";
+  }
+
+  try {
+
+    const payload = {
+      action: "readyToPack",
+      batchId: cleanBatchId,
+      completedBy:
+        GOOKIE_HQ_CONFIG.VERIFIED_BY
+    };
+
+    const response =
+      await fetch(
+        GOOKIE_HQ_CONFIG.API_URL,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type":
+              "text/plain;charset=utf-8"
+          },
+          body: JSON.stringify(payload),
+          redirect: "follow"
+        }
+      );
+
+    if (!response.ok) {
+      throw new Error(
+        "Ready To Pack request failed. HTTP " +
+        response.status
+      );
+    }
+
+    const result =
+      await response.json();
+
+    if (!result || result.ok !== true) {
+      throw new Error(
+        result && result.message
+          ? result.message
+          : "Unable to move batch."
+      );
+    }
+
+    showToast(
+      "Ready to Pack",
+      cleanBatchId +
+        " moved to Packing Queue.",
+      "success"
+    );
+
+    await loadHQData({
+      showLoadingScreen: false
+    });
+
+  } catch (error) {
+
+    console.error(
+      "GOOKIE HQ Ready To Pack error:",
+      error
+    );
+
+    showToast(
+      "Ready To Pack failed",
+      error.message,
+      "error"
+    );
+
+    if (button) {
+      button.disabled = false;
+      button.textContent =
+        "READY TO PACK";
+    }
+
+  }
+
+}
+
+/* =========================================================
    13. COOLING COLUMN
 ========================================================= */
 
