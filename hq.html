@@ -1084,16 +1084,33 @@
 
       </div>
 
-      <label class="shipping-field">
-        <span>Tracking Link</span>
+    <div class="shipping-tracking-link-section">
 
-        <input
-          id="shippingTrackingLinkInput"
-          type="url"
-          autocomplete="off"
-          placeholder="Tracking link"
-        >
-      </label>
+  <span class="shipping-tracking-label">
+    Tracking Link
+  </span>
+
+  <a
+    class="shipping-open-tracking-link"
+    id="shippingOpenTrackingLink"
+    href="#"
+    target="_blank"
+    rel="noopener noreferrer"
+    hidden
+  >
+    <span>🔗</span>
+    <span>Open Tracking</span>
+    <span aria-hidden="true">↗</span>
+  </a>
+
+  <p
+    class="shipping-tracking-unavailable"
+    id="shippingTrackingUnavailable"
+  >
+    Enter a courier and tracking number.
+  </p>
+
+</div>
 
       <div class="shipping-notification-preview">
 
