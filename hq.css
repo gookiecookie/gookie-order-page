@@ -2151,3 +2151,138 @@ svg {
     padding: 14px;
   }
 }
+
+/* =========================================================
+   SHIPPING MODAL
+========================================================= */
+
+.shipping-address-box {
+  padding: 14px 16px;
+
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 14px;
+
+  background: #f8f6f2;
+}
+
+.shipping-address-box p {
+  margin: 0;
+
+  color: #333333;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.shipping-form-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+  gap: 14px;
+
+  margin-top: 22px;
+}
+
+.shipping-field {
+  display: grid;
+  gap: 8px;
+
+  margin-top: 14px;
+}
+
+.shipping-field > span {
+  color: #555555;
+
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.shipping-field input,
+.shipping-field select {
+  width: 100%;
+  min-height: 46px;
+
+  padding: 0 13px;
+
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  border-radius: 12px;
+
+  background: #ffffff;
+  color: #171717;
+
+  font: inherit;
+}
+
+.shipping-field input:focus,
+.shipping-field select:focus {
+  outline: none;
+
+  border-color: #bb191a;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(187, 25, 26, 0.1);
+}
+
+.shipping-notification-preview {
+  display: grid;
+  gap: 10px;
+
+  margin-top: 22px;
+  padding: 16px;
+
+  border-radius: 16px;
+
+  background: #f6f3ee;
+}
+
+.shipping-preview-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.shipping-preview-heading > span:first-child {
+  color: #333333;
+
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.shipping-preview-badge {
+  padding: 5px 9px;
+
+  border-radius: 999px;
+
+  background: #dff5e7;
+  color: #168346;
+
+  font-size: 11px;
+  font-weight: 800;
+}
+
+#shippingNotificationPreview {
+  margin: 0;
+
+  color: #333333;
+
+  font-size: 14px;
+  line-height: 1.55;
+
+  white-space: pre-line;
+}
+
+#markAsShippedButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+@media (max-width: 600px) {
+  .shipping-form-grid {
+    grid-template-columns: 1fr;
+  }
+}
