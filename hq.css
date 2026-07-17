@@ -1933,3 +1933,221 @@ svg {
   }
 
 }
+
+/* =========================================================
+   PACKING MODAL
+========================================================= */
+
+.packing-checklist {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.packing-check-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 14px;
+
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 14px;
+
+  background: #ffffff;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.packing-check-item:hover {
+  border-color: rgba(187, 25, 26, 0.4);
+  transform: translateY(-1px);
+}
+
+.packing-check-item:has(input:checked) {
+  border-color: #bb191a;
+  background: rgba(187, 25, 26, 0.06);
+}
+
+.packing-check-item input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.packing-check-box {
+  display: grid;
+  place-items: center;
+
+  flex: 0 0 28px;
+
+  width: 28px;
+  height: 28px;
+
+  border: 2px solid rgba(0, 0, 0, 0.18);
+  border-radius: 8px;
+
+  color: transparent;
+  background: #ffffff;
+
+  font-size: 15px;
+  font-weight: 800;
+
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.packing-check-item input:checked
+  + .packing-check-box {
+  border-color: #bb191a;
+  background: #bb191a;
+  color: #ffffff;
+}
+
+.packing-check-copy {
+  display: grid;
+  gap: 2px;
+
+  min-width: 0;
+}
+
+.packing-check-copy strong {
+  color: #171717;
+  font-size: 15px;
+  line-height: 1.25;
+}
+
+.packing-check-copy small {
+  color: #777777;
+  font-size: 12px;
+}
+
+.packing-empty-message {
+  margin: 0;
+  padding: 18px;
+
+  border-radius: 14px;
+
+  background: #f6f6f6;
+  color: #777777;
+
+  text-align: center;
+}
+
+
+/* =========================================================
+   PACKING PROGRESS
+========================================================= */
+
+.packing-progress-section {
+  display: grid;
+  gap: 10px;
+
+  margin-top: 24px;
+  padding: 16px;
+
+  border-radius: 16px;
+
+  background: #f6f3ee;
+}
+
+.packing-progress-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  color: #333333;
+}
+
+.packing-progress-heading span {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.packing-progress-heading strong {
+  color: #bb191a;
+  font-size: 18px;
+}
+
+.packing-progress-track {
+  position: relative;
+
+  width: 100%;
+  height: 12px;
+
+  overflow: hidden;
+
+  border-radius: 999px;
+
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.packing-progress-fill {
+  display: block;
+
+  width: 0%;
+  height: 100%;
+
+  border-radius: inherit;
+
+  background: #bb191a;
+
+  transition: width 0.25s ease;
+}
+
+
+/* =========================================================
+   PACKING BUTTON STATES
+========================================================= */
+
+#finishPackingButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+#finishPackingButton:not(:disabled) {
+  animation: packingButtonReady 0.35s ease;
+}
+
+@keyframes packingButtonReady {
+  0% {
+    transform: scale(0.97);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+
+/* =========================================================
+   MOBILE PACKING MODAL
+========================================================= */
+
+@media (max-width: 600px) {
+  .packing-check-item {
+    padding: 12px;
+  }
+
+  .packing-check-box {
+    flex-basis: 26px;
+
+    width: 26px;
+    height: 26px;
+  }
+
+  .packing-progress-section {
+    margin-top: 18px;
+    padding: 14px;
+  }
+}
