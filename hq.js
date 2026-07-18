@@ -933,13 +933,17 @@ function normaliseHQData(result) {
         ? result.shippingQueue
         : [],
 
+    completedOrders:
+      Array.isArray(result.completedOrders)
+        ? result.completedOrders
+        : [],
+
     doughStock:
       Array.isArray(result.doughStock)
         ? result.doughStock
         : []
   };
 }
-
 
 /* =========================================================
    8. MAIN RENDER
@@ -3983,7 +3987,14 @@ function renderMissionControl() {
     };
   });
 
-
+const completedEntries =
+  data.completedOrders.map(function (order) {
+    return {
+      id: order.orderId,
+      type: "order"
+    };
+  });
+   
   renderDrawerGroup(
     drawerVerifyList,
     drawerVerifyCount,
@@ -4027,10 +4038,10 @@ function renderMissionControl() {
 
 
   renderDrawerGroup(
-    drawerCompletedList,
-    drawerCompletedCount,
-    []
-  );
+  drawerCompletedList,
+  drawerCompletedCount,
+  completedEntries
+);
 
 
   bindDrawerButtons();
