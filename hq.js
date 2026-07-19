@@ -5333,8 +5333,6 @@ document.addEventListener(
    DOUGH TOP-UP MODAL
 ================================================= */
 
-let activeDoughTopUpItem_ = null;
-
 
 function openDoughTopUpModal_(
   doughId,
