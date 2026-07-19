@@ -205,15 +205,6 @@ function openDoughStockDrawer() {
   document.body.classList.add(
     "drawer-open"
   );
-
-if (
-  doughStockGrid &&
-  doughStockDrawerMount
-) {
-  doughStockDrawerMount.appendChild(
-    doughStockGrid
-  );
-}   
 }
 
 
