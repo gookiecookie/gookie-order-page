@@ -54,6 +54,7 @@ isMarkingShipped: false,
  * Live countdown timer for Cooling column.
  */
 let coolingCountdownTimer = null;
+let activeDoughTopUpItem_ = null;
 
 
 /* =========================================================
