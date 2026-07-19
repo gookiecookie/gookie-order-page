@@ -963,6 +963,7 @@ function renderHQ() {
   renderPackingColumn();
   renderShippingColumn();
   renderMissionControl();
+   renderDoughStock();
 }
 
 
@@ -5151,3 +5152,60 @@ function startDoughAlertShake_() {
 
     }, 10000);
 }
+
+/* =================================================
+   DOUGH STOCK EVENTS
+================================================= */
+
+document.addEventListener(
+  "click",
+  function (event) {
+    const alertButton =
+      event.target.closest(
+        "#doughAlertSummary"
+      );
+
+    if (alertButton) {
+      const doughSection =
+        document.getElementById(
+          "doughStockSection"
+        );
+
+      if (doughSection) {
+        doughSection.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }
+
+      return;
+    }
+
+
+    const topUpButton =
+      event.target.closest(
+        '[data-action="top-up-dough"]'
+      );
+
+    if (!topUpButton) {
+      return;
+    }
+
+    const productId =
+      topUpButton.dataset.productId;
+
+    const doughId =
+      topUpButton.dataset.doughId;
+
+    console.log(
+      "Top up dough:",
+      productId,
+      doughId
+    );
+
+    /*
+     * Modal Top Up Stock akan dibuka
+     * dalam step seterusnya.
+     */
+  }
+);
