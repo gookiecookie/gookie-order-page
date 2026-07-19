@@ -4808,3 +4808,346 @@ function openCustomerWhatsApp(orderId) {
     "noopener,noreferrer"
   );
 }
+
+/* =================================================
+   DOUGH STOCK
+================================================= */
+
+function renderDoughStock() {
+  const grid =
+    document.getElementById("doughStockGrid");
+
+  const alertSummary =
+    document.getElementById("doughAlertSummary");
+
+  const alertCount =
+    document.getElementById("doughAlertCount");
+
+  const alertText =
+    document.getElementById("doughAlertText");
+
+  const alertIcon =
+    alertSummary
+      ? alertSummary.querySelector(
+          ".dough-alert-icon"
+        )
+      : null;
+
+  if (
+    !grid ||
+    !alertSummary ||
+    !alertCount ||
+    !alertText
+  ) {
+    return;
+  }
+
+  const doughStock =
+    hqState &&
+    hqState.data &&
+    Array.isArray(
+      hqState.data.doughStock
+    )
+      ? hqState.data.doughStock
+      : [];
+
+  if (!doughStock.length) {
+    grid.innerHTML = `
+      <div class="dough-stock-loading">
+        No dough stock data found.
+      </div>
+    `;
+
+    alertCount.textContent = "0";
+    alertText.textContent = "Dough Alerts";
+    alertSummary.dataset.status = "ok";
+
+    if (alertIcon) {
+      alertIcon.textContent = "✓";
+    }
+
+    return;
+  }
+
+  const alertItems =
+    doughStock.filter(function (item) {
+      const status =
+        String(
+          item.status || ""
+        ).toUpperCase();
+
+      return (
+        status === "LOW" ||
+        status === "CRITICAL" ||
+        status === "OUT"
+      );
+    });
+
+  const criticalItems =
+    doughStock.filter(function (item) {
+      const status =
+        String(
+          item.status || ""
+        ).toUpperCase();
+
+      return (
+        status === "CRITICAL" ||
+        status === "OUT"
+      );
+    });
+
+  const outItems =
+    doughStock.filter(function (item) {
+      return (
+        String(
+          item.status || ""
+        ).toUpperCase() === "OUT"
+      );
+    });
+
+  grid.innerHTML =
+    doughStock
+      .map(function (item) {
+        return buildDoughStockCard_(item);
+      })
+      .join("");
+
+  alertCount.textContent =
+    String(alertItems.length);
+
+  alertSummary.classList.remove(
+    "dough-alert-shake"
+  );
+
+  if (outItems.length > 0) {
+    alertSummary.dataset.status =
+      "danger";
+
+    alertText.textContent =
+      outItems.length === 1
+        ? "Dough Out of Stock"
+        : "Dough Out of Stock";
+
+    if (alertIcon) {
+      alertIcon.textContent = "🚨";
+    }
+
+    startDoughAlertShake_();
+
+  } else if (criticalItems.length > 0) {
+    alertSummary.dataset.status =
+      "danger";
+
+    alertText.textContent =
+      criticalItems.length === 1
+        ? "Critical Dough"
+        : "Critical Dough";
+
+    if (alertIcon) {
+      alertIcon.textContent = "🚨";
+    }
+
+    startDoughAlertShake_();
+
+  } else if (alertItems.length > 0) {
+    alertSummary.dataset.status =
+      "warning";
+
+    alertText.textContent =
+      alertItems.length === 1
+        ? "Dough Alert"
+        : "Dough Alerts";
+
+    if (alertIcon) {
+      alertIcon.textContent = "⚠️";
+    }
+
+  } else {
+    alertSummary.dataset.status =
+      "ok";
+
+    alertText.textContent =
+      "Dough Ready";
+
+    if (alertIcon) {
+      alertIcon.textContent = "✓";
+    }
+  }
+}
+
+
+/* =================================================
+   BUILD DOUGH CARD
+================================================= */
+
+function buildDoughStockCard_(item) {
+  const readyStock =
+    Number(item.readyStock) || 0;
+
+  const targetStock =
+    Number(item.targetStock) || 0;
+
+  const status =
+    String(
+      item.status || "OK"
+    ).toUpperCase();
+
+  const statusClass =
+    status.toLowerCase();
+
+  let percentage = 0;
+
+  if (targetStock > 0) {
+    percentage =
+      Math.round(
+        readyStock /
+        targetStock *
+        100
+      );
+  }
+
+  percentage =
+    Math.max(
+      0,
+      Math.min(
+        percentage,
+        100
+      )
+    );
+
+  let buttonText =
+    "Top Up Stock";
+
+  if (status === "LOW") {
+    buttonText =
+      "⚠️ Top Up Stock";
+  }
+
+  if (status === "CRITICAL") {
+    buttonText =
+      "🚨 TOP UP NOW";
+  }
+
+  if (status === "OUT") {
+    buttonText =
+      "🚨 PREPARE NOW";
+  }
+
+  const displayName =
+    escapeHtml_(
+      item.displayName ||
+      item.productId ||
+      "Unknown Dough"
+    );
+
+  const productId =
+    escapeHtml_(
+      item.productId || ""
+    );
+
+  const doughId =
+    escapeHtml_(
+      item.doughId || ""
+    );
+
+  return `
+    <article
+      class="dough-card ${statusClass}"
+      data-product-id="${productId}"
+      data-dough-id="${doughId}"
+    >
+
+      <div class="dough-title">
+
+        <h4>${displayName}</h4>
+
+        <span class="dough-status">
+          ${status}
+        </span>
+
+      </div>
+
+
+      <div
+        class="dough-progress"
+        aria-label="${readyStock} out of ${targetStock}"
+      >
+
+        <div
+          class="dough-progress-fill"
+          style="width:${percentage}%"
+        ></div>
+
+      </div>
+
+
+      <div class="dough-qty">
+
+        <span>
+          ${readyStock} ready
+        </span>
+
+        <span>
+          Target ${targetStock}
+        </span>
+
+      </div>
+
+
+      <button
+        class="topup-btn"
+        type="button"
+        data-action="top-up-dough"
+        data-product-id="${productId}"
+        data-dough-id="${doughId}"
+      >
+        ${buttonText}
+      </button>
+
+    </article>
+  `;
+}
+
+
+/* =================================================
+   DOUGH ALERT SHAKE
+================================================= */
+
+let doughAlertShakeTimer = null;
+
+function startDoughAlertShake_() {
+  const alertSummary =
+    document.getElementById(
+      "doughAlertSummary"
+    );
+
+  if (!alertSummary) {
+    return;
+  }
+
+  if (doughAlertShakeTimer) {
+    clearInterval(
+      doughAlertShakeTimer
+    );
+  }
+
+  doughAlertShakeTimer =
+    setInterval(function () {
+      alertSummary.classList.remove(
+        "dough-alert-shake"
+      );
+
+      void alertSummary.offsetWidth;
+
+      alertSummary.classList.add(
+        "dough-alert-shake"
+      );
+
+      setTimeout(function () {
+        alertSummary.classList.remove(
+          "dough-alert-shake"
+        );
+      }, 650);
+
+    }, 10000);
+}
