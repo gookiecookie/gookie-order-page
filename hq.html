@@ -1255,5 +1255,161 @@
   <!-- HQ JavaScript -->
   <script src="hq.js"></script>
 
+<!-- =================================================
+     TOP UP DOUGH MODAL
+================================================== -->
+
+<div
+  class="hq-modal"
+  id="doughTopUpModal"
+  hidden
+>
+
+  <div
+    class="hq-modal-backdrop"
+    data-action="close-dough-modal"
+  ></div>
+
+
+  <div
+    class="hq-modal-panel dough-topup-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="doughTopUpModalTitle"
+  >
+
+    <button
+      class="hq-modal-close"
+      type="button"
+      data-action="close-dough-modal"
+      aria-label="Close"
+    >
+      ✕
+    </button>
+
+
+    <div class="dough-modal-heading">
+
+      <p class="section-eyebrow">
+        DOUGH INVENTORY
+      </p>
+
+      <h2 id="doughTopUpModalTitle">
+        Top Up Dough Stock
+      </h2>
+
+      <p
+        class="dough-modal-product"
+        id="doughTopUpProductName"
+      >
+        Wonder Chip
+      </p>
+
+    </div>
+
+
+    <div class="dough-modal-current">
+
+      <span>Current Stock</span>
+
+      <strong id="doughTopUpCurrentStock">
+        0
+      </strong>
+
+      <span>pcs</span>
+
+    </div>
+
+
+    <form id="doughTopUpForm">
+
+      <input
+        type="hidden"
+        id="doughTopUpDoughId"
+      >
+
+      <input
+        type="hidden"
+        id="doughTopUpProductId"
+      >
+
+
+      <label
+        class="dough-form-field"
+        for="doughTopUpQuantity"
+      >
+
+        <span>
+          Quantity Prepared
+        </span>
+
+        <input
+          id="doughTopUpQuantity"
+          type="number"
+          min="1"
+          step="1"
+          inputmode="numeric"
+          placeholder="Example: 16"
+          required
+        >
+
+      </label>
+
+
+      <div
+        class="dough-stock-preview"
+        id="doughStockPreview"
+      >
+
+        <span>New Stock</span>
+
+        <strong id="doughTopUpNewStock">
+          0 pcs
+        </strong>
+
+      </div>
+
+
+      <label
+        class="dough-form-field"
+        for="doughTopUpNotes"
+      >
+
+        <span>
+          Notes
+          <small>Optional</small>
+        </span>
+
+        <input
+          id="doughTopUpNotes"
+          type="text"
+          maxlength="120"
+          placeholder="Example: Morning batch"
+        >
+
+      </label>
+
+
+      <p
+        class="dough-modal-message"
+        id="doughTopUpMessage"
+        hidden
+      ></p>
+
+
+      <button
+        class="dough-save-button"
+        id="doughTopUpSaveButton"
+        type="submit"
+      >
+        Save Dough Stock
+      </button>
+
+    </form>
+
+  </div>
+
+</div>
+  
 </body>
 </html>
