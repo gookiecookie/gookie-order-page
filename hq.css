@@ -2360,3 +2360,348 @@ box-shadow:
 .shipping-tracking-unavailable[hidden] {
   display: none;
 }
+
+/* =================================================
+   DOUGH STOCK
+================================================= */
+
+.dough-stock-section{
+  margin-top:32px;
+}
+
+.dough-stock-section .section-heading{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.dough-stock-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(290px,1fr));
+  gap:18px;
+}
+
+.dough-stock-loading{
+  padding:40px;
+  text-align:center;
+  opacity:.6;
+}
+
+
+/* ---------- Card ---------- */
+
+.dough-card{
+
+  background:#fff;
+
+  border:1px solid #ececec;
+
+  border-radius:18px;
+
+  padding:18px;
+
+  transition:.25s;
+}
+
+.dough-card:hover{
+
+  transform:translateY(-2px);
+
+  box-shadow:0 10px 30px rgba(0,0,0,.06);
+
+}
+
+
+/* ---------- Header ---------- */
+
+.dough-title{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  margin-bottom:14px;
+
+}
+
+.dough-title h4{
+
+  margin:0;
+
+  font-size:18px;
+
+}
+
+.dough-status{
+
+  font-size:12px;
+
+  font-weight:700;
+
+  border-radius:999px;
+
+  padding:4px 10px;
+
+}
+
+
+/* ---------- Progress ---------- */
+
+.dough-progress{
+
+  height:10px;
+
+  background:#efefef;
+
+  border-radius:999px;
+
+  overflow:hidden;
+
+  margin-bottom:10px;
+
+}
+
+.dough-progress-fill{
+
+  height:100%;
+
+  width:0;
+
+  transition:.4s;
+
+}
+
+
+/* ---------- Qty ---------- */
+
+.dough-qty{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:16px;
+
+  font-weight:600;
+
+}
+
+
+/* ---------- Button ---------- */
+
+.topup-btn{
+
+  width:100%;
+
+  border:none;
+
+  border-radius:12px;
+
+  padding:12px;
+
+  cursor:pointer;
+
+  font-weight:700;
+
+  transition:.25s;
+
+}
+
+
+/* =================================================
+   STATUS
+================================================= */
+
+.dough-card.ok .dough-progress-fill{
+
+  background:#2ecc71;
+
+}
+
+.dough-card.ok .dough-status{
+
+  background:#dff8ea;
+
+  color:#13864b;
+
+}
+
+.dough-card.ok .topup-btn{
+
+  background:#f4f4f4;
+
+}
+
+
+/* ---------- LOW ---------- */
+
+.dough-card.low{
+
+  border-color:#ffd54a;
+
+}
+
+.dough-card.low .dough-progress-fill{
+
+  background:#f4b400;
+
+}
+
+.dough-card.low .dough-status{
+
+  background:#fff4cf;
+
+  color:#b07a00;
+
+}
+
+.dough-card.low .topup-btn{
+
+  background:#ffe08a;
+
+  animation:pulse 2.8s infinite;
+
+}
+
+
+/* ---------- CRITICAL ---------- */
+
+.dough-card.critical{
+
+  border-color:#ff4d4f;
+
+}
+
+.dough-card.critical .dough-progress-fill{
+
+  background:#ff4d4f;
+
+}
+
+.dough-card.critical .dough-status{
+
+  background:#ffe1e2;
+
+  color:#d20000;
+
+}
+
+.dough-card.critical .topup-btn{
+
+  background:#ff5d5d;
+
+  color:white;
+
+  animation:pulse 1.3s infinite;
+
+}
+
+
+/* ---------- OUT ---------- */
+
+.dough-card.out{
+
+  border:2px solid #d80000;
+
+}
+
+.dough-card.out .dough-progress-fill{
+
+  background:#d80000;
+
+}
+
+.dough-card.out .dough-status{
+
+  background:#d80000;
+
+  color:white;
+
+}
+
+.dough-card.out .topup-btn{
+
+  background:#d80000;
+
+  color:white;
+
+  animation:pulse .8s infinite;
+
+}
+
+
+/* =================================================
+   ALERT SUMMARY
+================================================= */
+
+.dough-alert-summary{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:10px;
+
+  border:none;
+
+  border-radius:999px;
+
+  padding:10px 18px;
+
+  font-weight:700;
+
+  cursor:pointer;
+
+}
+
+.dough-alert-summary[data-status="ok"]{
+
+  background:#dff8ea;
+
+}
+
+.dough-alert-summary[data-status="warning"]{
+
+  background:#fff0b8;
+
+  animation:pulse 2s infinite;
+
+}
+
+.dough-alert-summary[data-status="danger"]{
+
+  background:#ffd9d9;
+
+  animation:pulse 1.2s infinite;
+
+}
+
+
+/* =================================================
+   Pulse
+================================================= */
+
+@keyframes pulse{
+
+  0%{
+
+    transform:scale(1);
+
+  }
+
+  50%{
+
+    transform:scale(1.05);
+
+  }
+
+  100%{
+
+    transform:scale(1);
+
+  }
+
+}
