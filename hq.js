@@ -134,7 +134,117 @@ const packingOrderList =
 const shippingOrderList =
   document.getElementById("shippingOrderList");
 
+/* Dough Stock Drawer */
 
+const doughStockDrawerButton =
+  document.getElementById(
+    "doughStockDrawerButton"
+  );
+
+const doughStockDrawer =
+  document.getElementById(
+    "doughStockDrawer"
+  );
+
+const closeDoughStockDrawerButton =
+  document.getElementById(
+    "closeDoughStockDrawerButton"
+  );
+
+const doughStockDrawerMount =
+  document.getElementById(
+    "doughStockDrawerMount"
+  );
+
+/* =========================================================
+   DOUGH STOCK DRAWER
+========================================================= */
+
+/* =========================================================
+   DOUGH STOCK DRAWER
+========================================================= */
+
+function openDoughStockDrawer() {
+  if (
+    !doughStockDrawer ||
+    !doughStockDrawerButton ||
+    !pageOverlay
+  ) {
+    return;
+  }
+
+  closeMissionControl();
+
+  doughStockDrawer.classList.add(
+    "is-open"
+  );
+
+  doughStockDrawer.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+  doughStockDrawerButton.setAttribute(
+    "aria-expanded",
+    "true"
+  );
+
+  pageOverlay.hidden = false;
+
+  requestAnimationFrame(function () {
+    pageOverlay.classList.add(
+      "is-visible"
+    );
+  });
+
+  document.body.classList.add(
+    "drawer-open"
+  );
+}
+
+
+function closeDoughStockDrawer() {
+  if (
+    !doughStockDrawer ||
+    !doughStockDrawer.classList.contains(
+      "is-open"
+    )
+  ) {
+    return;
+  }
+
+  doughStockDrawer.classList.remove(
+    "is-open"
+  );
+
+  doughStockDrawer.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+  doughStockDrawerButton.setAttribute(
+    "aria-expanded",
+    "false"
+  );
+
+  pageOverlay.classList.remove(
+    "is-visible"
+  );
+
+  setTimeout(function () {
+    if (
+      !missionControlDrawer.classList.contains(
+        "is-open"
+      )
+    ) {
+      pageOverlay.hidden = true;
+    }
+  }, 240);
+
+  document.body.classList.remove(
+    "drawer-open"
+  );
+}
 /* Mission Control */
 
 const missionControlButton =
@@ -465,7 +575,16 @@ function bindHQEvents() {
     });
   });
 
+doughStockDrawerButton.addEventListener(
+  "click",
+  openDoughStockDrawer
+);
 
+closeDoughStockDrawerButton.addEventListener(
+  "click",
+  closeDoughStockDrawer
+);
+   
   missionControlButton.addEventListener(
     "click",
     openMissionControl
@@ -478,9 +597,10 @@ function bindHQEvents() {
   );
 
 
-  pageOverlay.addEventListener("click", function () {
-    closeMissionControl();
-  });
+ pageOverlay.addEventListener("click", function () {
+  closeMissionControl();
+  closeDoughStockDrawer();
+});
 
 
   missionControlSearch.addEventListener(
@@ -533,10 +653,11 @@ function bindHQEvents() {
     }
 
 closeMissionControl();
+closeDoughStockDrawer();
 closeVerifyPaymentModal();
 closeOrderDetailsModal();
 closePackingModal();
-closeShippingModal();   
+closeShippingModal();
   });
 
    inOvenOrderList.addEventListener(
