@@ -5090,14 +5090,9 @@ function renderDoughStock() {
         )
       : null;
 
-  if (
-    !grid ||
-    !alertSummary ||
-    !alertCount ||
-    !alertText
-  ) {
-    return;
-  }
+ if (!grid) {
+  return;
+}
 
   const doughStock =
     hqState &&
