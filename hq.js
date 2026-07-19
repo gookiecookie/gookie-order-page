@@ -5164,19 +5164,19 @@ function buildDoughStockCard_(item) {
   }
 
   const displayName =
-    escapeHtml_(
+    escapeHtml(
       item.displayName ||
       item.productId ||
       "Unknown Dough"
     );
 
   const productId =
-    escapeHtml_(
+    escapeHtml(
       item.productId || ""
     );
 
   const doughId =
-    escapeHtml_(
+    escapeHtml(
       item.doughId || ""
     );
 
