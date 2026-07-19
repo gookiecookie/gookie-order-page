@@ -586,7 +586,136 @@ coolingOrderList.addEventListener(
   }
 );
 
-// 👇 PASTE DI SINI
+document
+  .getElementById("doughTopUpForm")
+  .addEventListener(
+    "submit",
+    async function (event) {
+
+      event.preventDefault();
+
+      const quantity =
+        Number(
+          document.getElementById(
+            "doughTopUpQuantity"
+          ).value
+        );
+
+      if (quantity <= 0) {
+        showToast(
+          "Invalid quantity",
+          "Quantity must be greater than zero.",
+          "error"
+        );
+        return;
+      }
+
+      const saveButton =
+        document.getElementById(
+          "doughTopUpSaveButton"
+        );
+
+      saveButton.disabled = true;
+      saveButton.textContent =
+        "Saving...";
+
+      try {
+
+        const payload = {
+
+          action:
+            "topUpDoughStock",
+
+          doughId:
+            document.getElementById(
+              "doughTopUpDoughId"
+            ).value,
+
+          quantity:
+            quantity,
+
+          notes:
+            document.getElementById(
+              "doughTopUpNotes"
+            ).value
+
+        };
+
+        const response =
+          await fetch(
+            GOOKIE_HQ_CONFIG.API_URL,
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type":
+                  "text/plain;charset=utf-8"
+              },
+
+              body:
+                JSON.stringify(payload),
+
+              redirect: "follow"
+            }
+          );
+
+        if (!response.ok) {
+          throw new Error(
+            "Top Up request failed. HTTP " +
+            response.status
+          );
+        }
+
+        const result =
+          await response.json();
+
+        if (
+          !result ||
+          result.ok !== true
+        ) {
+          throw new Error(
+            result && result.message
+              ? result.message
+              : "Unable to update dough stock."
+          );
+        }
+
+        closeDoughTopUpModal_();
+
+        showToast(
+          "Dough Updated",
+          result.message,
+          "success"
+        );
+
+        await loadHQData({
+          showLoadingScreen:false
+        });
+
+      } catch (error) {
+
+        console.error(
+          "GOOKIE HQ Dough Top Up error:",
+          error
+        );
+
+        showToast(
+          "Top Up failed",
+          error.message,
+          "error"
+        );
+
+      } finally {
+
+        saveButton.disabled = false;
+
+        saveButton.textContent =
+          "Save Dough Stock";
+
+      }
+
+    }
+  );
 
 packingOrderList.addEventListener(
   "click",
@@ -5369,6 +5498,7 @@ document.addEventListener(
 );
 
 
+
 /* =================================================
    CLOSE MODAL EVENTS
 ================================================= */
@@ -5398,3 +5528,4 @@ document.addEventListener(
     }
   }
 );
+
