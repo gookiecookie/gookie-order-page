@@ -164,46 +164,6 @@
            DOUGH STOCK
       ================================================== -->
 
-      <section
-        class="dough-stock-section"
-        id="doughStockSection"
-      >
-
-        <div class="section-heading">
-
-          <div>
-            <p class="section-eyebrow">
-              LIVE INVENTORY
-            </p>
-
-            <h2>🥣 Dough Stock</h2>
-          </div>
-
-
-          <button
-            class="dough-alert-summary"
-            id="doughAlertSummary"
-            type="button"
-            data-status="ok"
-          >
-            <span class="dough-alert-icon">
-              ✓
-            </span>
-
-            <span>
-              <strong id="doughAlertCount">
-                0
-              </strong>
-
-              <span id="doughAlertText">
-                Dough Alerts
-              </span>
-            </span>
-          </button>
-
-        </div>
-
-
         <div
           class="dough-stock-grid"
           id="doughStockGrid"
@@ -214,8 +174,6 @@
           </div>
 
         </div>
-
-      </section>
 
 
       <!-- =================================================
@@ -549,10 +507,23 @@
 
   <div class="dough-stock-drawer-content">
 
-    <div
-      id="doughStockDrawerMount"
-      class="dough-stock-drawer-mount"
-    ></div>
+   <div
+  id="doughStockDrawerMount"
+  class="dough-stock-drawer-mount"
+>
+     
+  <div
+    class="dough-stock-grid"
+    id="doughStockGrid"
+  >
+
+    <div class="dough-stock-loading">
+      Loading dough stock...
+    </div>
+
+  </div>
+
+</div>
 
   </div>
 </aside>
