@@ -156,6 +156,11 @@ const doughStockDrawerMount =
     "doughStockDrawerMount"
   );
 
+const doughStockGrid =
+  document.getElementById(
+    "doughStockGrid"
+  );
+
 /* =========================================================
    DOUGH STOCK DRAWER
 ========================================================= */
@@ -200,6 +205,15 @@ function openDoughStockDrawer() {
   document.body.classList.add(
     "drawer-open"
   );
+
+if (
+  doughStockGrid &&
+  doughStockDrawerMount
+) {
+  doughStockDrawerMount.appendChild(
+    doughStockGrid
+  );
+}   
 }
 
 
