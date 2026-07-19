@@ -5191,21 +5191,210 @@ document.addEventListener(
       return;
     }
 
-    const productId =
-      topUpButton.dataset.productId;
+    openDoughTopUpModal_(
+  topUpButton.dataset.doughId,
+  topUpButton.dataset.productId
+);
+     
+  }
+);
 
-    const doughId =
-      topUpButton.dataset.doughId;
+/* =================================================
+   DOUGH TOP-UP MODAL
+================================================= */
 
-    console.log(
-      "Top up dough:",
-      productId,
-      doughId
+let activeDoughTopUpItem_ = null;
+
+
+function openDoughTopUpModal_(
+  doughId,
+  productId
+) {
+  const modal =
+    document.getElementById(
+      "doughTopUpModal"
     );
 
-    /*
-     * Modal Top Up Stock akan dibuka
-     * dalam step seterusnya.
-     */
+  if (!modal) {
+    return;
+  }
+
+  const doughStock =
+    hqState &&
+    hqState.data &&
+    Array.isArray(
+      hqState.data.doughStock
+    )
+      ? hqState.data.doughStock
+      : [];
+
+  const item =
+    doughStock.find(function (stockItem) {
+      return (
+        String(stockItem.doughId) ===
+          String(doughId) &&
+        String(stockItem.productId) ===
+          String(productId)
+      );
+    });
+
+  if (!item) {
+    console.error(
+      "Dough stock item not found:",
+      doughId,
+      productId
+    );
+
+    return;
+  }
+
+  activeDoughTopUpItem_ = item;
+
+  document.getElementById(
+    "doughTopUpDoughId"
+  ).value = item.doughId || "";
+
+  document.getElementById(
+    "doughTopUpProductId"
+  ).value = item.productId || "";
+
+  document.getElementById(
+    "doughTopUpProductName"
+  ).textContent =
+    item.displayName ||
+    item.productId ||
+    "Dough Stock";
+
+  document.getElementById(
+    "doughTopUpCurrentStock"
+  ).textContent =
+    String(
+      Number(item.readyStock) || 0
+    );
+
+  document.getElementById(
+    "doughTopUpQuantity"
+  ).value = "";
+
+  document.getElementById(
+    "doughTopUpNotes"
+  ).value = "";
+
+  document.getElementById(
+    "doughTopUpNewStock"
+  ).textContent =
+    String(
+      Number(item.readyStock) || 0
+    ) + " pcs";
+
+  const message =
+    document.getElementById(
+      "doughTopUpMessage"
+    );
+
+  message.hidden = true;
+  message.textContent = "";
+  message.className =
+    "dough-modal-message";
+
+  modal.hidden = false;
+
+  document.body.classList.add(
+    "modal-open"
+  );
+
+  setTimeout(function () {
+    document.getElementById(
+      "doughTopUpQuantity"
+    ).focus();
+  }, 50);
+}
+
+
+function closeDoughTopUpModal_() {
+  const modal =
+    document.getElementById(
+      "doughTopUpModal"
+    );
+
+  if (!modal) {
+    return;
+  }
+
+  modal.hidden = true;
+
+  document.body.classList.remove(
+    "modal-open"
+  );
+
+  activeDoughTopUpItem_ = null;
+}
+
+
+/* =================================================
+   LIVE STOCK PREVIEW
+================================================= */
+
+document.addEventListener(
+  "input",
+  function (event) {
+    if (
+      event.target.id !==
+      "doughTopUpQuantity"
+    ) {
+      return;
+    }
+
+    const currentStock =
+      activeDoughTopUpItem_
+        ? Number(
+            activeDoughTopUpItem_
+              .readyStock
+          ) || 0
+        : 0;
+
+    const quantity =
+      Math.max(
+        0,
+        Number(event.target.value) || 0
+      );
+
+    document.getElementById(
+      "doughTopUpNewStock"
+    ).textContent =
+      String(
+        currentStock + quantity
+      ) + " pcs";
+  }
+);
+
+
+/* =================================================
+   CLOSE MODAL EVENTS
+================================================= */
+
+document.addEventListener(
+  "click",
+  function (event) {
+    const closeButton =
+      event.target.closest(
+        '[data-action="close-dough-modal"]'
+      );
+
+    if (!closeButton) {
+      return;
+    }
+
+    closeDoughTopUpModal_();
+  }
+);
+
+
+document.addEventListener(
+  "keydown",
+  function (event) {
+    if (event.key === "Escape") {
+      closeDoughTopUpModal_();
+    }
   }
 );
