@@ -3048,3 +3048,101 @@ body.modal-open{
     font-size: 20px;
   }
 }
+
+/* =========================================================
+   DOUGH STOCK HEADER BUTTON
+========================================================= */
+
+.dough-stock-trigger {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+}
+
+.dough-stock-trigger-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center;
+}
+
+.dough-stock-trigger.is-warning
+.dough-stock-trigger-icon {
+  animation:
+    dough-stock-pulse
+    1.3s
+    ease-in-out
+    infinite;
+}
+
+.dough-stock-trigger.is-danger
+.dough-stock-trigger-icon {
+  animation:
+    dough-stock-shake
+    0.9s
+    ease-in-out
+    infinite;
+}
+
+@keyframes dough-stock-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.22);
+  }
+}
+
+@keyframes dough-stock-shake {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+
+  20% {
+    transform: rotate(-10deg);
+  }
+
+  40% {
+    transform: rotate(10deg);
+  }
+
+  60% {
+    transform: rotate(-7deg);
+  }
+
+  80% {
+    transform: rotate(7deg);
+  }
+}
+
+/* Mobile: bowl icon only */
+@media (max-width: 720px) {
+  .dough-stock-trigger-label,
+  .dough-stock-trigger .header-badge {
+    display: none;
+  }
+
+  .dough-stock-trigger {
+    width: 42px;
+    min-width: 42px;
+    height: 42px;
+    padding: 0;
+    border-radius: 50%;
+  }
+
+  .dough-stock-trigger-icon {
+    font-size: 21px;
+  }
+}
+
+/* Respect accessibility setting */
+@media (prefers-reduced-motion: reduce) {
+  .dough-stock-trigger-icon {
+    animation: none !important;
+  }
+}
