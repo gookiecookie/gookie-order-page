@@ -165,10 +165,6 @@ const doughStockGrid =
    DOUGH STOCK DRAWER
 ========================================================= */
 
-/* =========================================================
-   DOUGH STOCK DRAWER
-========================================================= */
-
 function openDoughStockDrawer() {
   if (
     !doughStockDrawer ||
@@ -5225,8 +5221,37 @@ function renderDoughStock() {
       alertIcon.textContent = "✓";
     }
   }
+
+const doughStockDrawerBadge =
+  document.getElementById(
+    "doughStockDrawerBadge"
+  );
+
+if (doughStockDrawerBadge) {
+  doughStockDrawerBadge.textContent =
+    String(alertItems.length);
 }
 
+if (doughStockDrawerButton) {
+  doughStockDrawerButton.classList.remove(
+    "is-warning",
+    "is-danger"
+  );
+
+  if (
+    outItems.length > 0 ||
+    criticalItems.length > 0
+  ) {
+    doughStockDrawerButton.classList.add(
+      "is-danger"
+    );
+  } else if (alertItems.length > 0) {
+    doughStockDrawerButton.classList.add(
+      "is-warning"
+    );
+  }
+}
+}
 
 /* =================================================
    BUILD DOUGH CARD
