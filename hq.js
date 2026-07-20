@@ -5068,16 +5068,24 @@ function openCustomerWhatsApp(orderId) {
 
 function renderDoughStock() {
   const grid =
-    document.getElementById("doughStockGrid");
+    document.getElementById(
+      "doughStockGrid"
+    );
 
   const alertSummary =
-    document.getElementById("doughAlertSummary");
+    document.getElementById(
+      "doughAlertSummary"
+    );
 
   const alertCount =
-    document.getElementById("doughAlertCount");
+    document.getElementById(
+      "doughAlertCount"
+    );
 
   const alertText =
-    document.getElementById("doughAlertText");
+    document.getElementById(
+      "doughAlertText"
+    );
 
   const alertIcon =
     alertSummary
@@ -5086,9 +5094,9 @@ function renderDoughStock() {
         )
       : null;
 
- if (!grid) {
-  return;
-}
+  if (!grid) {
+    return;
+  }
 
   const doughStock =
     hqState &&
@@ -5099,6 +5107,16 @@ function renderDoughStock() {
       ? hqState.data.doughStock
       : [];
 
+  const doughStockButton =
+    document.getElementById(
+      "doughStockDrawerButton"
+    );
+
+  const doughStockBadge =
+    document.getElementById(
+      "doughStockDrawerBadge"
+    );
+
   if (!doughStock.length) {
     grid.innerHTML = `
       <div class="dough-stock-loading">
@@ -5106,12 +5124,38 @@ function renderDoughStock() {
       </div>
     `;
 
-    alertCount.textContent = "0";
-    alertText.textContent = "Dough Alerts";
-    alertSummary.dataset.status = "ok";
+    if (alertCount) {
+      alertCount.textContent = "0";
+    }
+
+    if (alertText) {
+      alertText.textContent =
+        "Dough Alerts";
+    }
+
+    if (alertSummary) {
+      alertSummary.dataset.status =
+        "ok";
+
+      alertSummary.classList.remove(
+        "dough-alert-shake"
+      );
+    }
 
     if (alertIcon) {
       alertIcon.textContent = "✓";
+    }
+
+    if (doughStockBadge) {
+      doughStockBadge.textContent =
+        "0";
+    }
+
+    if (doughStockButton) {
+      doughStockButton.classList.remove(
+        "is-warning",
+        "is-danger"
+      );
     }
 
     return;
@@ -5156,25 +5200,33 @@ function renderDoughStock() {
   grid.innerHTML =
     doughStock
       .map(function (item) {
-        return buildDoughStockCard_(item);
+        return buildDoughStockCard_(
+          item
+        );
       })
       .join("");
 
-  alertCount.textContent =
-    String(alertItems.length);
+  if (alertCount) {
+    alertCount.textContent =
+      String(alertItems.length);
+  }
 
-  alertSummary.classList.remove(
-    "dough-alert-shake"
-  );
+  if (alertSummary) {
+    alertSummary.classList.remove(
+      "dough-alert-shake"
+    );
+  }
 
   if (outItems.length > 0) {
-    alertSummary.dataset.status =
-      "danger";
+    if (alertSummary) {
+      alertSummary.dataset.status =
+        "danger";
+    }
 
-    alertText.textContent =
-      outItems.length === 1
-        ? "Dough Out of Stock"
-        : "Dough Out of Stock";
+    if (alertText) {
+      alertText.textContent =
+        "Dough Out of Stock";
+    }
 
     if (alertIcon) {
       alertIcon.textContent = "🚨";
@@ -5182,14 +5234,18 @@ function renderDoughStock() {
 
     startDoughAlertShake_();
 
-  } else if (criticalItems.length > 0) {
-    alertSummary.dataset.status =
-      "danger";
+  } else if (
+    criticalItems.length > 0
+  ) {
+    if (alertSummary) {
+      alertSummary.dataset.status =
+        "danger";
+    }
 
-    alertText.textContent =
-      criticalItems.length === 1
-        ? "Critical Dough"
-        : "Critical Dough";
+    if (alertText) {
+      alertText.textContent =
+        "Critical Dough";
+    }
 
     if (alertIcon) {
       alertIcon.textContent = "🚨";
@@ -5197,60 +5253,67 @@ function renderDoughStock() {
 
     startDoughAlertShake_();
 
-  } else if (alertItems.length > 0) {
-    alertSummary.dataset.status =
-      "warning";
+  } else if (
+    alertItems.length > 0
+  ) {
+    if (alertSummary) {
+      alertSummary.dataset.status =
+        "warning";
+    }
 
-    alertText.textContent =
-      alertItems.length === 1
-        ? "Dough Alert"
-        : "Dough Alerts";
+    if (alertText) {
+      alertText.textContent =
+        alertItems.length === 1
+          ? "Dough Alert"
+          : "Dough Alerts";
+    }
 
     if (alertIcon) {
       alertIcon.textContent = "⚠️";
     }
 
   } else {
-    alertSummary.dataset.status =
-      "ok";
+    if (alertSummary) {
+      alertSummary.dataset.status =
+        "ok";
+    }
 
-    alertText.textContent =
-      "Dough Ready";
+    if (alertText) {
+      alertText.textContent =
+        "Dough Ready";
+    }
 
     if (alertIcon) {
       alertIcon.textContent = "✓";
     }
   }
 
-const doughStockDrawerBadge =
-  document.getElementById(
-    "doughStockDrawerBadge"
-  );
+  if (doughStockBadge) {
+    doughStockBadge.textContent =
+      String(alertItems.length);
+  }
 
-if (doughStockDrawerBadge) {
-  doughStockDrawerBadge.textContent =
-    String(alertItems.length);
-}
-
-if (doughStockDrawerButton) {
-  doughStockDrawerButton.classList.remove(
-    "is-warning",
-    "is-danger"
-  );
-
-  if (
-    outItems.length > 0 ||
-    criticalItems.length > 0
-  ) {
-    doughStockDrawerButton.classList.add(
+  if (doughStockButton) {
+    doughStockButton.classList.remove(
+      "is-warning",
       "is-danger"
     );
-  } else if (alertItems.length > 0) {
-    doughStockDrawerButton.classList.add(
-      "is-warning"
-    );
+
+    if (
+      outItems.length > 0 ||
+      criticalItems.length > 0
+    ) {
+      doughStockButton.classList.add(
+        "is-danger"
+      );
+    } else if (
+      alertItems.length > 0
+    ) {
+      doughStockButton.classList.add(
+        "is-warning"
+      );
+    }
   }
-}
 }
 
 /* =================================================
