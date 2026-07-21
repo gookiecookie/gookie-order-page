@@ -5107,6 +5107,54 @@ function renderDoughStock() {
       ? hqState.data.doughStock
       : [];
 
+const statusPriority = {
+  OUT: 1,
+  CRITICAL: 2,
+  LOW: 3,
+  OK: 4
+};
+
+const sortedDoughStock =
+  [...doughStock].sort(function (a, b) {
+    const statusA =
+      String(
+        a.status || "OK"
+      ).toUpperCase();
+
+    const statusB =
+      String(
+        b.status || "OK"
+      ).toUpperCase();
+
+    const priorityA =
+      statusPriority[statusA] || 99;
+
+    const priorityB =
+      statusPriority[statusB] || 99;
+
+    if (priorityA !== priorityB) {
+      return priorityA - priorityB;
+    }
+
+    const readyA =
+      Number(a.readyStock) || 0;
+
+    const readyB =
+      Number(b.readyStock) || 0;
+
+    if (readyA !== readyB) {
+      return readyA - readyB;
+    }
+
+    return String(
+      a.displayName || ""
+    ).localeCompare(
+      String(
+        b.displayName || ""
+      )
+    );
+  });
+     
   const doughStockButton =
     document.getElementById(
       "doughStockDrawerButton"
