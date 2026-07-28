@@ -1113,7 +1113,6 @@ img {
   font-weight: 700;
   text-align: center;
   text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .box-helper-text {
@@ -3311,8 +3310,9 @@ button.cookie-slot {
 
   .hero-highlight strong{
     font-size:.65rem;
-    white-space:nowrap;
-  }
+    white-space:normal;
+    line-height:1.2;
+}
 
   .hero-image,
   .hero-visual,
@@ -3326,6 +3326,54 @@ button.cookie-slot {
     display:block;
     box-shadow:none;
     filter:none;
+  }
+
+}
+
+/* ========================================
+   MOBILE HERO — FINAL ALIGNMENT FIX
+======================================== */
+
+@media (max-width: 768px){
+
+  /* Keep all 3 highlights safely inside screen */
+  .hero-highlights{
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+    gap: 6px;
+    padding: 0 10px;
+    box-sizing: border-box;
+  }
+
+  .hero-highlight{
+    width: 100%;
+    min-width: 0;
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero-highlight strong{
+    width: 100%;
+    font-size: 0.64rem;
+    line-height: 1.15;
+    white-space: normal;
+    overflow-wrap: normal;
+  }
+
+  /* Make both hero buttons exactly the same width */
+  .hero-actions{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 16px;
+  }
+
+  .hero-actions .hero-button{
+    width: min(100%, 355px);
+    min-height: 56px;
+    box-sizing: border-box;
   }
 
 }
