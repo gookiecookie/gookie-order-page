@@ -355,83 +355,204 @@ img {
   color: var(--ink);
 }
 
+/* =========================================================
+   GOOKIE HERO V2
+   Clean, warm and premium
+========================================================= */
+
 .hero-section {
+  position: relative;
   overflow: hidden;
-  background: var(--cream);
+  background: #fffdf9;
 }
+
+/* Cookie visual area */
 
 .hero-cookie-area {
   position: relative;
+
   display: grid;
   place-items: center;
-  min-height: 430px;
-  padding: 40px 20px 16px;
-  background: #f3d6b5;
+
+  min-height: 390px;
+  padding: 34px 18px 8px;
+
+  background:
+    radial-gradient(
+      circle at 50% 46%,
+      rgba(255, 226, 193, 0.72) 0%,
+      rgba(255, 241, 220, 0.38) 38%,
+      rgba(255, 253, 249, 0) 72%
+    );
+
   isolation: isolate;
 }
+
+/* Main cookie image */
 
 .hero-cookie-image {
   position: relative;
   z-index: 2;
-  width: min(96vw, 560px);
-  filter: drop-shadow(0 24px 18px rgba(73, 31, 12, 0.18));
+
+  width: min(94vw, 540px);
+  height: auto;
+
+  object-fit: contain;
+
+  filter:
+    drop-shadow(
+      0 24px 22px
+      rgba(73, 31, 12, 0.16)
+    );
+
+  transform: translateY(4px);
 }
+
+/* Soft decorative shapes */
 
 .hero-shape {
   position: absolute;
+  z-index: 0;
   border-radius: 50%;
+  pointer-events: none;
 }
 
 .hero-shape-one {
-  top: 7%;
-  left: -18%;
-  width: 250px;
-  height: 250px;
-  background: rgba(187, 25, 26, 0.1);
+  top: 8%;
+  left: -24%;
+
+  width: 240px;
+  height: 240px;
+
+  background:
+    rgba(187, 25, 26, 0.055);
 }
 
 .hero-shape-two {
-  right: -22%;
-  bottom: -10%;
-  width: 310px;
-  height: 310px;
-  border: 2px solid rgba(187, 25, 26, 0.14);
+  right: -28%;
+  bottom: -16%;
+
+  width: 300px;
+  height: 300px;
+
+  border:
+    1.5px solid
+    rgba(187, 25, 26, 0.09);
 }
 
+/* Hero copy */
+
 .hero-content {
-  padding: 58px 24px 76px;
+  position: relative;
+  z-index: 3;
+
+  padding:
+    38px
+    24px
+    72px;
+
   text-align: center;
 }
 
+/* Small line above headline */
+
+.hero-content .section-kicker {
+  color: var(--gookie-red);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+}
+
+/* Main headline */
+
 .hero-content h1 {
-  margin: 13px 0 24px;
-  font-family: "League Spartan", sans-serif;
-  font-size: clamp(3.3rem, 15vw, 7rem);
+  margin:
+    14px
+    auto
+    22px;
+
+  max-width: 720px;
+
+  font-family:
+    "League Spartan",
+    sans-serif;
+
+  font-size:
+    clamp(
+      3.25rem,
+      14.5vw,
+      7rem
+    );
+
   font-weight: 900;
-  line-height: 0.88;
-  letter-spacing: -0.045em;
+  line-height: 0.86;
+  letter-spacing: -0.052em;
 }
 
 .hero-content h1 span {
   display: block;
 }
 
+.hero-content h1 span:first-child {
+  color: var(--ink);
+}
+
 .hero-content h1 span:not(:first-child) {
   color: var(--gookie-red);
 }
 
+/* Supporting copy */
+
 .hero-description {
-  max-width: 520px;
-  margin: 0 auto 30px;
+  max-width: 480px;
+
+  margin:
+    0
+    auto
+    28px;
+
   color: var(--muted);
-  font-size: 1.04rem;
+
+  font-size: 1rem;
   line-height: 1.65;
 }
 
+/* Hero button */
+
 .hero-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   gap: 12px;
+
+  min-height: 54px;
+  padding: 14px 25px;
+
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+
   background: var(--ink);
   color: var(--white);
+
+  box-shadow:
+    0 12px 28px
+    rgba(23, 21, 21, 0.14);
+
+  transition:
+    transform var(--transition),
+    background-color var(--transition),
+    color var(--transition),
+    box-shadow var(--transition);
+}
+
+.hero-button:hover {
+  background: var(--gookie-red);
+  border-color: var(--gookie-red);
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 16px 34px
+    rgba(187, 25, 26, 0.2);
 }
 
 .section-heading {
@@ -1453,36 +1574,71 @@ img {
   }
 
   .hero-section {
-    display: grid;
-    grid-template-columns: 1.05fr 0.95fr;
-    min-height: calc(100vh - var(--header-height-desktop));
-  }
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1.04fr)
+    minmax(0, 0.96fr);
 
-  .hero-cookie-area {
-    min-height: 100%;
-    padding: 60px 30px;
-  }
+  min-height:
+    calc(
+      100vh -
+      var(--header-height-desktop)
+    );
 
-  .hero-cookie-image {
-    width: min(52vw, 700px);
-  }
+  background: #fffdf9;
+}
 
-  .hero-content {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    padding: 80px clamp(40px, 6vw, 110px);
-    text-align: left;
-  }
+/* Image stays on the left */
 
-  .hero-content h1 {
-    font-size: clamp(4.5rem, 7vw, 7.8rem);
-  }
+.hero-cookie-area {
+  min-height: 100%;
+  padding: 64px 24px;
 
-  .hero-description {
-    margin-left: 0;
-  }
+  background:
+    radial-gradient(
+      circle at 52% 48%,
+      rgba(255, 224, 188, 0.68) 0%,
+      rgba(255, 241, 220, 0.28) 42%,
+      rgba(255, 253, 249, 0) 73%
+    );
+}
+
+.hero-cookie-image {
+  width: min(50vw, 680px);
+}
+
+/* Copy stays on the right */
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+
+  padding:
+    78px
+    clamp(42px, 6vw, 105px);
+
+  text-align: left;
+}
+
+.hero-content h1 {
+  max-width: 690px;
+
+  margin-left: 0;
+
+  font-size:
+    clamp(
+      4.4rem,
+      6.6vw,
+      7.5rem
+    );
+}
+
+.hero-description {
+  max-width: 470px;
+  margin-left: 0;
+}
 
   .marquee-card {
     width: 300px;
