@@ -474,7 +474,9 @@ img {
   display:flex;
   flex-direction:column;
   align-items:center;
-  gap:8px;
+  gap:10px;
+
+  min-width:140px;
 }
 
 .hero-highlight span{
