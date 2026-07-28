@@ -3269,3 +3269,21 @@ button.cookie-slot {
     animation-delay: 0ms !important;
   }
 }
+
+/* ========================================
+   MOBILE HERO HIGHLIGHTS
+======================================== */
+
+@media (max-width:768px){
+
+  .hero-highlights{
+    gap:20px;
+    flex-wrap:nowrap;
+    justify-content:space-between;
+  }
+
+  .hero-highlight{
+    flex:1;
+  }
+
+}
