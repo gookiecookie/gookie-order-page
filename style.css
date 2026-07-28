@@ -3248,19 +3248,3 @@ button.cookie-slot {
     animation-delay: 0ms !important;
   }
 }
-
-
-
-.hero-values-title{
-    margin-bottom:55px;
-    font-family:"League Spartan",sans-serif;
-    font-size:clamp(2.1rem,7vw,3rem);
-    font-weight:800;
-}
-
-.hero-values-title{margin:0 0 34px;font-family:"League Spartan",sans-serif;font-size:clamp(2rem,8vw,3rem);font-weight:800}
-.hero-values-grid{display:grid;grid-template-columns:repeat(3,1fr);max-width:720px;margin:0 auto}
-.hero-value{position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;padding:0 10px}
-.hero-value:not(:last-child)::after{content:"";position:absolute;right:0;top:4px;bottom:4px;width:1px;background:rgba(0,0,0,.12)}
-.hero-value span{font-size:1.8rem}
-.hero-value strong{font-family:"League Spartan",sans-serif;font-size:.82rem;text-transform:uppercase;letter-spacing:.08em}
