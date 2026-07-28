@@ -1639,35 +1639,6 @@ img {
     transition-duration: 0.01ms !important;
   }
 
-  @media (max-width: 767px) {
-    .marquee-wrapper {
-      gap: 0;
-    }
-
-    .marquee-arrow {
-    width: 46px;
-    height: 46px;
-    font-size: 1.25rem;
-  }
-
-  .marquee-arrow-left {
-    left: 8px;
-  }
-
-  .marquee-arrow-right {
-    right: 8px;
-  }
-}
-
-    .marquee-arrow:hover {
-      transform: translateY(-50%) scale(1.06);
-    }
-
-    .marquee-arrow:active {
-      transform: translateY(-50%) scale(0.94);
-    }
-  }
-
   .marquee-track {
     animation: none;
   }
@@ -3270,99 +3241,38 @@ button.cookie-slot {
 }
 
 /* ========================================
-   MOBILE HERO HIGHLIGHTS
+   MOBILE HERO — FINAL CLEAN FIX
 ======================================== */
 
-@media (max-width:768px){
-
-  .hero-highlights{
-    gap:20px;
-    flex-wrap:nowrap;
-    justify-content:space-between;
-  }
-
-  .hero-highlight{
-    flex:1;
-  }
-
-}
-
-/* ========================================
-   MOBILE HERO FINAL FIX
-======================================== */
-
-@media (max-width:768px){
-
-  .hero-highlights{
-    width:100%;
-    padding:0 18px;
-    gap:8px;
-    box-sizing:border-box;
-    flex-wrap:nowrap;
-    justify-content:space-between;
-  }
-
-  .hero-highlight{
-    flex:1;
-    min-width:0;
-    text-align:center;
-  }
-
-  .hero-highlight strong{
-    font-size:.65rem;
-    white-space:normal;
-    line-height:1.2;
-}
-
-  .hero-image,
-  .hero-visual,
-  .hero-cookie-image{
-    overflow:visible;
-  }
-
-  .hero-image img,
-  .hero-visual img,
-  .hero-cookie-image img{
-    display:block;
-    box-shadow:none;
-    filter:none;
-  }
-
-}
-
-/* ========================================
-   MOBILE HERO — FINAL ALIGNMENT FIX
-======================================== */
-
-@media (max-width: 768px){
-
-  /* Keep all 3 highlights safely inside screen */
-  .hero-highlights{
+@media (max-width: 767px) {
+  .hero-highlights {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     width: 100%;
-    gap: 6px;
-    padding: 0 10px;
-    box-sizing: border-box;
+    margin: 24px 0 42px;
+    padding: 0;
+    gap: 8px;
   }
 
-  .hero-highlight{
+  .hero-highlight {
     width: 100%;
     min-width: 0;
-    align-items: center;
+    gap: 10px;
     text-align: center;
   }
 
-  .hero-highlight strong{
+  .hero-highlight span {
+    font-size: 28px;
+  }
+
+  .hero-highlight strong {
     width: 100%;
     font-size: 0.64rem;
     line-height: 1.15;
     white-space: normal;
-    overflow-wrap: normal;
   }
 
-  /* Make both hero buttons exactly the same width */
-  .hero-actions{
+  .hero-actions {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -3370,10 +3280,14 @@ button.cookie-slot {
     gap: 16px;
   }
 
-  .hero-actions .hero-button{
+  .hero-actions .hero-button {
     width: min(100%, 355px);
+    min-width: 0;
     min-height: 56px;
-    box-sizing: border-box;
+    padding: 15px 24px;
   }
 
+  .hero-cookie-image {
+    filter: none;
+  }
 }
