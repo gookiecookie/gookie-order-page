@@ -459,13 +459,15 @@ img {
 ======================================== */
 
 .hero-highlights{
-  display:flex;
-  justify-content:center;
-  gap:34px;
 
-  margin:28px 0 38px;
+    display:flex;
+    justify-content:center;
+    gap:34px;
 
-  flex-wrap:wrap;
+    margin:18px 0 30px;
+
+    flex-wrap:wrap;
+
 }
 
 .hero-highlight{
@@ -476,14 +478,14 @@ img {
 }
 
 .hero-highlight span{
-  font-size:20px;
+  font-size:18px;
 }
 
 .hero-highlight strong{
   font-family:"League Spartan",sans-serif;
-  font-size:.78rem;
+  font-size:.72rem;
   text-transform:uppercase;
-  letter-spacing:.08em;
+  letter-spacing:.12em;
 }
 
 .hero-actions{
@@ -1548,6 +1550,7 @@ img {
 
   .hero-content h1 {
     font-size: clamp(4.5rem, 7vw, 7.8rem);
+    margin:10px 0 20px;
   }
 
   .hero-description {
