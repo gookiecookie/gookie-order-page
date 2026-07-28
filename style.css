@@ -3287,3 +3287,45 @@ button.cookie-slot {
   }
 
 }
+
+/* ========================================
+   MOBILE HERO FINAL FIX
+======================================== */
+
+@media (max-width:768px){
+
+  .hero-highlights{
+    width:100%;
+    padding:0 18px;
+    gap:8px;
+    box-sizing:border-box;
+    flex-wrap:nowrap;
+    justify-content:space-between;
+  }
+
+  .hero-highlight{
+    flex:1;
+    min-width:0;
+    text-align:center;
+  }
+
+  .hero-highlight strong{
+    font-size:.65rem;
+    white-space:nowrap;
+  }
+
+  .hero-image,
+  .hero-visual,
+  .hero-cookie-image{
+    overflow:visible;
+  }
+
+  .hero-image img,
+  .hero-visual img,
+  .hero-cookie-image img{
+    display:block;
+    box-shadow:none;
+    filter:none;
+  }
+
+}
