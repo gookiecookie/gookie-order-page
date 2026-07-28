@@ -122,6 +122,72 @@ img {
   right: 12px;
 }
 
+.malaysia-badge {
+  position: absolute;
+  top: 50%;
+  right: 66px;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--white);
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.malaysia-badge:hover,
+.malaysia-badge:focus-visible {
+  background: rgba(255, 255, 255, 0.12);
+  outline: none;
+}
+
+.malaysia-flag {
+  width: 25px;
+  height: auto;
+  border-radius: 3px;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.42);
+}
+
+.malaysia-tooltip {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: -10px;
+  width: max-content;
+  max-width: 190px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  background: rgba(23, 21, 21, 0.94);
+  color: var(--white);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.3;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-4px);
+  transition: opacity var(--transition), transform var(--transition);
+}
+
+.malaysia-tooltip::before {
+  content: "";
+  position: absolute;
+  right: 21px;
+  bottom: 100%;
+  border: 6px solid transparent;
+  border-bottom-color: rgba(23, 21, 21, 0.94);
+}
+
+.malaysia-badge:hover .malaysia-tooltip,
+.malaysia-badge:focus .malaysia-tooltip,
+.malaysia-badge:focus-visible .malaysia-tooltip {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .header-icon-button:hover {
   background: rgba(255, 255, 255, 0.12);
 }
@@ -355,28 +421,18 @@ img {
   color: var(--ink);
 }
 
-/* =========================================================
-   GOOKIE HERO V2
-   Clean, warm and premium
-========================================================= */
-
 .hero-section {
   position: relative;
   overflow: hidden;
   background: #fffdf9;
 }
 
-/* Cookie visual area */
-
 .hero-cookie-area {
   position: relative;
-
   display: grid;
   place-items: center;
-
   min-height: 390px;
   padding: 34px 18px 8px;
-
   background:
     radial-gradient(
       circle at 50% 46%,
@@ -384,31 +440,18 @@ img {
       rgba(255, 241, 220, 0.38) 38%,
       rgba(255, 253, 249, 0) 72%
     );
-
   isolation: isolate;
 }
-
-/* Main cookie image */
 
 .hero-cookie-image {
   position: relative;
   z-index: 2;
-
   width: min(94vw, 540px);
   height: auto;
-
   object-fit: contain;
-
-  filter:
-    drop-shadow(
-      0 24px 22px
-      rgba(73, 31, 12, 0.16)
-    );
-
+  filter: drop-shadow(0 24px 22px rgba(73, 31, 12, 0.16));
   transform: translateY(4px);
 }
-
-/* Soft decorative shapes */
 
 .hero-shape {
   position: absolute;
@@ -420,41 +463,25 @@ img {
 .hero-shape-one {
   top: 8%;
   left: -24%;
-
   width: 240px;
   height: 240px;
-
-  background:
-    rgba(187, 25, 26, 0.055);
+  background: rgba(187, 25, 26, 0.055);
 }
 
 .hero-shape-two {
   right: -28%;
   bottom: -16%;
-
   width: 300px;
   height: 300px;
-
-  border:
-    1.5px solid
-    rgba(187, 25, 26, 0.09);
+  border: 1.5px solid rgba(187, 25, 26, 0.09);
 }
-
-/* Hero copy */
 
 .hero-content {
   position: relative;
   z-index: 3;
-
-  padding:
-    38px
-    24px
-    72px;
-
+  padding: 38px 24px 64px;
   text-align: center;
 }
-
-/* Small line above headline */
 
 .hero-content .section-kicker {
   color: var(--gookie-red);
@@ -462,27 +489,11 @@ img {
   letter-spacing: 0.18em;
 }
 
-/* Main headline */
-
 .hero-content h1 {
-  margin:
-    14px
-    auto
-    22px;
-
   max-width: 720px;
-
-  font-family:
-    "League Spartan",
-    sans-serif;
-
-  font-size:
-    clamp(
-      3.25rem,
-      14.5vw,
-      7rem
-    );
-
+  margin: 14px auto 18px;
+  font-family: "League Spartan", sans-serif;
+  font-size: clamp(3.25rem, 14.5vw, 7rem);
   font-weight: 900;
   line-height: 0.86;
   letter-spacing: -0.052em;
@@ -500,59 +511,150 @@ img {
   color: var(--gookie-red);
 }
 
-/* Supporting copy */
+.hero-tagline {
+  margin: 0 auto 12px;
+  color: var(--ink);
+  font-family: "League Spartan", sans-serif;
+  font-size: clamp(1.45rem, 6vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
 
 .hero-description {
   max-width: 480px;
-
-  margin:
-    0
-    auto
-    28px;
-
+  margin: 0 auto 28px;
   color: var(--muted);
-
   font-size: 1rem;
   line-height: 1.65;
 }
 
-/* Hero button */
-
-.hero-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+.hero-actions {
+  display: flex;
+  flex-direction: column;
   gap: 12px;
-
-  min-height: 54px;
-  padding: 14px 25px;
-
-  border: 1px solid var(--ink);
-  border-radius: 999px;
-
-  background: var(--ink);
-  color: var(--white);
-
-  box-shadow:
-    0 12px 28px
-    rgba(23, 21, 21, 0.14);
-
-  transition:
-    transform var(--transition),
-    background-color var(--transition),
-    color var(--transition),
-    box-shadow var(--transition);
+  width: min(100%, 360px);
+  margin: 0 auto;
 }
 
-.hero-button:hover {
+.hero-button {
+  width: 100%;
+  gap: 12px;
+  border: 1px solid transparent;
+  box-shadow: 0 12px 28px rgba(23, 21, 21, 0.12);
+}
+
+.hero-button-primary {
   background: var(--gookie-red);
-  border-color: var(--gookie-red);
+  color: var(--white);
+}
 
+.hero-button-primary:hover {
+  background: var(--gookie-red-dark);
   transform: translateY(-2px);
+}
 
-  box-shadow:
-    0 16px 34px
-    rgba(187, 25, 26, 0.2);
+.hero-button-secondary {
+  border-color: rgba(23, 21, 21, 0.2);
+  background: transparent;
+  color: var(--ink);
+  box-shadow: none;
+}
+
+.hero-button-secondary:hover {
+  border-color: var(--ink);
+  background: var(--white);
+  transform: translateY(-2px);
+}
+
+.hero-signature {
+  position: relative;
+  z-index: 4;
+  padding: 0 20px;
+  background: #fffdf9;
+}
+
+.hero-signature-inner {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: min(100%, 1040px);
+  margin: 0 auto;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.signature-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-width: 0;
+  padding: 24px 8px;
+  text-align: center;
+  animation: signatureRise 650ms both;
+}
+
+.signature-item:nth-child(2) {
+  animation-delay: 120ms;
+}
+
+.signature-item:nth-child(3) {
+  animation-delay: 240ms;
+}
+
+.signature-item + .signature-item {
+  border-left: 1px solid var(--line);
+}
+
+.signature-icon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  color: var(--gookie-red);
+}
+
+.signature-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.signature-item strong,
+.signature-item small {
+  display: block;
+}
+
+.signature-item strong {
+  font-family: "League Spartan", sans-serif;
+  font-size: clamp(0.82rem, 3.2vw, 1rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.035em;
+}
+
+.signature-item small {
+  display: none;
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 0.76rem;
+  line-height: 1.3;
+}
+
+@keyframes signatureRise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .signature-item {
+    animation: none;
+  }
 }
 
 .section-heading {
@@ -1573,72 +1675,89 @@ img {
     right: 24px;
   }
 
+  .malaysia-badge {
+    right: 82px;
+    width: 42px;
+    height: 42px;
+  }
+
+  .malaysia-flag {
+    width: 27px;
+  }
+
   .hero-section {
-  display: grid;
-  grid-template-columns:
-    minmax(0, 1.04fr)
-    minmax(0, 0.96fr);
+    display: grid;
+    grid-template-columns: minmax(0, 1.04fr) minmax(0, 0.96fr);
+    min-height: calc(100vh - var(--header-height-desktop));
+    background: #fffdf9;
+  }
 
-  min-height:
-    calc(
-      100vh -
-      var(--header-height-desktop)
-    );
+  .hero-cookie-area {
+    min-height: 100%;
+    padding: 64px 24px;
+    background:
+      radial-gradient(
+        circle at 52% 48%,
+        rgba(255, 224, 188, 0.68) 0%,
+        rgba(255, 241, 220, 0.28) 42%,
+        rgba(255, 253, 249, 0) 73%
+      );
+  }
 
-  background: #fffdf9;
-}
+  .hero-cookie-image {
+    width: min(50vw, 680px);
+  }
 
-/* Image stays on the left */
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 78px clamp(42px, 6vw, 105px);
+    text-align: left;
+  }
 
-.hero-cookie-area {
-  min-height: 100%;
-  padding: 64px 24px;
+  .hero-content h1 {
+    max-width: 690px;
+    margin-left: 0;
+    font-size: clamp(4.4rem, 6.6vw, 7.5rem);
+  }
 
-  background:
-    radial-gradient(
-      circle at 52% 48%,
-      rgba(255, 224, 188, 0.68) 0%,
-      rgba(255, 241, 220, 0.28) 42%,
-      rgba(255, 253, 249, 0) 73%
-    );
-}
+  .hero-tagline,
+  .hero-description {
+    margin-left: 0;
+  }
 
-.hero-cookie-image {
-  width: min(50vw, 680px);
-}
+  .hero-actions {
+    flex-direction: row;
+    width: auto;
+    margin-left: 0;
+  }
 
-/* Copy stays on the right */
+  .hero-button {
+    width: auto;
+  }
 
-.hero-content {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
+  .hero-signature {
+    padding: 0 36px;
+  }
 
-  padding:
-    78px
-    clamp(42px, 6vw, 105px);
+  .signature-item {
+    flex-direction: row;
+    gap: 14px;
+    padding: 28px 30px;
+    text-align: left;
+  }
 
-  text-align: left;
-}
+  .signature-icon {
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+  }
 
-.hero-content h1 {
-  max-width: 690px;
-
-  margin-left: 0;
-
-  font-size:
-    clamp(
-      4.4rem,
-      6.6vw,
-      7.5rem
-    );
-}
-
-.hero-description {
-  max-width: 470px;
-  margin-left: 0;
-}
+  .signature-item small {
+    display: block;
+  }
 
   .marquee-card {
     width: 300px;
