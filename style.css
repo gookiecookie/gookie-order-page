@@ -1797,11 +1797,15 @@ button.cookie-slot {
     padding: 8px 64px 14px;
   }
 
-  .marquee-card {
+ .marquee-card {
     width: min(56vw, 220px);
-    border-radius: 22px;
-    box-shadow: 0 10px 26px rgba(65, 27, 15, 0.1);
-  }
+
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+
+    box-shadow: none;
+}
 
   .marquee-card-image {
     aspect-ratio: 1 / 0.92;
