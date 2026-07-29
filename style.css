@@ -1,3 +1,15 @@
+/* =========================================================
+   GOOKIE ORDER PAGE
+   FILE: style.css
+   CLEAN VERSION: V1
+
+   Notes:
+   - Existing page design and functionality preserved.
+   - Repeated mobile Hero rules consolidated into one block.
+   - Repeated mobile Meet The Gookies rules consolidated.
+   - Keep future edits inside the relevant labelled section.
+   ========================================================= */
+
 :root {
   --gookie-red: #bb191a;
   --gookie-red-dark: #991214;
@@ -696,22 +708,6 @@ img {
 
 .marquee-arrow:active {
   transform: translateY(-50%) scale(0.94);
-}
-
-@media (max-width: 767px) {
-  .marquee-arrow {
-    width: 44px;
-    height: 44px;
-    font-size: 1.2rem;
-  }
-
-  .marquee-arrow-left {
-    left: 8px;
-  }
-
-  .marquee-arrow-right {
-    right: 8px;
-  }
 }
 
 /* ========================================
@@ -1741,67 +1737,6 @@ button.cookie-slot {
 
 
 /* =========================================================
-   MEET THE GOOKIES — MOBILE SIZING & CONTROLS
-   ========================================================= */
-
-@media (max-width: 767px) {
-  .meet-section {
-    padding-top: 72px;
-    padding-bottom: 72px;
-  }
-
-  .marquee-track {
-    gap: 12px;
-    padding-inline: 54px;
-  }
-
-  .marquee-card {
-    width: min(66vw, 258px);
-    border-radius: 24px;
-  }
-
-  .marquee-card-copy {
-    padding: 16px;
-  }
-
-  .marquee-card-copy strong {
-    font-size: 1.18rem;
-  }
-
-  .marquee-arrow {
-    position: absolute;
-    top: 50%;
-    width: 46px;
-    height: 46px;
-    flex-basis: 46px;
-    transform: translateY(-50%);
-  }
-
-  .marquee-arrow-left {
-    left: 8px;
-  }
-
-  .marquee-arrow-right {
-    right: 8px;
-  }
-
-  .marquee-arrow:hover {
-    transform: translateY(-50%);
-  }
-
-  .marquee-arrow:active {
-    transform: translateY(-50%) scale(0.94);
-  }
-
-  .marquee-hint {
-    max-width: 330px;
-    margin: 22px auto 0;
-    padding: 0 18px;
-    line-height: 1.45;
-  }
-}
-
-/* =========================================================
    MEET THE GOOKIES — INTERACTIVE CAROUSEL
    ========================================================= */
 
@@ -1895,10 +1830,20 @@ button.cookie-slot {
   }
 
   .marquee-arrow {
+    position: absolute;
     top: 42%;
     width: 42px;
     height: 42px;
     font-size: 1.35rem;
+    transform: translateY(-50%);
+  }
+
+  .marquee-arrow:hover {
+    transform: translateY(-50%);
+  }
+
+  .marquee-arrow:active {
+    transform: translateY(-50%) scale(0.94);
   }
 
   .marquee-arrow-left {
@@ -3240,16 +3185,17 @@ button.cookie-slot {
   }
 }
 
-/* ========================================
-   MOBILE HERO — FINAL CLEAN FIX
-======================================== */
+/* =========================================================
+   HERO — MOBILE
+   Keep this as the only mobile Hero override.
+   ========================================================= */
 
 @media (max-width: 767px) {
   .hero-highlights {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     width: 100%;
-    margin: 24px 0 42px;
+    margin: 24px 0 36px;
     padding: 0;
     gap: 8px;
   }
@@ -3267,69 +3213,33 @@ button.cookie-slot {
 
   .hero-highlight strong {
     width: 100%;
-    font-size: 0.64rem;
-    line-height: 1.15;
+    font-size: 0.65rem;
+    line-height: 1.2;
     white-space: normal;
   }
 
   .hero-actions {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
     width: 100%;
-    gap: 16px;
+    gap: 12px;
+    flex-wrap: nowrap;
   }
 
   .hero-actions .hero-button {
-    width: min(100%, 355px);
+    flex: 1 1 0;
+    width: auto;
+    max-width: 170px;
     min-width: 0;
     min-height: 56px;
-    padding: 15px 24px;
+    padding: 14px 10px;
+    font-size: 0.78rem;
+    text-align: center;
   }
 
   .hero-cookie-image {
     filter: none;
   }
-}
-
-/* ========================================
-   HERO MOBILE
-======================================== */
-
-@media (max-width:767px){
-
-  .hero-highlights{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:8px;
-    margin:24px 0 36px;
-  }
-
-  .hero-highlight{
-    min-width:0;
-  }
-
-  .hero-highlight strong{
-    font-size:.65rem;
-    line-height:1.2;
-    white-space:normal;
-  }
-
-  .hero-actions{
-    display:flex;
-    flex-direction:row;
-    justify-content:center;
-    gap:12px;
-    flex-wrap:nowrap;
-  }
-
-  .hero-actions .hero-button{
-    flex:1;
-    max-width:170px;
-    min-width:0;
-    min-height:56px;
-    padding:14px 10px;
-    font-size:.78rem;
-  }
-
 }
