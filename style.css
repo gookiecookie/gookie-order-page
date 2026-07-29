@@ -555,6 +555,91 @@ img {
   line-height: 1.6;
 }
 
+/* =========================================================
+   FRESH BANNER
+========================================================= */
+
+.fresh-banner-section{
+    padding:12px 20px 36px;
+    background:#fff;
+}
+
+.fresh-banner{
+
+    display:flex;
+    align-items:center;
+    gap:18px;
+
+    width:min(100%,900px);
+
+    margin:0 auto;
+
+    padding:18px 20px;
+
+    border-radius:24px;
+
+    background:#FFF8EF;
+
+    box-shadow:0 12px 30px rgba(0,0,0,.06);
+
+}
+
+.fresh-banner-icon{
+
+    font-size:42px;
+
+    flex-shrink:0;
+
+}
+
+.fresh-banner-copy{
+
+    flex:1;
+
+}
+
+.fresh-banner-copy span{
+
+    display:block;
+
+    margin-bottom:6px;
+
+    font-family:"League Spartan",sans-serif;
+
+    font-size:1rem;
+
+    font-weight:800;
+
+    color:var(--gookie-red);
+
+}
+
+.fresh-banner-copy p{
+
+    margin:0;
+
+    color:var(--muted);
+
+    line-height:1.5;
+
+}
+
+.fresh-banner-cookie{
+
+    width:110px;
+
+    flex-shrink:0;
+
+}
+
+.fresh-banner-cookie img{
+
+    width:100%;
+
+    display:block;
+
+}
+
 .meet-section {
   overflow: hidden;
   padding: 90px 0;
@@ -3114,5 +3199,40 @@ button.cookie-slot {
 
   .hero-cookie-image {
     filter: none;
+  }
+}
+
+/* =========================================================
+   FRESH BANNER — MOBILE
+========================================================= */
+
+@media (max-width: 767px) {
+
+  .fresh-banner-section {
+    padding: 8px 20px 42px;
+  }
+
+  .fresh-banner {
+    gap: 12px;
+    padding: 14px 14px;
+    border-radius: 20px;
+  }
+
+  .fresh-banner-icon {
+    font-size: 32px;
+  }
+
+  .fresh-banner-copy span {
+    font-size: 0.78rem;
+    line-height: 1.15;
+  }
+
+  .fresh-banner-copy p {
+    font-size: 0.72rem;
+    line-height: 1.45;
+  }
+
+  .fresh-banner-cookie {
+    width: 82px;
   }
 }
