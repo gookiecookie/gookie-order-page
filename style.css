@@ -3254,3 +3254,186 @@ button.cookie-slot {
     width: 82px;
   }
 }
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.site-footer{
+
+    margin-top:100px;
+
+    background:#141414;
+
+    color:#fff;
+
+}
+
+.footer-inner{
+
+    width:min(1200px,92%);
+
+    margin:0 auto;
+
+    padding:70px 0 30px;
+
+}
+
+.footer-brand{
+
+    text-align:center;
+
+    margin-bottom:60px;
+
+}
+
+.footer-brand h2{
+
+    font-family:"League Spartan",sans-serif;
+
+    font-size:3rem;
+
+    font-weight:800;
+
+    letter-spacing:.04em;
+
+    margin-bottom:18px;
+
+}
+
+.footer-brand p{
+
+    max-width:560px;
+
+    margin:auto;
+
+    color:rgba(255,255,255,.75);
+
+    line-height:1.8;
+
+}
+
+.footer-links{
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:60px;
+
+    margin-bottom:60px;
+
+}
+
+.footer-column h3{
+
+    margin-bottom:18px;
+
+    font-family:"League Spartan",sans-serif;
+
+    font-size:1rem;
+
+    letter-spacing:.08em;
+
+    color:var(--gookie-red);
+
+}
+
+.footer-column a{
+
+    display:block;
+
+    margin-bottom:12px;
+
+    color:rgba(255,255,255,.75);
+
+    text-decoration:none;
+
+    transition:.25s;
+
+}
+
+.footer-column a:hover{
+
+    color:#fff;
+
+    transform:translateX(4px);
+
+}
+
+.footer-bottom{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    flex-wrap:wrap;
+
+    gap:20px;
+
+    padding-top:25px;
+
+    border-top:1px solid rgba(255,255,255,.12);
+
+    color:rgba(255,255,255,.55);
+
+    font-size:.9rem;
+
+}
+
+/* =========================================================
+   FOOTER — MOBILE
+========================================================= */
+
+@media (max-width: 767px) {
+
+  .site-footer {
+    margin-top: 70px;
+  }
+
+  .footer-inner {
+    width: min(100%, 88%);
+    padding: 56px 0 24px;
+  }
+
+  .footer-brand {
+    margin-bottom: 46px;
+  }
+
+  .footer-brand h2 {
+    font-size: 2.35rem;
+    margin-bottom: 14px;
+  }
+
+  .footer-brand p {
+    font-size: 0.92rem;
+    line-height: 1.7;
+  }
+
+  .footer-links {
+    grid-template-columns: 1fr;
+    gap: 34px;
+    margin-bottom: 46px;
+    text-align: center;
+  }
+
+  .footer-column h3 {
+    margin-bottom: 14px;
+  }
+
+  .footer-column a {
+    margin-bottom: 11px;
+  }
+
+  .footer-column a:hover {
+    transform: none;
+  }
+
+  .footer-bottom {
+    justify-content: center;
+    text-align: center;
+    gap: 8px;
+    font-size: 0.82rem;
+  }
+
+}
