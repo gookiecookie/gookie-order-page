@@ -640,6 +640,24 @@ img {
 
 }
 
+.fresh-oven-icon{
+
+    width:44px;
+    height:44px;
+
+    stroke:var(--gookie-red);
+
+    stroke-width:2.8;
+
+    fill:none;
+
+    stroke-linecap:round;
+    stroke-linejoin:round;
+
+    display:block;
+
+}
+
 .meet-section {
   overflow: hidden;
   padding: 90px 0;
