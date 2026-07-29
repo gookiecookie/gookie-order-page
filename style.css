@@ -3291,3 +3291,45 @@ button.cookie-slot {
     filter: none;
   }
 }
+
+/* ========================================
+   HERO MOBILE
+======================================== */
+
+@media (max-width:767px){
+
+  .hero-highlights{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    margin:24px 0 36px;
+  }
+
+  .hero-highlight{
+    min-width:0;
+  }
+
+  .hero-highlight strong{
+    font-size:.65rem;
+    line-height:1.2;
+    white-space:normal;
+  }
+
+  .hero-actions{
+    display:flex;
+    flex-direction:row;
+    justify-content:center;
+    gap:12px;
+    flex-wrap:nowrap;
+  }
+
+  .hero-actions .hero-button{
+    flex:1;
+    max-width:170px;
+    min-width:0;
+    min-height:56px;
+    padding:14px 10px;
+    font-size:.78rem;
+  }
+
+}
