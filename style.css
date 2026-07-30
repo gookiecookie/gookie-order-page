@@ -3422,6 +3422,7 @@ button.cookie-slot {
 
   .fresh-banner-cookie {
     width: 105px;
+     grid-template-columns: 52px minmax(0, 1fr) 82px;
   }
 
    .fresh-oven-icon{
