@@ -585,15 +585,12 @@ img {
 }
 
 .fresh-banner-icon{
-
     font-size:42px;
-
     flex-shrink:0;
 
 }
 
 .fresh-banner-copy{
-
     flex:1;
 
 }
@@ -3443,4 +3440,20 @@ button.cookie-slot {
 
 }
 
+   .fresh-banner-copy span{
+    display:block;
+    margin-bottom:6px;
+    font-family:"League Spartan",sans-serif;
+    font-size:0.8rem;
+    font-weight:600;
+    color:var(--gookie-red);
+
+}
+
+.fresh-banner-copy p{
+ margin:0;
+    font-size:0.8rem;
+    color:var(--muted);
+    line-height:1.5;
+}
 }
