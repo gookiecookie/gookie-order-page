@@ -642,8 +642,8 @@ img {
 
 .fresh-oven-icon{
 
-    width:44px;
-    height:44px;
+    width:60px;
+    height:60px;
 
     stroke:var(--gookie-red);
 
@@ -3424,5 +3424,23 @@ button.cookie-slot {
   .fresh-banner-cookie {
     width: 105px;
   }
+
+   .fresh-oven-icon{
+
+    width:60px;
+    height:60px;
+
+    stroke:var(--gookie-red);
+
+    stroke-width:2.8;
+
+    fill:none;
+
+    stroke-linecap:round;
+    stroke-linejoin:round;
+
+    display:block;
+
+}
 
 }
