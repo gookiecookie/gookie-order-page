@@ -465,11 +465,14 @@ function goToMarqueeSlide(index, userAction = false) {
 
   const card = cards[marqueeCurrentIndex];
 
-  card.scrollIntoView({
-    behavior: "smooth",
-    block: "nearest",
-    inline: "center",
-  });
+ const targetLeft =
+  card.offsetLeft -
+  (marqueeShell.clientWidth - card.offsetWidth) / 2;
+
+marqueeShell.scrollTo({
+  left: targetLeft,
+  behavior: "smooth",
+});
 
   updateMarqueeActiveState(marqueeCurrentIndex);
 
