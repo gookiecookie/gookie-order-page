@@ -4141,3 +4141,149 @@ button.cookie-slot {
   }
 
 }
+
+/* =========================================================
+   MEET THE GOOKIES — HEART NAVIGATION
+========================================================= */
+
+.meet-section .marquee-arrow {
+  width: 64px;
+  height: 44px;
+
+  border: 1.5px solid rgba(187, 25, 26, 0.28);
+  border-radius: 999px 999px 999px 999px;
+
+  background: #fff8ef;
+  color: var(--gookie-red);
+
+  font-size: 0;
+  box-shadow: 0 10px 26px rgba(55, 26, 12, 0.12);
+
+  overflow: visible;
+}
+
+
+/* HEART SHAPE */
+
+.meet-section .marquee-arrow::before,
+.meet-section .marquee-arrow::after {
+  content: "";
+  position: absolute;
+
+  top: 11px;
+
+  width: 21px;
+  height: 29px;
+
+  border-radius: 21px 21px 0 0;
+
+  background: var(--gookie-red);
+}
+
+
+/* LEFT SIDE OF HEART */
+
+.meet-section .marquee-arrow::before {
+  left: 21px;
+
+  transform:
+    rotate(-45deg);
+
+  transform-origin:
+    0 100%;
+}
+
+
+/* RIGHT SIDE OF HEART */
+
+.meet-section .marquee-arrow::after {
+  left: 20px;
+
+  transform:
+    rotate(45deg);
+
+  transform-origin:
+    100% 100%;
+}
+
+
+/* FLIP LEFT BUTTON */
+
+.meet-section .marquee-arrow-left {
+  left: 18px;
+  transform:
+    translateY(-50%)
+    rotate(-90deg);
+}
+
+
+/* FLIP RIGHT BUTTON */
+
+.meet-section .marquee-arrow-right {
+  right: 18px;
+  transform:
+    translateY(-50%)
+    rotate(90deg);
+}
+
+
+/* HOVER */
+
+@media (hover: hover) {
+
+  .meet-section .marquee-arrow:hover {
+    background: var(--gookie-red);
+    color: var(--white);
+  }
+
+  .meet-section .marquee-arrow:hover::before,
+  .meet-section .marquee-arrow:hover::after {
+    background: var(--white);
+  }
+
+}
+
+
+/* ACTIVE */
+
+.meet-section .marquee-arrow:active {
+  scale: 0.94;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 767px) {
+
+  .meet-section .marquee-arrow {
+    width: 54px;
+    height: 38px;
+
+    top: 50%;
+  }
+
+  .meet-section .marquee-arrow::before,
+  .meet-section .marquee-arrow::after {
+    top: 10px;
+
+    width: 18px;
+    height: 24px;
+  }
+
+  .meet-section .marquee-arrow::before {
+    left: 18px;
+  }
+
+  .meet-section .marquee-arrow::after {
+    left: 17px;
+  }
+
+  .meet-section .marquee-arrow-left {
+    left: 8px;
+  }
+
+  .meet-section .marquee-arrow-right {
+    right: 8px;
+  }
+
+}
