@@ -986,6 +986,78 @@ box-shadow:0 10px 26px rgba(0,0,0,.05);
   cursor: pointer;
 }
 
+/* ========================================
+   BOX SIZE PRODUCT IMAGES
+======================================== */
+
+.box-size-image {
+  width: 132px;
+  flex: 0 0 132px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: -14px;
+  margin-bottom: -14px;
+  margin-left: -24px;
+
+  position: relative;
+  z-index: 2;
+}
+
+.box-size-image img {
+  display: block;
+  width: 100%;
+  height: 128px;
+
+  object-fit: contain;
+
+  filter: drop-shadow(
+    0 12px 12px rgba(64, 27, 14, 0.16)
+  );
+
+  transition:
+    transform 260ms ease,
+    filter 260ms ease;
+}
+
+.box-size-card:hover .box-size-image img {
+  transform: translateY(-3px) scale(1.035);
+
+  filter: drop-shadow(
+    0 16px 15px rgba(64, 27, 14, 0.2)
+  );
+}
+
+@media (max-width: 480px) {
+  .box-accordion-header {
+    gap: 10px;
+    padding: 18px 16px;
+  }
+
+  .box-size-image {
+    width: 118px;
+    flex-basis: 118px;
+
+    margin-top: -10px;
+    margin-bottom: -10px;
+    margin-left: -20px;
+  }
+
+  .box-size-image img {
+    height: 112px;
+  }
+
+  .box-accordion-copy strong {
+    font-size: 1.35rem;
+  }
+
+  .box-accordion-copy small {
+    font-size: 0.82rem;
+  }
+}
+
 .box-accordion-copy {
   display: flex;
   flex-direction: column;
