@@ -4143,147 +4143,100 @@ button.cookie-slot {
 }
 
 /* =========================================================
-   MEET THE GOOKIES — HEART NAVIGATION
+   MEET THE GOOKIES — PREMIUM CHEVRON NAVIGATION
 ========================================================= */
 
 .meet-section .marquee-arrow {
-  width: 64px;
-  height: 44px;
+  position: absolute;
+  top: 50%;
+  z-index: 10;
 
-  border: 1.5px solid rgba(187, 25, 26, 0.28);
-  border-radius: 999px 999px 999px 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  background: #fff8ef;
+  width: 54px;
+  height: 54px;
+  padding: 0;
+
+  border: 1px solid rgba(187, 25, 26, 0.16);
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.94);
   color: var(--gookie-red);
 
-  font-size: 0;
-  box-shadow: 0 10px 26px rgba(55, 26, 12, 0.12);
+  font-family: Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
 
-  overflow: visible;
+  box-shadow:
+    0 10px 28px rgba(30, 20, 10, 0.1);
+
+  cursor: pointer;
+
+  transform: translateY(-50%);
+
+  transition:
+    background-color 220ms ease,
+    color 220ms ease,
+    box-shadow 220ms ease,
+    transform 220ms ease;
 }
-
-
-/* HEART SHAPE */
-
-.meet-section .marquee-arrow::before,
-.meet-section .marquee-arrow::after {
-  content: "";
-  position: absolute;
-
-  top: 11px;
-
-  width: 21px;
-  height: 29px;
-
-  border-radius: 21px 21px 0 0;
-
-  background: var(--gookie-red);
-}
-
-
-/* LEFT SIDE OF HEART */
-
-.meet-section .marquee-arrow::before {
-  left: 21px;
-
-  transform:
-    rotate(-45deg);
-
-  transform-origin:
-    0 100%;
-}
-
-
-/* RIGHT SIDE OF HEART */
-
-.meet-section .marquee-arrow::after {
-  left: 20px;
-
-  transform:
-    rotate(45deg);
-
-  transform-origin:
-    100% 100%;
-}
-
-
-/* FLIP LEFT BUTTON */
 
 .meet-section .marquee-arrow-left {
-  left: 18px;
-  transform:
-    translateY(-50%)
-    rotate(-90deg);
+  left: 14px;
 }
-
-
-/* FLIP RIGHT BUTTON */
 
 .meet-section .marquee-arrow-right {
-  right: 18px;
-  transform:
-    translateY(-50%)
-    rotate(90deg);
+  right: 14px;
 }
-
-
-/* HOVER */
 
 @media (hover: hover) {
 
   .meet-section .marquee-arrow:hover {
     background: var(--gookie-red);
-    color: var(--white);
-  }
+    color: #fff;
 
-  .meet-section .marquee-arrow:hover::before,
-  .meet-section .marquee-arrow:hover::after {
-    background: var(--white);
+    box-shadow:
+      0 14px 32px rgba(187, 25, 26, 0.2);
+
+    transform:
+      translateY(-50%)
+      scale(1.08);
   }
 
 }
-
-
-/* ACTIVE */
 
 .meet-section .marquee-arrow:active {
-  scale: 0.94;
+  transform:
+    translateY(-50%)
+    scale(0.92);
 }
 
-
-/* MOBILE */
+.meet-section .marquee-arrow:focus-visible {
+  outline: 3px solid rgba(187, 25, 26, 0.25);
+  outline-offset: 4px;
+}
 
 @media (max-width: 767px) {
 
   .meet-section .marquee-arrow {
-    width: 54px;
-    height: 38px;
+    width: 44px;
+    height: 44px;
 
-    top: 50%;
-  }
+    font-size: 19px;
 
-  .meet-section .marquee-arrow::before,
-  .meet-section .marquee-arrow::after {
-    top: 10px;
-
-    width: 18px;
-    height: 24px;
-  }
-
-  .meet-section .marquee-arrow::before {
-    left: 18px;
-  }
-
-  .meet-section .marquee-arrow::after {
-    left: 17px;
+    box-shadow:
+      0 8px 20px rgba(30, 20, 10, 0.1);
   }
 
   .meet-section .marquee-arrow-left {
-    left: 8px;
+    left: 6px;
   }
 
   .meet-section .marquee-arrow-right {
-    right: 8px;
+    right: 6px;
   }
 
 }
