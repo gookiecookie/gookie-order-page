@@ -3872,3 +3872,272 @@ button.cookie-slot {
   }
 
 }
+
+/* =========================================================
+   MEET THE GOOKIES — PREMIUM SNAP CAROUSEL V1
+========================================================= */
+
+.meet-section .marquee-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.meet-section .marquee-shell {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scroll-padding-inline: calc((100vw - 340px) / 2);
+
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+
+  cursor: grab;
+}
+
+.meet-section .marquee-shell::-webkit-scrollbar {
+  display: none;
+}
+
+.meet-section .marquee-shell.is-dragging {
+  cursor: grabbing;
+  scroll-snap-type: none;
+  scroll-behavior: auto;
+}
+
+.meet-section .marquee-track {
+  display: flex;
+  align-items: flex-start;
+  gap: 34px;
+
+  width: max-content;
+
+  padding:
+    20px
+    max(40px, calc((100vw - 340px) / 2))
+    28px;
+
+  transform: none !important;
+  animation: none !important;
+}
+
+
+/* EACH SLIDE */
+
+.meet-section .marquee-card {
+  width: 340px;
+  flex: 0 0 340px;
+
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+
+  opacity: 0.48;
+
+  transform:
+    translateY(12px)
+    scale(0.9);
+
+  transition:
+    opacity 380ms ease,
+    transform 380ms cubic-bezier(.2,.8,.2,1);
+}
+
+
+/* ACTIVE COOKIE */
+
+.meet-section .marquee-card.is-active {
+  opacity: 1;
+
+  transform:
+    translateY(0)
+    scale(1);
+}
+
+.meet-section
+.marquee-card.is-active
+.marquee-card-image::before {
+  transform:
+    rotate(3deg)
+    scale(1.05);
+
+  background: #ffe8c8;
+}
+
+.meet-section
+.marquee-card.is-active
+.marquee-card-image img {
+  transform:
+    translateY(-7px)
+    scale(1.035);
+}
+
+
+/* POP ANIMATION WHEN ACTIVE */
+
+.meet-section
+.marquee-card.is-active
+.marquee-card-image::after {
+  animation: gookieDoodlePop 500ms ease both;
+}
+
+@keyframes gookieDoodlePop {
+  0% {
+    opacity: 0;
+    transform: scale(0.4) rotate(-12deg);
+  }
+
+  70% {
+    transform: scale(1.16) rotate(7deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(3deg);
+  }
+}
+
+
+/* PAGINATION DOTS */
+
+.marquee-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+
+  margin-top: 8px;
+}
+
+.marquee-dot {
+  width: 9px;
+  height: 9px;
+  flex: 0 0 9px;
+
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+
+  background: rgba(187, 25, 26, 0.18);
+
+  cursor: pointer;
+
+  transition:
+    width 260ms ease,
+    background-color 260ms ease,
+    transform 260ms ease;
+}
+
+.marquee-dot.is-active {
+  width: 25px;
+
+  background: var(--gookie-red);
+
+  transform: scale(1.02);
+}
+
+.marquee-dot:focus-visible {
+  outline: 3px solid rgba(187, 25, 26, 0.24);
+  outline-offset: 4px;
+}
+
+
+/* DESKTOP */
+
+@media (min-width: 768px) {
+
+  .meet-section .marquee-shell {
+    scroll-padding-inline:
+      calc((100vw - 360px) / 2);
+  }
+
+  .meet-section .marquee-track {
+    gap: 48px;
+
+    padding-inline:
+      max(60px, calc((100vw - 360px) / 2));
+  }
+
+  .meet-section .marquee-card {
+    width: 360px;
+    flex-basis: 360px;
+  }
+
+}
+
+
+/* MOBILE */
+
+@media (max-width: 767px) {
+
+  .meet-section .marquee-shell {
+    scroll-padding-inline: 11vw;
+  }
+
+  .meet-section .marquee-track {
+    gap: 18px;
+
+    padding:
+      14px
+      11vw
+      24px;
+  }
+
+  .meet-section .marquee-card {
+    width: 78vw;
+    max-width: 310px;
+
+    flex-basis: 78vw;
+  }
+
+  .meet-section .marquee-card-image {
+    aspect-ratio: 1 / 1;
+  }
+
+  .meet-section .marquee-card:not(.is-active) {
+    opacity: 0.42;
+
+    transform:
+      translateY(8px)
+      scale(0.92);
+  }
+
+  .marquee-pagination {
+    gap: 7px;
+    margin-top: 4px;
+  }
+
+  .marquee-dot {
+    width: 7px;
+    height: 7px;
+    flex-basis: 7px;
+  }
+
+  .marquee-dot.is-active {
+    width: 21px;
+  }
+
+}
+
+
+/* REDUCED MOTION */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .meet-section .marquee-shell {
+    scroll-behavior: auto;
+  }
+
+  .meet-section .marquee-card,
+  .marquee-dot {
+    transition: none;
+  }
+
+  .meet-section
+  .marquee-card.is-active
+  .marquee-card-image::after {
+    animation: none;
+  }
+
+}
