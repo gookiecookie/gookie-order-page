@@ -336,7 +336,6 @@ function closeAllModals() {
 /* =========================================================
    MEET THE GOOKIES — PREMIUM SNAP CAROUSEL
 ========================================================= */
-
 let marqueeCurrentIndex = 0;
 let marqueeScrollTimer = null;
 let marqueeAutoplayTimer = null;
