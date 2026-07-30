@@ -3414,3 +3414,15 @@ button.cookie-slot {
   }
 
 }
+
+/* =========================================================
+   FRESH BANNER — MOBILE IMAGE SIZE
+========================================================= */
+
+@media (max-width: 767px) {
+
+  .fresh-banner-cookie {
+    width: 105px;
+  }
+
+}
