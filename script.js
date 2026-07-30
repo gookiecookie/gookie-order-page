@@ -367,15 +367,13 @@ function createMarqueeCard(cookie, index) {
   `;
 
   button.addEventListener("click", (event) => {
-    if (marqueeDragDistance > 8) {
-      event.preventDefault();
-      marqueeDragDistance = 0;
-      return;
-    }
+  event.preventDefault();
 
-    pauseMarquee();
-    openCookieDetails(cookie);
-  });
+  pauseMarquee();
+  openCookieDetails(cookie);
+
+  marqueeDragDistance = 0;
+});
 
   return button;
 }
