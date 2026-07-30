@@ -3616,23 +3616,107 @@ button.cookie-slot {
 /* LITTLE DOODLES */
 
 .meet-section .marquee-card-image::after {
-  content: "✦  ♡";
+  content: "✦";
+
   position: absolute;
   z-index: 3;
 
-  top: 12%;
+  top: 8%;
   right: 8%;
 
   color: var(--gookie-red);
 
   font-family: Arial, sans-serif;
-  font-size: 1.15rem;
-  letter-spacing: 0.35em;
+  font-size: 1.3rem;
 
-  transform: rotate(8deg);
   pointer-events: none;
+
+  animation: gookieDoodleFloat 4.8s ease-in-out infinite;
 }
 
+/* Extra lightweight doodles around each cookie */
+
+.meet-section .marquee-card {
+  --doodle-delay: 0s;
+}
+
+.meet-section .marquee-card:nth-child(2n) {
+  --doodle-delay: -1.2s;
+}
+
+.meet-section .marquee-card:nth-child(3n) {
+  --doodle-delay: -2.4s;
+}
+
+.meet-section .marquee-card-image {
+  overflow: visible;
+}
+
+.meet-section .marquee-card-image::after {
+  animation-delay: var(--doodle-delay);
+}
+
+.meet-section .marquee-card-copy::before {
+  content: "♡";
+
+  position: absolute;
+
+  top: -28px;
+  left: 10%;
+
+  color: var(--gookie-red);
+
+  font-family: Arial, sans-serif;
+  font-size: 1.15rem;
+
+  transform: rotate(-14deg);
+
+  pointer-events: none;
+
+  animation:
+    gookieDoodleFloat 5.5s ease-in-out infinite;
+  animation-delay: calc(var(--doodle-delay) - 0.7s);
+}
+
+.meet-section .marquee-card:nth-child(3n) .marquee-card-image::after {
+  content: "✧";
+  top: 18%;
+  right: 3%;
+}
+
+.meet-section .marquee-card:nth-child(3n + 1) .marquee-card-copy::before {
+  content: "◌";
+  top: -18px;
+  left: 14%;
+  font-size: 1.35rem;
+}
+
+.meet-section .marquee-card:nth-child(3n + 2) .marquee-card-copy::before {
+  content: "⌁";
+  top: -22px;
+  left: 8%;
+  font-size: 1.3rem;
+}
+
+@keyframes gookieDoodleFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-8deg);
+  }
+
+  50% {
+    transform: translateY(-5px) rotate(5deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .meet-section .marquee-card-image::after,
+  .meet-section .marquee-card-copy::before {
+    animation: none;
+  }
+
+}
 
 /* COOKIE IMAGE */
 
