@@ -1376,6 +1376,21 @@ function renderPaymentStep() {
 async function openPaymentStep() {
   if (!currentOrder || !customerDetails) return;
 
+  const originalButtonText =
+    proceedToPaymentButton.textContent;
+
+  proceedToPaymentButton.disabled = true;
+  proceedToPaymentButton.classList.add("is-loading");
+
+  proceedToPaymentButton.innerHTML = `
+    <span class="button-loading-dots" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+    </span>
+    <span>PLEASE WAIT</span>
+  `;
+
   try {
     const payload = buildOrderPayload();
 
@@ -1419,24 +1434,25 @@ async function openPaymentStep() {
       );
     }
 
-    /*
-     * Save the backend quote before opening payment.
-     * This does not create an order.
-     */
     currentOrder.serverQuote = {
       subtotal: Number(result.totals.subtotal),
+
       discount: Number(
         result.totals.discount || 0,
       ),
+
       shippingCharge: Number(
         result.totals.shippingCharge,
       ),
+
       grandTotal: Number(
         result.totals.grandTotal,
       ),
+
       parcelWeightG: Number(
         result.totals.parcelWeightG || 0,
       ),
+
       zoneId: result.zone?.zoneId || "",
     };
 
@@ -1454,9 +1470,13 @@ async function openPaymentStep() {
       error.message ||
         "Unable to calculate delivery charge. Please try again.",
     );
+  } finally {
+    proceedToPaymentButton.disabled = false;
+    proceedToPaymentButton.classList.remove("is-loading");
+    proceedToPaymentButton.textContent =
+      originalButtonText;
   }
 }
-
 function getWhatsAppMessage() {
   const quote = currentOrder?.serverQuote;
 
