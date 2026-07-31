@@ -11,7 +11,7 @@
       href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=League+Spartan:wght@700;800;900&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css?v=9.0" />
+    <link rel="stylesheet" href="style.css?v=9.1" />
   </head>
   <body>
     <button
@@ -295,8 +295,14 @@ Which one will steal your heart?</p>
       <section class="order-builder" id="order-builder">
         <div class="section-heading order-builder-heading">
           <p class="section-kicker">NOW FOR THE FUN PART</p>
-          <h2>GET YOUR GOOKIES</h2>
-          <p>Build your own box, or let Gookie choose for you 🤍</p>
+          <h2 class="order-title">
+            <span class="order-title-top">GET YOUR</span>
+            <span class="order-title-red">
+              GOOKIES
+              <span class="order-title-heart">♡</span>
+            </span>
+          </h2>
+          <p>Build your dream box, or let Gookie do the choosing.</p>
         </div>
 
         <div
@@ -347,7 +353,7 @@ Which one will steal your heart?</p>
 
       <span class="box-accordion-copy">
         <strong>TREAT BOX</strong>
-        <small>4 cookies · RM39</small>
+        <small><b>GET 4 COOKIES</b><span>RM39</span></small>
       </span>
 
       <span class="box-accordion-arrow" aria-hidden="true">⌄</span>
@@ -386,7 +392,7 @@ Which one will steal your heart?</p>
 
       <span class="box-accordion-copy">
         <strong>CHUNKY BOX</strong>
-        <small>6 cookies · RM56</small>
+        <small><b>GET 6 COOKIES</b><span>RM56</span></small>
       </span>
 
       <span class="box-accordion-arrow" aria-hidden="true">⌄</span>
@@ -425,7 +431,7 @@ Which one will steal your heart?</p>
 
       <span class="box-accordion-copy">
         <strong>COOKIE FEAST</strong>
-        <small>12 cookies · RM108</small>
+        <small><b>GET 12 COOKIES</b><span>RM108</span></small>
       </span>
 
       <span class="box-accordion-arrow" aria-hidden="true">⌄</span>
@@ -731,9 +737,22 @@ Which one will steal your heart?</p>
             ×
           </button>
         </div>
-        <div class="flavour-selector-counter">
-          <strong id="flavourSelectedCount">0</strong><span>/</span
-          ><strong id="flavourBoxCapacity">0</strong><span>selected</span>
+        <div class="flavour-box-meter" aria-live="polite">
+          <p class="flavour-meter-label">YOUR GOOKIE BOX</p>
+          <div
+            class="flavour-meter-slots"
+            id="flavourMeterSlots"
+            aria-label="Selected Gookies"
+          ></div>
+          <p class="flavour-meter-count">
+            <strong id="flavourSelectedCount">0</strong>
+            <span> OF </span>
+            <strong id="flavourBoxCapacity">0</strong>
+            <span> SELECTED</span>
+          </p>
+          <p class="flavour-meter-message" id="flavourMeterMessage">
+            Choose your first Gookie.
+          </p>
         </div>
         <div class="flavour-name-list" id="flavourNameList"></div>
         <div class="modal-sticky-footer">
@@ -1073,7 +1092,7 @@ Which one will steal your heart?</p>
 </section>
 
 <script src="order-engine.js"></script>
-<script src="script.js?v=9.0"></script>
+<script src="script.js?v=9.1"></script>
         
   </body>
 </html>

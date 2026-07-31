@@ -213,6 +213,8 @@ const $ = (id) => document.getElementById(id),
   flavourModalTitle = $("flavourModalTitle"),
   flavourSelectedCount = $("flavourSelectedCount"),
   flavourBoxCapacity = $("flavourBoxCapacity"),
+  flavourMeterSlots = $("flavourMeterSlots"),
+  flavourMeterMessage = $("flavourMeterMessage"),
   flavourNameList = $("flavourNameList"),
   saveFlavourSelection = $("saveFlavourSelection"),
   collectionGrid = $("collectionGrid"),
@@ -278,7 +280,8 @@ let buildBoxSize = 0,
   marqueeScrollStart = 0,
   marqueeDragDistance = 0,
   marqueeResumeTimer = null,
-  marqueeAutoPosition = 0;
+  marqueeAutoPosition = 0,
+  flavourMeterPreviousCount = 0;
 const getCookieById = (id) => gookieCatalogue.find((c) => c.id === id);
 function openOverlay() {
   pageOverlay.hidden = false;
@@ -807,6 +810,7 @@ function selectBuildBox(button) {
   buildBoxSize = Number(button.dataset.boxSize);
   buildBoxName = button.dataset.boxName;
   buildSelection = [];
+  flavourMeterPreviousCount = 0;
   buildSelectedBoxName.textContent = buildBoxName;
   buildSelectedCount.textContent = "0";
   buildBoxCapacity.textContent = String(buildBoxSize);
@@ -855,10 +859,57 @@ function renderFlavourList() {
     flavourNameList.appendChild(row);
   });
 }
+
+function renderFlavourMeter() {
+  if (!flavourMeterSlots || !flavourMeterMessage) return;
+
+  const selectedCount = buildSelection.length;
+  const remaining = Math.max(buildBoxSize - selectedCount, 0);
+  const addedNewCookie = selectedCount > flavourMeterPreviousCount;
+
+  flavourMeterSlots.innerHTML = "";
+  flavourMeterSlots.style.setProperty("--meter-capacity", String(buildBoxSize));
+
+  for (let index = 0; index < buildBoxSize; index += 1) {
+    const cookie = buildSelection[index]
+      ? getCookieById(buildSelection[index])
+      : null;
+    const slot = document.createElement("span");
+
+    slot.className = "flavour-meter-slot";
+
+    if (cookie) {
+      slot.classList.add("has-cookie");
+      if (addedNewCookie && index === selectedCount - 1) {
+        slot.classList.add("is-new");
+      }
+
+      slot.innerHTML = `<img src="${cookie.image}" alt="${cookie.name}">`;
+      slot.title = cookie.name;
+    } else {
+      slot.setAttribute("aria-hidden", "true");
+      slot.innerHTML = '<span class="flavour-meter-ghost">🍪</span>';
+    }
+
+    flavourMeterSlots.appendChild(slot);
+  }
+
+  if (selectedCount === 0) {
+    flavourMeterMessage.textContent = "Choose your first Gookie.";
+  } else if (remaining === 0) {
+    flavourMeterMessage.textContent = "YOUR BOX IS READY! ♡";
+  } else {
+    flavourMeterMessage.textContent = `${remaining} MORE TO GO`;
+  }
+
+  flavourMeterPreviousCount = selectedCount;
+}
+
 function updateFlavourSelector() {
   flavourSelectedCount.textContent = String(buildSelection.length);
   flavourBoxCapacity.textContent = String(buildBoxSize);
   saveFlavourSelection.disabled = buildSelection.length !== buildBoxSize;
+  renderFlavourMeter();
   renderFlavourList();
   renderCookieSlots(
     buildCookieSlots,
@@ -880,6 +931,7 @@ function updateFlavourSelector() {
 }
 function openBuildFlavourSelector() {
   flavourModalTitle.textContent = buildBoxName;
+  flavourMeterPreviousCount = buildSelection.length;
   updateFlavourSelector();
   openModal(flavourModal);
 }

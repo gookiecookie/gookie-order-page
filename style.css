@@ -4261,3 +4261,210 @@ button.cookie-slot {
   }
 
 }
+
+/* =========================================================
+   GET YOUR GOOKIES — CLEAR, PLAYFUL ORDER EXPERIENCE V9.1
+========================================================= */
+
+.order-builder-heading .section-kicker {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.order-builder-heading .section-kicker::before,
+.order-builder-heading .section-kicker::after {
+  content: "✦";
+  color: var(--gookie-red);
+  font-size: 1rem;
+}
+
+.order-title {
+  margin: 14px 0 20px !important;
+  font-family: "League Spartan", sans-serif;
+  font-weight: 900;
+  line-height: 0.82 !important;
+  letter-spacing: -0.055em !important;
+}
+
+.order-title-top,
+.order-title-red {
+  display: block;
+}
+
+.order-title-top {
+  color: var(--ink);
+  font-size: clamp(3.6rem, 7vw, 6.8rem);
+}
+
+.order-title-red {
+  position: relative;
+  color: var(--gookie-red);
+  font-size: clamp(4rem, 8vw, 7.8rem);
+}
+
+.order-title-heart {
+  position: absolute;
+  top: 50%;
+  margin-left: 10px;
+  color: var(--gookie-red);
+  font-family: Arial, sans-serif;
+  font-size: 0.52em;
+  font-weight: 400;
+  transform: translateY(-44%) rotate(-10deg);
+}
+
+.box-accordion-copy small {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.box-accordion-copy small b {
+  color: var(--gookie-red);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.035em;
+}
+
+.box-accordion-copy small span {
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+.flavour-box-meter {
+  margin: 18px 20px 4px;
+  padding: 18px 18px 16px;
+  border: 1px solid rgba(187, 25, 26, 0.12);
+  border-radius: 22px;
+  background: var(--white);
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(55, 26, 12, 0.05);
+}
+
+.flavour-meter-label {
+  margin: 0 0 13px;
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+}
+
+.flavour-meter-slots {
+  --meter-capacity: 4;
+  display: grid;
+  grid-template-columns: repeat(var(--meter-capacity), minmax(34px, 62px));
+  justify-content: center;
+  gap: clamp(5px, 1.6vw, 10px);
+  width: 100%;
+}
+
+.flavour-meter-slot {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  min-width: 0;
+  overflow: hidden;
+  border: 1.5px dashed rgba(187, 25, 26, 0.25);
+  border-radius: 50%;
+  background: #fff8ef;
+}
+
+.flavour-meter-slot.has-cookie {
+  border-style: solid;
+  border-color: rgba(187, 25, 26, 0.16);
+  background: #fff3df;
+}
+
+.flavour-meter-slot img {
+  display: block;
+  width: 92%;
+  height: 92%;
+  object-fit: contain;
+  filter: drop-shadow(0 5px 5px rgba(55, 26, 12, 0.14));
+}
+
+.flavour-meter-ghost {
+  opacity: 0.17;
+  filter: grayscale(1);
+  font-size: clamp(1rem, 3vw, 1.45rem);
+}
+
+.flavour-meter-slot.is-new {
+  animation: gookieMeterPop 230ms ease-out both;
+}
+
+@keyframes gookieMeterPop {
+  0% { transform: scale(0.78); opacity: 0.35; }
+  65% { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.flavour-meter-count {
+  margin: 13px 0 2px;
+  color: var(--muted);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.055em;
+}
+
+.flavour-meter-count strong {
+  color: var(--ink);
+  font-size: 0.96rem;
+}
+
+.flavour-meter-message {
+  min-height: 20px;
+  margin: 3px 0 0;
+  color: var(--gookie-red);
+  font-family: "League Spartan", sans-serif;
+  font-size: 1rem;
+  font-weight: 900;
+  letter-spacing: 0.025em;
+}
+
+@media (max-width: 767px) {
+  .order-builder-heading .section-kicker {
+    gap: 8px;
+    font-size: 0.68rem;
+    letter-spacing: 0.11em;
+  }
+
+  .order-builder-heading .section-kicker::before,
+  .order-builder-heading .section-kicker::after {
+    font-size: 0.72rem;
+  }
+
+  .order-title {
+    margin: 12px 0 18px !important;
+  }
+
+  .order-title-top {
+    font-size: clamp(3rem, 14vw, 4.4rem);
+  }
+
+  .order-title-red {
+    font-size: clamp(3.35rem, 15.5vw, 4.8rem);
+  }
+
+  .order-title-heart {
+    margin-left: 5px;
+  }
+
+  .flavour-box-meter {
+    margin: 14px 14px 2px;
+    padding: 15px 10px 14px;
+  }
+
+  .flavour-meter-slots {
+    grid-template-columns: repeat(var(--meter-capacity), minmax(22px, 48px));
+    gap: 4px;
+  }
+
+  .flavour-meter-count {
+    margin-top: 10px;
+  }
+}
