@@ -4468,3 +4468,52 @@ button.cookie-slot {
     margin-top: 10px;
   }
 }
+
+/* =========================================================
+   CONTINUE TO PAYMENT — LOADING STATE
+========================================================= */
+
+#proceedToPaymentButton.is-loading {
+  gap: 10px;
+  cursor: wait;
+  opacity: 0.88;
+}
+
+.button-loading-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.button-loading-dots span {
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: currentColor;
+
+  animation: paymentButtonDot 900ms ease-in-out infinite;
+}
+
+.button-loading-dots span:nth-child(2) {
+  animation-delay: 150ms;
+}
+
+.button-loading-dots span:nth-child(3) {
+  animation-delay: 300ms;
+}
+
+@keyframes paymentButtonDot {
+  0%,
+  60%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0);
+  }
+
+  30% {
+    opacity: 1;
+    transform: translateY(-4px);
+  }
+}
