@@ -2400,6 +2400,7 @@ button.cookie-slot {
   border-radius: 24px;
   background: var(--white);
   text-align: center;
+   margin-top:12px;
 }
 
 .payment-qr-card .mini-heading {
@@ -4526,7 +4527,7 @@ button.cookie-slot {
   position: relative;
 
   margin-bottom: 18px;
-  padding: 28px 26px;
+  padding:18px 18px;
 
   border: 1px solid rgba(187, 25, 26, 0.1);
   border-radius: 26px;
@@ -4552,16 +4553,16 @@ button.cookie-slot {
   display: grid;
   place-items: center;
 
-  width: 48px;
-  height: 48px;
+  width:34px;
+height:34px;
 
-  margin: 0 auto 10px;
+font-size:1rem;
+
+margin:0 auto 6px;
 
   border-radius: 50%;
 
   background: rgba(255, 255, 255, 0.72);
-
-  font-size: 1.45rem;
 
   box-shadow:
     0 7px 18px rgba(72, 38, 20, 0.08);
@@ -4591,17 +4592,19 @@ button.cookie-slot {
   color: var(--ink);
 
   font-family: "League Spartan", sans-serif;
-  font-size: clamp(3rem, 12vw, 4.5rem);
+  font-size:clamp(2.6rem,10vw,3.8rem);
   font-weight: 900;
   line-height: 0.95;
 }
 
 .payment-breakdown {
-  margin-top: 0;
+  margin-top:10px;
+   
 }
 
 .payment-breakdown-row {
   color: var(--ink);
+   padding:6px 0;
 }
 
 .payment-breakdown-row span {
@@ -4616,6 +4619,7 @@ button.cookie-slot {
 .payment-total-divider {
   background: var(--ink);
   opacity: 0.16;
+   margin:8px 0;
 }
 
 @media (max-width: 480px) {
