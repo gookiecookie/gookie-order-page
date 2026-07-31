@@ -556,104 +556,154 @@ img {
 }
 
 /* =========================================================
-   FRESH BANNER
+   GOOKIE TRUST BANNER
 ========================================================= */
 
-.fresh-banner-section{
-    padding:12px 20px 36px;
-    background:#fff;
+.gookie-trust-section {
+  padding: 34px 20px 56px;
+  background: var(--white);
 }
 
-.fresh-banner{
+.gookie-trust-banner {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
 
-    display:flex;
-    align-items:center;
-    gap:18px;
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  padding: 26px 28px;
 
-    width:min(100%,900px);
+  border: 1px solid rgba(187, 25, 26, 0.1);
+  border-radius: 28px;
 
-    margin:0 auto;
+  background: #fff8ef;
 
-    padding:18px 20px;
+  box-shadow:
+    0 14px 36px rgba(55, 26, 12, 0.07);
+}
 
-    border-radius:24px;
+.gookie-trust-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
 
-    background:#FFF8EF;
+  min-width: 0;
+  padding: 5px 24px;
+}
 
-border:1px solid rgba(187,25,26,.08);
+.gookie-trust-item + .gookie-trust-item {
+  border-left: 1px solid rgba(23, 21, 21, 0.11);
+}
 
-box-shadow:0 10px 26px rgba(0,0,0,.05);
+.gookie-trust-icon {
+  display: grid;
+  place-items: center;
+
+  width: 52px;
+  height: 52px;
+  flex: 0 0 52px;
+
+  color: var(--gookie-red);
+
+  font-size: 2.5rem;
+  line-height: 1;
+}
+
+.gookie-trust-cookie {
+  font-size: 2.8rem;
+}
+
+.gookie-trust-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.gookie-trust-copy strong {
+  color: var(--ink);
+
+  font-family: "League Spartan", sans-serif;
+  font-size: 0.83rem;
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: 0.015em;
+}
+
+.gookie-trust-copy span {
+  color: var(--muted);
+
+  font-size: 0.79rem;
+  line-height: 1.4;
+}
+
+
+/* =========================================================
+   GOOKIE TRUST BANNER — TABLET
+========================================================= */
+
+@media (max-width: 950px) {
+
+  .gookie-trust-banner {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 24px;
+  }
+
+  .gookie-trust-item:nth-child(3) {
+    border-left: 0;
+  }
 
 }
 
-.fresh-banner-icon{
-    font-size:42px;
-    flex-shrink:0;
 
-}
+/* =========================================================
+   GOOKIE TRUST BANNER — MOBILE
+========================================================= */
 
-.fresh-banner-copy{
-    flex:1;
+@media (max-width: 600px) {
 
-}
+  .gookie-trust-section {
+    padding: 20px 16px 38px;
+  }
 
-.fresh-banner-copy span{
+  .gookie-trust-banner {
+    grid-template-columns: 1fr;
 
-    display:block;
+    padding: 10px 20px;
 
-    margin-bottom:6px;
+    border-radius: 24px;
+  }
 
-    font-family:"League Spartan",sans-serif;
+  .gookie-trust-item {
+    justify-content: flex-start;
 
-    font-size:1rem;
+    padding: 20px 4px;
+  }
 
-    font-weight:800;
+  .gookie-trust-item + .gookie-trust-item,
+  .gookie-trust-item:nth-child(3) {
+    border-top: 1px solid rgba(23, 21, 21, 0.1);
+    border-left: 0;
+  }
 
-    color:var(--gookie-red);
+  .gookie-trust-icon {
+    width: 48px;
+    height: 48px;
+    flex-basis: 48px;
 
-}
+    font-size: 2.2rem;
+  }
 
-.fresh-banner-copy p{
+  .gookie-trust-cookie {
+    font-size: 2.45rem;
+  }
 
-    margin:0;
+  .gookie-trust-copy strong {
+    font-size: 0.8rem;
+  }
 
-    color:var(--muted);
-
-    line-height:1.5;
-
-}
-
-.fresh-banner-cookie{
-
-    width:200px;
-
-    flex-shrink:0;
-
-}
-
-.fresh-banner-cookie img{
-
-    width:100%;
-
-    display:block;
-
-}
-
-.fresh-oven-icon{
-
-    width:100px;
-    height:100px;
-
-    stroke:var(--gookie-red);
-
-    stroke-width:2.8;
-
-    fill:none;
-
-    stroke-linecap:round;
-    stroke-linejoin:round;
-
-    display:block;
+  .gookie-trust-copy span {
+    font-size: 0.76rem;
+  }
 
 }
 
