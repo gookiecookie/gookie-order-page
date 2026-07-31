@@ -4517,3 +4517,116 @@ button.cookie-slot {
     transform: translateY(-4px);
   }
 }
+
+/* =========================================================
+   PAYMENT SUMMARY CARD — FRIENDLY CREAM OPTION B
+========================================================= */
+
+.payment-total-card {
+  position: relative;
+
+  margin-bottom: 18px;
+  padding: 28px 26px;
+
+  border: 1px solid rgba(187, 25, 26, 0.1);
+  border-radius: 26px;
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(255, 255, 255, 0.8),
+      transparent 48%
+    ),
+    #fff1dc;
+
+  color: var(--ink);
+  text-align: center;
+
+  box-shadow:
+    0 14px 34px rgba(72, 38, 20, 0.1);
+}
+
+.payment-total-card::before {
+  content: "🍪";
+
+  display: grid;
+  place-items: center;
+
+  width: 48px;
+  height: 48px;
+
+  margin: 0 auto 10px;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.72);
+
+  font-size: 1.45rem;
+
+  box-shadow:
+    0 7px 18px rgba(72, 38, 20, 0.08);
+}
+
+.payment-total-card > span {
+  margin: 0 0 20px;
+
+  color: var(--muted);
+
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.payment-total-card > p {
+  margin: 20px 0 8px;
+
+  color: var(--muted);
+
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+}
+
+.payment-total-card > strong {
+  color: var(--ink);
+
+  font-family: "League Spartan", sans-serif;
+  font-size: clamp(3rem, 12vw, 4.5rem);
+  font-weight: 900;
+  line-height: 0.95;
+}
+
+.payment-breakdown {
+  margin-top: 0;
+}
+
+.payment-breakdown-row {
+  color: var(--ink);
+}
+
+.payment-breakdown-row span {
+  color: var(--muted);
+  opacity: 1;
+}
+
+.payment-breakdown-row strong {
+  color: var(--ink);
+}
+
+.payment-total-divider {
+  background: var(--ink);
+  opacity: 0.16;
+}
+
+@media (max-width: 480px) {
+  .payment-total-card {
+    padding: 24px 20px;
+    border-radius: 22px;
+  }
+
+  .payment-total-card::before {
+    width: 44px;
+    height: 44px;
+    font-size: 1.25rem;
+  }
+}
