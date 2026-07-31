@@ -271,6 +271,119 @@ footerInfoModalClose = $("footerInfoModalClose"),
 footerInfoModalEyebrow = $("footerInfoModalEyebrow"),
 footerInfoModalTitle = $("footerInfoModalTitle"),
 footerInfoModalBody = $("footerInfoModalBody");
+
+/* =========================================================
+   FOOTER MODAL CONTENT
+========================================================= */
+
+const FOOTER_MODAL_CONTENT = {
+
+  faq: {
+    eyebrow: "NEED HELP?",
+    title: "Frequently Asked Questions",
+    body: `
+      <div class="footer-info-card">
+        <h3>Test successful 🍪</h3>
+        <p>
+          The FAQ content will appear here.
+        </p>
+      </div>
+    `
+  },
+
+  delivery: {
+    eyebrow: "DELIVERY INFORMATION",
+    title: "Where are my Gookies going?",
+    body: `
+      <div class="footer-info-card">
+        <h3>Delivery information</h3>
+        <p>
+          Full delivery details will be added here.
+        </p>
+      </div>
+    `
+  },
+
+  storage: {
+    eyebrow: "KEEP THEM HAPPY",
+    title: "Storage & Reheating",
+    body: `
+      <div class="footer-info-card">
+        <h3>Storage guide</h3>
+        <p>
+          Full storage instructions will be added here.
+        </p>
+      </div>
+    `
+  },
+
+  contact: {
+    eyebrow: "LET'S CHAT",
+    title: "Contact Us",
+    body: `
+      <div class="footer-info-card">
+        <h3>Need help?</h3>
+        <p>
+          Our contact details will appear here.
+        </p>
+      </div>
+    `
+  },
+
+  allergen: {
+    eyebrow: "IMPORTANT INFORMATION",
+    title: "Allergen Information",
+    body: `
+      <div class="footer-info-alert">
+        <h3>Please read before ordering</h3>
+        <p>
+          Full allergen information will be added here.
+        </p>
+      </div>
+    `
+  },
+
+  terms: {
+    eyebrow: "THE BORING STUFF",
+    title: "Terms & Conditions",
+    body: `
+      <div class="footer-info-card">
+        <h3>Terms & Conditions</h3>
+        <p>
+          Full terms will be added here.
+        </p>
+      </div>
+    `
+  },
+
+  privacy: {
+    eyebrow: "THE BORING STUFF",
+    title: "Privacy Policy",
+    body: `
+      <div class="footer-info-card">
+        <h3>Privacy Policy</h3>
+        <p>
+          Full privacy information will be added here.
+        </p>
+      </div>
+    `
+  },
+
+  refund: {
+    eyebrow: "THE BORING STUFF",
+    title: "Refund & Replacement Policy",
+    body: `
+      <div class="footer-info-card">
+        <h3>Refund & Replacement</h3>
+        <p>
+          Full refund and replacement information will be added here.
+        </p>
+      </div>
+    `
+  }
+
+};
+
 let buildBoxSize = 0,
   buildBoxName = "",
   buildSelection = [],
