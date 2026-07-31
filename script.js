@@ -259,7 +259,8 @@ const $ = (id) => document.getElementById(id),
   continueToWhatsAppButton = $("continueToWhatsAppButton"),
   orderCreationLoader = $("orderCreationLoader"),
   orderCreationStatus = $("orderCreationStatus"),
-  orderCreationBox = $("orderCreationBox");
+  orderCreationBox = $("orderCreationBox"),
+  orderCreationGif = $("orderCreationGif");
 let buildBoxSize = 0,
   buildBoxName = "",
   buildSelection = [],
@@ -1479,6 +1480,11 @@ function showOrderCreationLoader() {
   orderCreationLoader.hidden = false;
   orderCreationLoader.setAttribute("aria-hidden", "false");
   orderCreationLoader.classList.remove("is-complete", "is-error");
+
+  if (orderCreationGif) {
+    const gifSource = orderCreationGif.getAttribute("src").split("?")[0];
+    orderCreationGif.src = `${gifSource}?restart=${Date.now()}`;
+  }
 
   if (orderCreationBox) {
     orderCreationBox.classList.remove("is-complete");
