@@ -260,9 +260,17 @@ const $ = (id) => document.getElementById(id),
   paymentProofSaved = $("paymentProofSaved"),
   continueToWhatsAppButton = $("continueToWhatsAppButton"),
   orderCreationLoader = $("orderCreationLoader"),
-  orderCreationStatus = $("orderCreationStatus"),
-  orderCreationBox = $("orderCreationBox"),
-  orderCreationGif = $("orderCreationGif");
+orderCreationStatus = $("orderCreationStatus"),
+orderCreationBox = $("orderCreationBox"),
+orderCreationGif = $("orderCreationGif"),
+
+/* ==================== FOOTER MODAL ==================== */
+
+footerInfoModal = $("footerInfoModal"),
+footerInfoModalClose = $("footerInfoModalClose"),
+footerInfoModalEyebrow = $("footerInfoModalEyebrow"),
+footerInfoModalTitle = $("footerInfoModalTitle"),
+footerInfoModalBody = $("footerInfoModalBody");
 let buildBoxSize = 0,
   buildBoxName = "",
   buildSelection = [],
