@@ -3360,393 +3360,821 @@ button.cookie-slot {
 }
 
 /* =========================================================
-   GOOKIE FOOTER — PRODUCTION
+   GOOKIE FOOTER — FULL BRAND VERSION
 ========================================================= */
 
 .site-footer {
   position: relative;
-  margin-top: 44px;
+  margin-top: 60px;
   overflow: hidden;
-  background: #fff8f0;
+  background: #fff8ef;
   color: var(--ink);
-  border-top: 1px solid rgba(23, 21, 21, 0.08);
 }
 
-.site-footer .footer-inner {
-  width: min(1100px, 90%);
+
+/* =========================================================
+   FOOTER HERO
+========================================================= */
+
+.footer-hero {
+  width: min(1180px, 92%);
   margin: 0 auto;
-  padding: 48px 0 28px;
-}
-
-
-/* ========================================
-   SIGN-OFF
-======================================== */
-
-.site-footer .footer-signoff {
-  margin-bottom: 34px;
+  padding: 64px 0 42px;
   text-align: center;
 }
 
-.site-footer .footer-eyebrow {
-  margin: 0 0 8px;
+.footer-hero .footer-eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+
+  margin: 0 0 12px;
+
   color: var(--gookie-red);
+
   font-family: "League Spartan", sans-serif;
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   font-weight: 900;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.18em;
 }
 
-.site-footer .footer-signoff h2 {
-  margin: 0 0 10px;
-  font-family: "League Spartan", sans-serif;
-  font-size: clamp(2.2rem, 5vw, 3.8rem);
-  font-weight: 900;
-  line-height: 0.95;
-  letter-spacing: -0.04em;
-}
-
-.site-footer .footer-message {
+.footer-hero h2 {
   margin: 0;
-  color: var(--muted);
-  font-size: 0.9rem;
-  line-height: 1.55;
+
+  font-family: "League Spartan", sans-serif;
+  font-size: clamp(3rem, 6vw, 5.2rem);
+  font-weight: 900;
+  line-height: 0.94;
+  letter-spacing: -0.055em;
 }
 
-.site-footer .footer-cookie {
+.footer-cookie {
   display: inline-block;
+  margin-left: 5px;
   transform-origin: center bottom;
   transition: transform 240ms ease;
 }
 
-.site-footer .footer-signoff h2:hover .footer-cookie {
-  transform: translateY(-4px) rotate(10deg) scale(1.1);
+.footer-hero h2:hover .footer-cookie {
+  transform:
+    translateY(-6px)
+    rotate(10deg)
+    scale(1.08);
 }
 
+.footer-message {
+  margin: 22px 0 0;
 
-/* ========================================
-   MAIN FOOTER CONTENT
-======================================== */
+  color: #38312d;
 
-.site-footer .footer-content {
-  display: grid;
-  grid-template-columns: 1fr 1.15fr 1fr;
-  gap: 56px;
-  padding: 32px 0;
-  border-top: 1px solid rgba(23, 21, 21, 0.1);
-  border-bottom: 1px solid rgba(23, 21, 21, 0.1);
+  font-size: clamp(1rem, 1.7vw, 1.35rem);
+  line-height: 1.55;
 }
 
-.site-footer .footer-content h3 {
-  margin: 0 0 14px;
+.footer-heart-doodle {
+  display: block;
+
+  margin-top: 14px;
+
   color: var(--gookie-red);
+
+  font-family: Georgia, serif;
+  font-size: 2.8rem;
+  line-height: 1;
+  transform: rotate(-8deg);
+}
+
+
+/* =========================================================
+   MAIN FOOTER GRID
+========================================================= */
+
+.footer-main {
+  display: grid;
+  grid-template-columns:
+    minmax(220px, 1.08fr)
+    minmax(220px, 1fr)
+    minmax(250px, 1.08fr)
+    minmax(250px, 1.12fr);
+
+  width: min(1400px, 92%);
+  margin: 0 auto;
+  padding: 46px 0 44px;
+
+  border-top: 1px solid rgba(23, 21, 21, 0.11);
+}
+
+.footer-main > * {
+  min-width: 0;
+  padding: 0 38px;
+}
+
+.footer-main > * + * {
+  border-left: 1px solid rgba(23, 21, 21, 0.11);
+}
+
+
+/* =========================================================
+   BRAND COLUMN
+========================================================= */
+
+.footer-brand-column {
+  padding-left: 0;
+}
+
+.footer-logo {
+  margin: 0;
+
+  color: var(--gookie-red);
+
+  font-family: "League Spartan", sans-serif;
+  font-size: clamp(2.3rem, 3.5vw, 3.4rem);
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+}
+
+.footer-tagline {
+  margin: 8px 0 0;
+
+  color: var(--gookie-red);
+
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.18rem;
+  font-style: italic;
+}
+
+.footer-brand-description {
+  max-width: 280px;
+  margin: 24px 0 0;
+
+  color: #302b27;
+
+  font-size: 0.98rem;
+  line-height: 1.55;
+}
+
+.footer-brand-divider {
+  width: 100%;
+  max-width: 280px;
+  height: 1px;
+
+  margin: 20px 0 17px;
+
+  background: rgba(23, 21, 21, 0.11);
+}
+
+.footer-social-section h3,
+.footer-contact-section h3 {
+  margin: 0 0 12px;
+
+  color: var(--gookie-red);
+
   font-family: "League Spartan", sans-serif;
   font-size: 0.82rem;
   font-weight: 900;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.055em;
 }
 
-.site-footer .footer-help-links,
-.site-footer .footer-legal-links {
+.footer-socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.footer-socials a {
+  display: grid;
+  place-items: center;
+
+  width: 42px;
+  height: 42px;
+
+  border: 1.5px solid rgba(187, 25, 26, 0.52);
+  border-radius: 50%;
+
+  background: transparent;
+  color: var(--gookie-red);
+
+  font-family: "League Spartan", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 900;
+
+  transition:
+    color 180ms ease,
+    background-color 180ms ease,
+    transform 180ms ease;
+}
+
+.footer-socials a:hover {
+  background: var(--gookie-red);
+  color: var(--white);
+  transform: translateY(-3px);
+}
+
+.footer-contact-section {
+  margin-top: 22px;
+}
+
+.footer-contact-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+
+  margin: 0 0 9px;
+
+  color: #302b27;
+
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+a.footer-contact-row:hover {
+  color: var(--gookie-red);
+}
+
+.footer-contact-icon {
+  flex: 0 0 auto;
+
+  color: var(--gookie-red);
+
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   FOOTER LINK COLUMNS
+========================================================= */
+
+.footer-column-heading {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+
+  margin: 0 0 28px;
+
+  color: var(--gookie-red);
+
+  font-family: "League Spartan", sans-serif;
+  font-size: 1rem;
+  font-weight: 900;
+  letter-spacing: 0.025em;
+}
+
+.footer-heading-icon {
+  display: grid;
+  place-items: center;
+
+  width: 42px;
+  height: 42px;
+
+  color: var(--gookie-red);
+
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.footer-link-list {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 8px;
+  gap: 17px;
 }
 
-
-/* ========================================
-   TEXT LINKS
-======================================== */
-
-.site-footer .footer-text-link {
+.footer-text-link {
   width: fit-content;
   padding: 0;
+
   border: 0;
+
   background: transparent;
-  color: #514a45;
+  color: #302b27;
+
   font-family: "DM Sans", sans-serif;
-  font-size: 0.88rem;
-  line-height: 1.45;
+  font-size: 0.98rem;
+  line-height: 1.4;
   text-align: left;
+
   cursor: pointer;
+
   transition:
     color 180ms ease,
     transform 180ms ease;
 }
 
-.site-footer .footer-text-link:hover {
+.footer-text-link:hover {
   color: var(--gookie-red);
-  transform: translateX(3px);
+  transform: translateX(4px);
 }
 
-.site-footer .footer-text-link:focus-visible,
-.site-footer .footer-allergen-button:focus-visible,
-.site-footer .footer-whatsapp-button:focus-visible,
-.site-footer .footer-socials a:focus-visible {
-  outline: 3px solid rgba(187, 25, 26, 0.22);
-  outline-offset: 4px;
-}
-
-
-/* ========================================
-   ALLERGEN ALERT
-======================================== */
-
-.site-footer .footer-allergen-button {
+.footer-allergen-button {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 9px;
-  min-height: 44px;
-  margin-top: 20px;
-  padding: 11px 17px;
-  border: 2px solid var(--gookie-red);
-  border-radius: 999px;
+  justify-content: flex-start;
+  gap: 12px;
+
+  width: 100%;
+  max-width: 305px;
+  min-height: 58px;
+
+  padding: 12px 16px;
+
+  border: 1.5px solid rgba(187, 25, 26, 0.48);
+  border-radius: 12px;
+
   background: transparent;
   color: var(--gookie-red);
+
   font-family: "League Spartan", sans-serif;
-  font-size: 0.73rem;
+  font-size: 0.82rem;
   font-weight: 900;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.025em;
+  text-align: left;
+
   cursor: pointer;
+
   transition:
-    color 200ms ease,
-    background-color 200ms ease,
-    transform 200ms ease;
+    color 190ms ease,
+    background-color 190ms ease,
+    border-color 190ms ease,
+    transform 190ms ease;
 }
 
-.site-footer .footer-allergen-button:hover {
+.footer-allergen-icon {
+  font-size: 1.55rem;
+  line-height: 1;
+}
+
+.footer-allergen-button:hover {
+  border-color: var(--gookie-red);
   background: var(--gookie-red);
   color: var(--white);
   transform: translateY(-2px);
 }
 
 
-/* ========================================
-   LET'S CONNECT
-======================================== */
+/* =========================================================
+   WHATSAPP COLUMN
+========================================================= */
 
-.site-footer .footer-connect {
+.footer-whatsapp-column {
+  padding-right: 0;
   text-align: center;
 }
 
-.site-footer .footer-whatsapp-button {
+.footer-whatsapp-icon {
+  margin: 0 auto 16px;
+
+  color: var(--gookie-red);
+
+  font-size: 3.5rem;
+  line-height: 1;
+}
+
+.footer-whatsapp-column h3 {
+  margin: 0;
+
+  color: var(--gookie-red);
+
+  font-family: "League Spartan", sans-serif;
+  font-size: clamp(1.25rem, 2vw, 1.65rem);
+  font-weight: 900;
+  line-height: 1.18;
+}
+
+.footer-whatsapp-column p {
+  max-width: 270px;
+  margin: 24px auto 28px;
+
+  color: #302b27;
+
+  font-size: 0.98rem;
+  line-height: 1.55;
+}
+
+.footer-whatsapp-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 9px;
+  gap: 11px;
+
   width: 100%;
-  min-height: 50px;
-  padding: 13px 18px;
-  border-radius: 999px;
+  min-height: 60px;
+
+  padding: 15px 22px;
+
+  border-radius: 10px;
+
   background: var(--gookie-red);
   color: var(--white);
+
   font-family: "League Spartan", sans-serif;
-  font-size: 0.77rem;
+  font-size: 0.88rem;
   font-weight: 900;
-  letter-spacing: 0.055em;
+  letter-spacing: 0.025em;
+
+  box-shadow: 0 12px 28px rgba(187, 25, 26, 0.17);
+
   transition:
-    background-color 200ms ease,
-    transform 200ms ease,
-    box-shadow 200ms ease;
+    background-color 190ms ease,
+    box-shadow 190ms ease,
+    transform 190ms ease;
 }
 
-.site-footer .footer-whatsapp-button:hover {
+.footer-whatsapp-button:hover {
   background: var(--gookie-red-dark);
-  box-shadow: 0 12px 26px rgba(187, 25, 26, 0.2);
-  transform: translateY(-2px);
-}
-
-.site-footer .footer-socials {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 16px;
-}
-
-.site-footer .footer-socials a {
-  display: grid;
-  place-items: center;
-  width: 42px;
-  height: 42px;
-  border: 1px solid rgba(23, 21, 21, 0.12);
-  border-radius: 50%;
-  background: var(--white);
-  color: var(--ink);
-  font-family: "League Spartan", sans-serif;
-  font-size: 0.73rem;
-  font-weight: 900;
-  transition:
-    color 180ms ease,
-    border-color 180ms ease,
-    transform 180ms ease;
-}
-
-.site-footer .footer-socials a:hover {
-  border-color: var(--gookie-red);
-  color: var(--gookie-red);
+  box-shadow: 0 16px 34px rgba(187, 25, 26, 0.25);
   transform: translateY(-3px);
 }
 
 
-/* ========================================
-   BOTTOM BAR
-======================================== */
+/* =========================================================
+   TRUST BAR
+========================================================= */
 
-.site-footer .footer-bottom {
+.footer-trust-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+
+  width: min(1400px, 92%);
+  margin: 0 auto 0;
+  padding: 24px 26px;
+
+  border: 1px solid rgba(23, 21, 21, 0.06);
+  border-radius: 24px 24px 0 0;
+
+  background: rgba(255, 255, 255, 0.38);
+}
+
+.footer-trust-item {
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 28px;
-  padding-top: 20px;
-  color: #77706a;
-  font-size: 0.72rem;
+  align-items: center;
+  justify-content: center;
+  gap: 17px;
+
+  min-width: 0;
+  padding: 4px 25px;
 }
 
-.site-footer .footer-bottom p {
-  margin: 0;
+.footer-trust-item + .footer-trust-item {
+  border-left: 1px solid rgba(23, 21, 21, 0.12);
 }
 
-.site-footer .footer-bottom-copy {
+.footer-trust-icon {
+  flex: 0 0 auto;
+
+  color: var(--gookie-red);
+
+  font-size: 2.8rem;
+  line-height: 1;
+}
+
+.footer-trust-item div {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.site-footer .footer-thank-you {
-  color: var(--gookie-red);
-  font-weight: 700;
-  text-align: right;
+.footer-trust-item strong {
+  color: #2a2522;
+
+  font-family: "League Spartan", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.footer-trust-item span:not(.footer-trust-icon) {
+  color: #4f4843;
+
+  font-size: 0.78rem;
+  line-height: 1.4;
 }
 
 
-/* ========================================
-   DECORATIVE BOTTOM EDGE
-======================================== */
+/* =========================================================
+   RED BOTTOM BAR
+========================================================= */
 
-.site-footer .footer-scallop {
+.footer-red-bar {
+  position: relative;
+
+  margin-top: 0;
+
+  background: var(--gookie-red);
+  color: var(--white);
+}
+
+.footer-red-scallop {
+  position: absolute;
+  top: -12px;
+  left: 0;
+
   width: 100%;
-  height: 12px;
+  height: 14px;
+
   background:
     radial-gradient(
-      circle at 12px -2px,
-      transparent 12px,
-      var(--gookie-red) 13px
+      circle at 12px 14px,
+      var(--gookie-red) 12px,
+      transparent 13px
     )
-    0 0 / 24px 24px repeat-x;
+    0 0 / 24px 14px repeat-x;
+}
+
+.footer-red-bar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 34px;
+
+  width: min(1200px, 90%);
+  min-height: 90px;
+  margin: 0 auto;
+  padding: 24px 0;
+
+  text-align: center;
+}
+
+.footer-red-bar-inner p {
+  margin: 0;
+
+  color: var(--white);
+
+  font-size: 0.82rem;
+}
+
+.footer-bottom-divider {
+  width: 1px;
+  height: 38px;
+
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.footer-baked-line,
+.footer-thank-you {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.08rem !important;
+  font-style: italic;
 }
 
 
 /* =========================================================
-   GOOKIE FOOTER — TABLET
+   ACCESSIBILITY
 ========================================================= */
 
-@media (max-width: 900px) {
+.footer-text-link:focus-visible,
+.footer-allergen-button:focus-visible,
+.footer-whatsapp-button:focus-visible,
+.footer-socials a:focus-visible,
+.footer-contact-row:focus-visible {
+  outline: 3px solid rgba(187, 25, 26, 0.24);
+  outline-offset: 4px;
+}
 
-  .site-footer .footer-content {
+
+/* =========================================================
+   FOOTER — SMALL DESKTOP
+========================================================= */
+
+@media (max-width: 1180px) {
+
+  .footer-main {
     grid-template-columns: 1fr 1fr;
-    gap: 34px 42px;
+    row-gap: 42px;
   }
 
-  .site-footer .footer-connect {
-    grid-column: 1 / -1;
-    width: min(100%, 430px);
-    margin: 0 auto;
+  .footer-main > * {
+    padding: 0 32px;
+  }
+
+  .footer-main > * + * {
+    border-left: 0;
+  }
+
+  .footer-main > :nth-child(even) {
+    border-left: 1px solid rgba(23, 21, 21, 0.11);
+  }
+
+  .footer-brand-column {
+    padding-left: 0;
+  }
+
+  .footer-whatsapp-column {
+    padding-right: 0;
+  }
+
+  .footer-trust-bar {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 22px;
+  }
+
+  .footer-trust-item:nth-child(3) {
+    border-left: 0;
   }
 
 }
 
 
 /* =========================================================
-   GOOKIE FOOTER — MOBILE
+   FOOTER — TABLET
 ========================================================= */
 
-@media (max-width: 767px) {
+@media (max-width: 850px) {
+
+  .footer-hero {
+    padding-top: 48px;
+  }
+
+  .footer-main {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: 20px 0 36px;
+  }
+
+  .footer-main > * {
+    padding: 30px 0;
+  }
+
+  .footer-main > * + *,
+  .footer-main > :nth-child(even) {
+    border-top: 1px solid rgba(23, 21, 21, 0.1);
+    border-left: 0;
+  }
+
+  .footer-brand-description,
+  .footer-brand-divider {
+    max-width: none;
+  }
+
+  .footer-column-heading {
+    margin-bottom: 20px;
+  }
+
+  .footer-whatsapp-column p {
+    max-width: 380px;
+  }
+
+  .footer-whatsapp-button {
+    max-width: 380px;
+  }
+
+  .footer-red-bar-inner {
+    flex-direction: column;
+    gap: 10px;
+    min-height: 0;
+    padding: 34px 0 28px;
+  }
+
+  .footer-bottom-divider {
+    width: 70px;
+    height: 1px;
+  }
+
+}
+
+
+/* =========================================================
+   FOOTER — MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
 
   .site-footer {
-    margin-top: 34px;
+    margin-top: 38px;
   }
 
-  .site-footer .footer-inner {
+  .footer-hero {
     width: 88%;
-    padding: 34px 0 18px;
+    padding: 38px 0 28px;
   }
 
-  .site-footer .footer-signoff {
-    margin-bottom: 25px;
+  .footer-hero .footer-eyebrow {
+    gap: 8px;
+    font-size: 0.62rem;
+    letter-spacing: 0.13em;
   }
 
-  .site-footer .footer-eyebrow {
-    margin-bottom: 6px;
-    font-size: 0.64rem;
+  .footer-hero h2 {
+    font-size: 2.4rem;
+    line-height: 0.98;
   }
 
-  .site-footer .footer-signoff h2 {
-    margin-bottom: 8px;
-    font-size: 2rem;
+  .footer-message {
+    margin-top: 15px;
+    font-size: 0.88rem;
   }
 
-  .site-footer .footer-message {
-    font-size: 0.78rem;
+  .footer-heart-doodle {
+    margin-top: 10px;
+    font-size: 2.2rem;
   }
 
-  .site-footer .footer-content {
-    grid-template-columns: 1fr;
-    gap: 28px;
-    padding: 26px 0;
-    text-align: center;
+  .footer-main {
+    width: 88%;
   }
 
-  .site-footer .footer-help-links,
-  .site-footer .footer-legal-links {
-    align-items: center;
+  .footer-main > * {
+    padding: 27px 0;
   }
 
-  .site-footer .footer-text-link {
+  .footer-logo {
+    font-size: 2.6rem;
+  }
+
+  .footer-tagline {
+    font-size: 1rem;
+  }
+
+  .footer-brand-description {
+    font-size: 0.88rem;
+  }
+
+  .footer-contact-row {
     font-size: 0.84rem;
+  }
+
+  .footer-column-heading {
+    gap: 8px;
+    font-size: 0.9rem;
+  }
+
+  .footer-heading-icon {
+    width: 34px;
+    height: 34px;
+    font-size: 1.45rem;
+  }
+
+  .footer-link-list {
+    gap: 15px;
+  }
+
+  .footer-text-link {
+    font-size: 0.9rem;
+  }
+
+  .footer-allergen-button {
+    max-width: none;
+    min-height: 54px;
+    font-size: 0.76rem;
+  }
+
+  .footer-whatsapp-column h3 {
+    font-size: 1.35rem;
+  }
+
+  .footer-whatsapp-column p {
+    margin: 18px auto 22px;
+    font-size: 0.88rem;
+  }
+
+  .footer-whatsapp-button {
+    min-height: 55px;
+    font-size: 0.8rem;
+  }
+
+  .footer-trust-bar {
+    grid-template-columns: 1fr;
+
+    width: 88%;
+    padding: 10px 20px 18px;
+
+    border-radius: 20px 20px 0 0;
+  }
+
+  .footer-trust-item {
+    justify-content: flex-start;
+
+    padding: 20px 4px;
+  }
+
+  .footer-trust-item + .footer-trust-item,
+  .footer-trust-item:nth-child(3) {
+    border-top: 1px solid rgba(23, 21, 21, 0.1);
+    border-left: 0;
+  }
+
+  .footer-trust-icon {
+    width: 48px;
+    font-size: 2.35rem;
     text-align: center;
   }
 
-  .site-footer .footer-text-link:hover {
-    transform: none;
+  .footer-red-bar-inner {
+    width: 86%;
   }
 
-  .site-footer .footer-allergen-button {
-    width: 100%;
-    max-width: 290px;
-    margin-top: 18px;
+  .footer-red-bar-inner p {
+    font-size: 0.72rem;
   }
 
-  .site-footer .footer-connect {
-    grid-column: auto;
-    width: 100%;
-  }
-
-  .site-footer .footer-whatsapp-button {
-    max-width: 340px;
-    margin: 0 auto;
-  }
-
-  .site-footer .footer-bottom {
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    padding-top: 16px;
-    text-align: center;
-    font-size: 0.67rem;
-  }
-
-  .site-footer .footer-bottom-copy {
-    align-items: center;
-  }
-
-  .site-footer .footer-thank-you {
-    text-align: center;
+  .footer-baked-line,
+  .footer-thank-you {
+    font-size: 0.95rem !important;
   }
 
 }
-
 /* =========================================================
    FOOTER INFORMATION MODAL
 ========================================================= */
