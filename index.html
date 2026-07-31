@@ -925,8 +925,8 @@ Which one will steal your heart?</p>
       <div class="modal-card payment-modal-card">
         <div class="modal-sticky-header">
           <div>
-            <p class="drawer-eyebrow">STEP 7 · PAYMENT</p>
-            <h2>Pay for your Gookies</h2>
+            <p class="drawer-eyebrow">PAYMENT</p>
+<h2>Pay for your Gookies</h2>
           </div>
           <button
             class="modal-close-button"
@@ -940,24 +940,28 @@ Which one will steal your heart?</p>
 
         <div class="payment-modal-body">
 <div class="payment-total-card">
-  <span id="paymentBoxSummary"></span>
+  <div class="payment-total-main">
+    <div>
+      <p>AMOUNT TO PAY</p>
+      <strong id="paymentTotal">RM0.00</strong>
+    </div>
 
-  <div class="payment-breakdown">
-    <div class="payment-breakdown-row">
+    <span class="payment-cookie-icon" aria-hidden="true">🍪</span>
+  </div>
+
+  <div class="payment-summary-details">
+    <div class="payment-summary-row">
       <span>Subtotal</span>
       <strong id="paymentSubtotal">RM0.00</strong>
     </div>
 
-    <div class="payment-breakdown-row">
+    <div class="payment-summary-row">
       <span>Delivery</span>
       <strong id="paymentDelivery">RM0.00</strong>
     </div>
   </div>
 
-  <div class="payment-total-divider"></div>
-
-  <p>AMOUNT TO PAY</p>
-  <strong id="paymentTotal">RM0.00</strong>
+  <span class="payment-box-summary" id="paymentBoxSummary"></span>
 </div>
 
           <div class="payment-qr-card">
