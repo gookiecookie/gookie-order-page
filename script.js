@@ -427,18 +427,76 @@ const FOOTER_MODAL_CONTENT = {
   `
 },
 
-  storage: {
-    eyebrow: "KEEP THEM HAPPY",
-    title: "Storage & Reheating",
-    body: `
-      <div class="footer-info-card">
-        <h3>Storage guide</h3>
-        <p>
-          Full storage instructions will be added here.
-        </p>
-      </div>
-    `
-  },
+ storage: {
+  eyebrow: "KEEP THEM HAPPY",
+  title: "Storage & Reheating",
+  body: `
+    <div class="footer-info-card">
+      <h3>🏠 Room Temperature</h3>
+      <p>
+        Gookies are best enjoyed within
+        <strong>3 days</strong> of receiving them.
+      </p>
+      <p>
+        Keep them in an airtight container at room temperature,
+        away from direct sunlight and heat.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>❄ Freeze for Later</h3>
+      <p>
+        Want to save some for later?
+      </p>
+      <p>
+        Store your Gookies in an airtight container or freezer-safe bag
+        for up to <strong>2 months</strong>.
+      </p>
+      <p>
+        Thaw at room temperature before reheating.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>🔥 Reheat for Freshly Baked Goodness</h3>
+
+      <p>
+        <strong>Microwave</strong><br>
+        8–12 seconds
+      </p>
+
+      <p>
+        <strong>Air Fryer</strong><br>
+        150°C for 2–3 minutes
+      </p>
+
+      <p>
+        Heating time may vary depending on your appliance.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>❤️ Our Favourite Way</h3>
+
+      <p>
+        Warm your Gookie slightly...
+      </p>
+
+      <p>
+        Grab a cup of coffee (or a glass of cold milk),
+        take a bite, and enjoy every chunky moment.
+      </p>
+    </div>
+
+    <div class="footer-info-alert">
+      <h3>A Little Reminder</h3>
+      <p>
+        Please avoid reheating for too long,
+        as this may affect the texture of your Gookies.
+      </p>
+    </div>
+  `
+},
 
   contact: {
     eyebrow: "LET'S CHAT",
