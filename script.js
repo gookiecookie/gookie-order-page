@@ -803,18 +803,107 @@ terms: {
   `
 },
 
-  refund: {
-    eyebrow: "THE BORING STUFF",
-    title: "Refund & Replacement Policy",
-    body: `
-      <div class="footer-info-card">
-        <h3>Refund & Replacement</h3>
-        <p>
-          Full refund and replacement information will be added here.
-        </p>
-      </div>
-    `
-  }
+ refund: {
+  eyebrow: "THE BORING STUFF",
+  title: "Refund & Replacement Policy",
+  body: `
+    <div class="footer-info-card">
+      <h3>Change of Mind</h3>
+      <p>
+        Because our cookies are freshly baked food products,
+        we do not offer refunds, exchanges or cancellations
+        for change of mind.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>When We Can Help</h3>
+      <p>
+        Please contact us if:
+      </p>
+      <ul>
+        <li>You received the wrong order</li>
+        <li>Important items are missing</li>
+        <li>Your cookies arrived significantly damaged during delivery</li>
+      </ul>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Report the Issue Within 24 Hours</h3>
+      <p>
+        Please contact us within <strong>24 hours</strong>
+        of receiving your order.
+      </p>
+      <p>
+        Reports made after this period may be difficult to verify
+        and may not qualify for a refund or replacement.
+      </p>
+    </div>
+
+    <div class="footer-info-alert">
+      <h3>What We Need From You</h3>
+      <p>
+        Please include:
+      </p>
+      <ul>
+        <li>Your Order ID</li>
+        <li>A clear photo of the parcel before it is opened</li>
+        <li>Clear photos of the products after opening</li>
+        <li>A short explanation of the issue</li>
+      </ul>
+      <p>
+        Please keep the original packaging until your case has been reviewed.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Our Review</h3>
+      <p>
+        Every case will be reviewed fairly based on the information
+        and photos provided.
+      </p>
+      <p>
+        Where appropriate, Gookie may offer a replacement,
+        partial refund or full refund depending on the circumstances.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Courier Delays</h3>
+      <p>
+        Delivery times after shipment depend on courier operations.
+        Delays alone do not automatically qualify for a refund
+        if the order arrives in an acceptable condition.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Contact Us</h3>
+      <p>
+        For refund or replacement assistance, contact us through WhatsApp
+        and include your Order ID.
+      </p>
+      <p>
+        <a
+          href="https://wa.me/60102810487"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Message Gookie on WhatsApp
+        </a>
+      </p>
+    </div>
+
+    <div class="footer-info-alert">
+      <h3>We’re Here to Help</h3>
+      <p>
+        Your satisfaction means a lot to us.
+        If something isn’t quite right with your order,
+        we’ll always do our best to make it right. ❤️
+      </p>
+    </div>
+  `
+}
 
 };
 
