@@ -279,17 +279,94 @@ footerInfoModalBody = $("footerInfoModalBody");
 const FOOTER_MODAL_CONTENT = {
 
   faq: {
-    eyebrow: "NEED HELP?",
-    title: "Frequently Asked Questions",
-    body: `
-      <div class="footer-info-card">
-        <h3>Test successful 🍪</h3>
-        <p>
-          The FAQ content will appear here.
-        </p>
-      </div>
-    `
-  },
+  eyebrow: "NEED HELP?",
+  title: "Frequently Asked Questions",
+  body: `
+    <div class="footer-info-card">
+      <h3>Do I need to order a whole box?</h3>
+      <p>
+        Yes. Every order starts from <strong>1 box</strong>.
+        Individual cookies are not available so your Gookies fit the packaging properly
+        and the delivery charge remains worthwhile.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Can I build my own box?</h3>
+      <p>
+        Absolutely. Choose your favourite flavours with
+        <strong>Build Your Box</strong>, or pick one of our ready-made Gookie’s Picks.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>When is my order confirmed?</h3>
+      <p>
+        Your order is confirmed after you send the completed order to Gookie through
+        WhatsApp and your payment has been verified.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Can I change my flavour or delivery address?</h3>
+      <p>
+        Flavour selections and delivery addresses cannot be changed once the order has
+        been placed. Every order is sent directly to the kitchen team, so this helps us
+        prevent confusion and preparation errors.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>What payment methods do you accept?</h3>
+      <p>
+        We currently accept payment through <strong>DuitNow QR</strong> only.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Are your cookies halal?</h3>
+      <p>
+        Our cookies are made using halal-friendly ingredients by a Muslim-owned business.
+      </p>
+      <p>
+        <strong>Gookie is not yet halal certified.</strong>
+        We’re committed to working towards halal certification so our customers can
+        enjoy every Gookie with complete confidence.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Where do you deliver?</h3>
+      <p>
+        We currently deliver throughout <strong>Peninsular Malaysia</strong>.
+        Sabah and Sarawak delivery is coming soon.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>How soon will my order be shipped?</h3>
+      <p>
+        Orders will be shipped within <strong>1–3 working days</strong> after payment
+        verification. Delivery time after shipment depends on courier operations and
+        your location.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Do you have a physical store?</h3>
+      <p>
+        Not yet. Gookie is currently available online only.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Can I cancel my order?</h3>
+      <p>
+        Orders cannot be cancelled once payment has been verified and preparation has begun.
+      </p>
+    </div>
+  `
+},
 
   delivery: {
     eyebrow: "DELIVERY INFORMATION",
