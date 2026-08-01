@@ -3685,6 +3685,11 @@ a.footer-contact-row:hover {
   line-height: 1;
 }
 
+.footer-help-column .footer-heading-icon i {
+  font-size: 1.9rem;
+  transform: translateY(1px) scaleX(1.08);
+}
+
 .footer-heading-icon i{
   font-size:1.7rem;
 }
