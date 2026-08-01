@@ -498,18 +498,69 @@ const FOOTER_MODAL_CONTENT = {
   `
 },
 
-  contact: {
-    eyebrow: "LET'S CHAT",
-    title: "Contact Us",
-    body: `
-      <div class="footer-info-card">
-        <h3>Need help?</h3>
-        <p>
-          Our contact details will appear here.
-        </p>
-      </div>
-    `
-  },
+ contact: {
+  eyebrow: "LET'S CONNECT!",
+  title: "Contact Us",
+  body: `
+    <div class="footer-info-card">
+      <h3>Need Help?</h3>
+      <p>
+        We’re happy to help with questions about your order,
+        delivery, flavours or anything Gookie-related.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Email</h3>
+      <p>
+        <a href="mailto:heygookie@gmail.com">
+          heygookie@gmail.com
+        </a>
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>WhatsApp</h3>
+      <p>
+        For the fastest response, contact us through WhatsApp.
+      </p>
+      <p>
+        <a
+          href="https://wa.me/60102810487"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Message Gookie on WhatsApp
+        </a>
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Reply Hours</h3>
+      <p>
+        WhatsApp messages and enquiries are replied to daily between
+        <strong>9:00 AM and 5:00 PM</strong>.
+      </p>
+      <p>
+        Orders can still be placed online <strong>24/7</strong>.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Location</h3>
+      <p>
+        Ampang, Selangor, Malaysia
+      </p>
+    </div>
+
+    <div class="footer-info-alert">
+      <h3>Already Placed an Order?</h3>
+      <p>
+        Please include your Order ID when contacting us so we can assist you faster.
+      </p>
+    </div>
+  `
+},
 
   allergen: {
   eyebrow: "IMPORTANT INFORMATION",
