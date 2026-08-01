@@ -613,7 +613,105 @@ const FOOTER_MODAL_CONTENT = {
   `
 },
 
- v
+terms: {
+  eyebrow: "THE BORING STUFF",
+  title: "Terms & Conditions",
+  body: `
+    <div class="footer-info-card">
+      <h3>Orders</h3>
+      <p>
+        The minimum order is <strong>1 box</strong>.
+        Individual cookies are not available.
+      </p>
+      <p>
+        An order is only confirmed after it has been sent to Gookie through
+        WhatsApp and payment has been verified.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Payment</h3>
+      <p>
+        We currently accept payment through
+        <strong>DuitNow QR</strong> only.
+      </p>
+      <p>
+        Full payment is required before your order enters our preparation queue.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Order Changes</h3>
+      <p>
+        Flavour selections and delivery details cannot be changed once the order
+        has been placed.
+      </p>
+      <p>
+        Every confirmed order is sent directly to the kitchen team, so this policy
+        helps us prevent confusion and preparation errors.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Cancellations</h3>
+      <p>
+        Orders cannot be cancelled after payment has been verified and preparation
+        has begun.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Handmade Products</h3>
+      <p>
+        Every Gookie is handmade.
+      </p>
+      <p>
+        Slight differences in appearance, colour, shape or size are normal and do
+        not affect the quality of the product.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Shipping</h3>
+      <p>
+        Orders will be shipped within <strong>1–3 working days</strong> after
+        payment verification.
+      </p>
+      <p>
+        Delivery time after shipment depends on courier operations, location,
+        weather conditions and other circumstances outside our control.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Incorrect Information</h3>
+      <p>
+        Customers are responsible for ensuring that their name, phone number,
+        postcode and delivery address are correct before placing an order.
+      </p>
+      <p>
+        Gookie is not responsible for delays or failed deliveries caused by
+        incorrect information provided during checkout.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Policy Updates</h3>
+      <p>
+        Gookie Enterprise reserves the right to update products, prices,
+        availability and policies when necessary.
+      </p>
+    </div>
+
+    <div class="footer-info-alert">
+      <h3>Agreement</h3>
+      <p>
+        By placing an order with Gookie, you confirm that you have read,
+        understood and agreed to these Terms & Conditions.
+      </p>
+    </div>
+  `
+},
 
   privacy: {
     eyebrow: "THE BORING STUFF",
