@@ -714,17 +714,94 @@ terms: {
 },
 
   privacy: {
-    eyebrow: "THE BORING STUFF",
-    title: "Privacy Policy",
-    body: `
-      <div class="footer-info-card">
-        <h3>Privacy Policy</h3>
-        <p>
-          Full privacy information will be added here.
-        </p>
-      </div>
-    `
-  },
+  eyebrow: "THE BORING STUFF",
+  title: "Privacy Policy",
+  body: `
+    <div class="footer-info-card">
+      <h3>Information We Collect</h3>
+      <p>
+        We collect only the information needed to process,
+        prepare and deliver your order.
+      </p>
+      <p>
+        This may include:
+      </p>
+      <ul>
+        <li>Your name</li>
+        <li>Phone number</li>
+        <li>Delivery address</li>
+        <li>Postcode</li>
+        <li>Email address, if provided</li>
+        <li>Order and payment verification details</li>
+      </ul>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>How We Use Your Information</h3>
+      <p>
+        Your information may be used to:
+      </p>
+      <ul>
+        <li>Process and prepare your order</li>
+        <li>Verify payment</li>
+        <li>Arrange delivery</li>
+        <li>Send order and tracking updates</li>
+        <li>Respond to enquiries or order-related issues</li>
+      </ul>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Sharing Your Information</h3>
+      <p>
+        We do not sell or rent your personal information.
+      </p>
+      <p>
+        Your information may only be shared with trusted service providers
+        when required to complete your order, such as courier companies
+        and delivery partners.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Payment Information</h3>
+      <p>
+        Gookie does not store your banking login details,
+        card details or DuitNow account information.
+      </p>
+      <p>
+        Payment proof may be reviewed only for order verification purposes.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Keeping Your Information Safe</h3>
+      <p>
+        We take reasonable care to protect customer information
+        from unauthorised access, misuse or disclosure.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Your Responsibility</h3>
+      <p>
+        Please make sure the information you provide is accurate
+        and avoid sending sensitive banking details through WhatsApp
+        or email.
+      </p>
+    </div>
+
+    <div class="footer-info-alert">
+      <h3>Privacy Questions</h3>
+      <p>
+        For questions about your personal information,
+        contact us at
+        <a href="mailto:heygookie@gmail.com">
+          heygookie@gmail.com
+        </a>.
+      </p>
+    </div>
+  `
+},
 
   refund: {
     eyebrow: "THE BORING STUFF",
