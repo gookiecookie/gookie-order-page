@@ -3685,6 +3685,10 @@ a.footer-contact-row:hover {
   line-height: 1;
 }
 
+.footer-heading-icon i{
+  font-size:1.7rem;
+}
+
 .footer-link-list {
   display: flex;
   flex-direction: column;
@@ -3782,6 +3786,10 @@ a.footer-contact-row:hover {
   line-height: 1;
 }
 
+.footer-whatsapp-icon i{
+  font-size:3.5rem;
+}
+
 .footer-whatsapp-column h3 {
   margin: 0;
 
@@ -3830,6 +3838,10 @@ a.footer-contact-row:hover {
     background-color 190ms ease,
     box-shadow 190ms ease,
     transform 190ms ease;
+}
+
+.footer-whatsapp-button i{
+   font-size:1.15rem;
 }
 
 .footer-whatsapp-button:hover {
