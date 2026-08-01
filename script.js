@@ -613,18 +613,7 @@ const FOOTER_MODAL_CONTENT = {
   `
 },
 
-  terms: {
-    eyebrow: "THE BORING STUFF",
-    title: "Terms & Conditions",
-    body: `
-      <div class="footer-info-card">
-        <h3>Terms & Conditions</h3>
-        <p>
-          Full terms will be added here.
-        </p>
-      </div>
-    `
-  },
+ v
 
   privacy: {
     eyebrow: "THE BORING STUFF",
