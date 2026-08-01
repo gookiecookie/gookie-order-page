@@ -369,17 +369,63 @@ const FOOTER_MODAL_CONTENT = {
 },
 
   delivery: {
-    eyebrow: "DELIVERY INFORMATION",
-    title: "Where are my Gookies going?",
-    body: `
-      <div class="footer-info-card">
-        <h3>Delivery information</h3>
-        <p>
-          Full delivery details will be added here.
-        </p>
-      </div>
-    `
-  },
+  eyebrow: "DELIVERY INFORMATION",
+  title: "Freshly Baked. Carefully Shipped.",
+  body: `
+    <div class="footer-info-card">
+      <h3>Where do we deliver?</h3>
+      <p>
+        We currently deliver throughout
+        <strong>Peninsular Malaysia</strong>.
+      </p>
+      <p>
+        Sabah and Sarawak delivery is coming soon.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>When will my order be shipped?</h3>
+      <p>
+        Your order will be shipped within
+        <strong>1–3 working days</strong>
+        after payment has been verified.
+      </p>
+      <p>
+        Delivery time after shipment depends on courier operations,
+        your location and any unexpected delays during transit.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>How can I track my order?</h3>
+      <p>
+        Once your parcel has been shipped, we’ll send your tracking
+        number and tracking link through WhatsApp.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Please check your delivery details</h3>
+      <p>
+        Make sure your name, phone number, postcode and delivery address
+        are correct before placing your order.
+      </p>
+      <p>
+        Delivery details cannot be changed after the order has been placed,
+        as every confirmed order is sent directly to the kitchen team.
+      </p>
+    </div>
+
+    <div class="footer-info-alert">
+      <h3>Important</h3>
+      <p>
+        Gookie is not responsible for delays caused by courier operations,
+        incorrect delivery information, unsuccessful delivery attempts,
+        weather conditions or other circumstances outside our control.
+      </p>
+    </div>
+  `
+},
 
   storage: {
     eyebrow: "KEEP THEM HAPPY",
