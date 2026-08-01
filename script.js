@@ -2022,6 +2022,63 @@ async function continueToWhatsApp() {
   }
 }
 
+/* =========================================================
+   FOOTER INFORMATION MODAL
+========================================================= */
+
+function openFooterInfoModal(contentKey) {
+  const content = FOOTER_MODAL_CONTENT[contentKey];
+
+  if (
+    !content ||
+    !footerInfoModal ||
+    !footerInfoModalEyebrow ||
+    !footerInfoModalTitle ||
+    !footerInfoModalBody
+  ) {
+    return;
+  }
+
+  footerInfoModalEyebrow.textContent = content.eyebrow;
+  footerInfoModalTitle.textContent = content.title;
+  footerInfoModalBody.innerHTML = content.body;
+
+  openModal(footerInfoModal);
+
+  setTimeout(() => {
+    footerInfoModalClose?.focus();
+  }, 280);
+}
+
+
+/* Open modal from footer buttons */
+
+document
+  .querySelectorAll("[data-footer-modal]")
+  .forEach((button) => {
+    button.addEventListener("click", () => {
+      openFooterInfoModal(
+        button.dataset.footerModal
+      );
+    });
+  });
+
+
+/* Close button */
+
+footerInfoModalClose?.addEventListener("click", () => {
+  closeModal(footerInfoModal);
+});
+
+
+/* Close when clicking the dark background */
+
+footerInfoModal?.addEventListener("click", (event) => {
+  if (event.target === footerInfoModal) {
+    closeModal(footerInfoModal);
+  }
+});
+    
 menuButton?.addEventListener("click", () => openDrawer(menuDrawer, menuButton));
 cartButton?.addEventListener("click", () => openDrawer(cartDrawer, cartButton));
 menuCloseButton?.addEventListener("click", () => closeDrawer(menuDrawer));
