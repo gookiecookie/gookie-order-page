@@ -512,17 +512,55 @@ const FOOTER_MODAL_CONTENT = {
   },
 
   allergen: {
-    eyebrow: "IMPORTANT INFORMATION",
-    title: "Allergen Information",
-    body: `
-      <div class="footer-info-alert">
-        <h3>Please read before ordering</h3>
-        <p>
-          Full allergen information will be added here.
-        </p>
-      </div>
-    `
-  },
+  eyebrow: "IMPORTANT INFORMATION",
+  title: "Allergen Information",
+  body: `
+    <div class="footer-info-alert">
+      <h3>Please Read Before Ordering</h3>
+      <p>
+        Our cookies contain or may contain:
+      </p>
+
+      <ul>
+        <li>Wheat (Gluten)</li>
+        <li>Milk</li>
+        <li>Eggs</li>
+        <li>Soy</li>
+        <li>Peanuts</li>
+        <li>Tree Nuts, including Macadamia and Pistachio</li>
+      </ul>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Shared Kitchen Notice</h3>
+      <p>
+        All Gookies are prepared in the same kitchen and may come into
+        contact with other allergens during preparation, baking or packing.
+      </p>
+      <p>
+        Although we take care when handling our ingredients, we cannot
+        guarantee that any product is completely free from allergen
+        cross-contact.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Severe Allergies</h3>
+      <p>
+        If you have a severe food allergy, we kindly recommend that you
+        do not consume our products.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Need More Information?</h3>
+      <p>
+        Please contact us before placing your order if you need more
+        information about the ingredients used in a specific flavour.
+      </p>
+    </div>
+  `
+},
 
   terms: {
     eyebrow: "THE BORING STUFF",
