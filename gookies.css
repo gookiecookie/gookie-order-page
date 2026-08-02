@@ -986,14 +986,14 @@
   position:absolute;
   top:50%;
   left:50%;
-  width:190px;
-  height:190px;
-  margin:-95px;
+  width:250px;
+    height:250px;
+    margin:-125px;
   transform:
     rotate(var(--item-angle))
-    translateX(330px)
-    rotate(calc(-1 * var(--item-angle)))
-    scale(var(--item-scale,.74));
+      translateX(330px)
+      rotate(calc(-1 * var(--item-angle)))
+      scale(var(--item-scale,.82));
   opacity:var(--item-opacity,.3);
   filter:blur(var(--item-blur,0));
   transition:
@@ -1099,9 +1099,9 @@
   .gookie-wheel-stage{min-height:430px}
   .gookie-wheel{right:-355px;width:680px;height:680px}
   .gookie-wheel-item{
-    width:150px;
-    height:150px;
-    margin:-75px;
+    width:200px;
+height:200px;
+margin:-100px;
     transform:
       rotate(var(--item-angle))
       translateX(292px)
