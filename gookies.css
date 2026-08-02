@@ -62,7 +62,31 @@
   letter-spacing: 0.12em;
 }
 
+.gookies-hero-art {
+  position: relative;
+  display: grid;
+  place-items: end center;
+  min-height: 620px;
+  background:
+    radial-gradient(circle at 50% 45%, #fff1dc 0 26%, transparent 65%),
+    #fff8ef;
+}
 
+.gookies-hero-art::before {
+  content: "";
+  position: absolute;
+  width: 430px;
+  height: 430px;
+  border: 2px solid rgba(187, 25, 26, 0.12);
+  border-radius: 50%;
+}
+
+.gookies-hero-art img {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 720px);
+  filter: drop-shadow(0 30px 28px rgba(64, 27, 14, 0.18));
+}
 
 .gookie-collection-section {
   padding: 110px 30px 130px;
@@ -940,174 +964,4 @@
   .gookie-allergen-note {
     display: none;
   }
-}
-
-
-/* =========================================================
-   HERO — VERTICAL QUARTER-CIRCLE COOKIE CAROUSEL
-========================================================= */
-
-.gookie-wheel-stage{
-  position:relative;
-  min-height:620px;
-  overflow:hidden;
-  background:
-    radial-gradient(circle at 84% 50%,rgba(255,231,201,.76),transparent 58%),
-    #fff8ef;
-}
-
-.gookie-wheel-viewport{
-  position:absolute;
-  inset:0;
-  overflow:hidden;
-}
-
-.gookie-wheel{
-  position:absolute;
-  top:50%;
-  right:-365px;
-  width:760px;
-  height:760px;
-  border-radius:50%;
-  transform:translateY(-50%) rotate(var(--wheel-rotation,0deg));
-  transition:transform 900ms cubic-bezier(.22,.76,.22,1);
-  will-change:transform;
-}
-
-.gookie-wheel::before{
-  content:"";
-  position:absolute;
-  inset:54px;
-  border:2px dashed rgba(187,25,26,.15);
-  border-radius:50%;
-}
-
-.gookie-wheel-item{
-  position:absolute;
-  top:50%;
-  left:50%;
-  width:500px;
-    height:500px;
-    margin:-125px;
-  transform:
-    rotate(var(--item-angle))
-      translateX(330px)
-      rotate(calc(-1 * var(--item-angle)))
-      scale(var(--item-scale,.82));
-  opacity:var(--item-opacity,.3);
-  filter:blur(var(--item-blur,0));
-  transition:
-    transform 900ms cubic-bezier(.22,.76,.22,1),
-    opacity 650ms ease,
-    filter 650ms ease;
-}
-
-.gookie-wheel-item img{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  filter:drop-shadow(0 18px 16px rgba(70,30,12,.2));
-}
-
-.gookie-wheel-item.is-focus{
-  --item-scale:1;
-  --item-opacity:1;
-  z-index:4;
-}
-
-.gookie-wheel-item.is-near{
-  --item-scale:.86;
-  --item-opacity:.72;
-  z-index:3;
-}
-
-.gookie-wheel-item.is-far{
-  --item-scale:.68;
-  --item-opacity:.18;
-  --item-blur:.7px;
-}
-
-.gookie-wheel:not(.is-spinning) .gookie-wheel-item.is-focus img{
-  animation:gookieWheelLand 420ms cubic-bezier(.2,.9,.25,1);
-}
-
-@keyframes gookieWheelLand{
-  0%{transform:scale(.92)}
-  60%{transform:scale(1.045)}
-  100%{transform:scale(1)}
-}
-
-.gookie-wheel-controls{
-  position:absolute;
-  top:50%;
-  right:20px;
-  z-index:5;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:13px;
-  transform:translateY(-50%);
-}
-
-.gookie-wheel-button{
-  display:grid;
-  place-items:center;
-  width:44px;
-  height:44px;
-  padding:0;
-  border:1px solid rgba(187,25,26,.12);
-  border-radius:50%;
-  background:rgba(255,255,255,.82);
-  color:var(--gookie-red);
-  cursor:pointer;
-}
-
-.gookie-wheel-dots{
-  display:flex;
-  flex-direction:column;
-  gap:7px;
-}
-
-.gookie-wheel-dot{
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:rgba(187,25,26,.18);
-}
-
-.gookie-wheel-dot.is-active{
-  background:var(--gookie-red);
-  transform:scale(1.45);
-}
-
-@media(max-width:900px){
-  .gookie-wheel-stage{min-height:470px}
-  .gookie-wheel{right:-330px;width:700px;height:700px}
-  .gookie-wheel-item{
-    width:165px;
-    height:165px;
-    margin:-82.5px;
-    transform:
-      rotate(var(--item-angle))
-      translateX(302px)
-      rotate(calc(-1 * var(--item-angle)))
-      scale(var(--item-scale,.74));
-  }
-}
-
-@media(max-width:600px){
-  .gookie-wheel-stage{min-height:430px}
-  .gookie-wheel{right:-355px;width:680px;height:680px}
-  .gookie-wheel-item{
-    width:200px;
-height:200px;
-margin:-100px;
-    transform:
-      rotate(var(--item-angle))
-      translateX(292px)
-      rotate(calc(-1 * var(--item-angle)))
-      scale(var(--item-scale,.74));
-  }
-  .gookie-wheel-controls{right:8px}
-  .gookie-wheel-button{width:39px;height:39px}
 }
