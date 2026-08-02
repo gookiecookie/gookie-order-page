@@ -612,257 +612,9 @@
   left: 7%;
 }
 
-/* Premium popup inspired by the approved mockup. */
-.gookie-profile-modal-card {
-  display: block;
-  width: min(980px, 100%);
-  max-height: 90vh;
-  overflow: auto;
-  border-radius: 30px;
-  background: #fffaf3;
-  box-shadow: 0 30px 100px rgba(40, 18, 10, 0.24);
-}
-
-.gookie-profile-main {
-  display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
-  align-items: center;
-  min-height: 430px;
-}
-
-.gookie-profile-copy {
-  display: block;
-  padding: 58px 36px 38px 58px;
-  text-align: left;
-}
-
-.gookie-profile-kicker {
-  margin: 0 0 10px;
-  color: var(--gookie-red);
-  font-size: 0.68rem;
-  font-weight: 800;
-  letter-spacing: 0.13em;
-}
-
-.gookie-profile-copy h2 {
-  margin: 0 0 10px;
-  font-size: clamp(3.4rem, 6vw, 5.7rem);
-}
-
-.gookie-profile-subtitle {
-  margin: 0 0 22px;
-  color: var(--gookie-red);
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.11em;
-  text-transform: uppercase;
-}
-
-.gookie-profile-description {
-  margin: 0;
-  color: var(--muted);
-  line-height: 1.75;
-}
-
-.gookie-profile-facts {
-  display: grid;
-  gap: 10px;
-  margin-top: 26px;
-  padding-top: 22px;
-  border-top: 1px solid rgba(23, 21, 21, 0.1);
-}
-
-.gookie-profile-facts span {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: var(--ink);
-  font-size: 0.82rem;
-}
-
-.gookie-profile-facts i {
-  width: 18px;
-  color: var(--gookie-red);
-  text-align: center;
-}
-
-.gookie-profile-image {
-  display: grid;
-  place-items: center;
-  min-height: 430px;
-  padding: 46px 48px 36px 20px;
-  background:
-    radial-gradient(circle at 50% 50%, rgba(255, 232, 201, 0.88) 0 36%, transparent 70%);
-}
-
-.gookie-profile-image img {
-  width: min(100%, 430px);
-  max-height: 390px;
-  object-fit: contain;
-  filter: drop-shadow(0 24px 18px rgba(66, 29, 12, 0.22));
-}
-
-.gookie-allergen-section {
-  margin: 0 38px;
-  padding: 24px 20px 20px;
-  border-top: 1px solid rgba(23, 21, 21, 0.1);
-}
-
-.gookie-allergen-heading {
-  margin: 0 0 14px;
-  color: var(--gookie-red);
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-}
-
-.gookie-allergen-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.gookie-allergen-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 38px;
-  padding: 9px 13px;
-  border-radius: 999px;
-  background: #fff1dc;
-  color: var(--ink);
-  font-size: 0.75rem;
-  font-weight: 700;
-}
-
-.gookie-allergen-chip i {
-  color: var(--gookie-red);
-}
-
-.gookie-allergen-note {
-  margin: 14px 0 0;
-  color: var(--muted);
-  font-size: 0.74rem;
-  line-height: 1.5;
-}
-
-.gookie-profile-purchase {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 20px;
-  margin: 0 38px 34px;
-  padding: 22px 24px;
-  border-radius: 22px;
-  background: #fff;
-  box-shadow: 0 12px 34px rgba(55, 26, 12, 0.07);
-}
-
-.gookie-profile-purchase p {
-  margin: 0;
-  color: var(--ink);
-  font-size: 0.9rem;
-  line-height: 1.5;
-}
-
-.gookie-profile-order-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 14px;
-  min-width: 250px;
-  margin: 0;
-  padding: 17px 22px;
-  background: var(--gookie-red);
-  color: #fff;
-}
-
-.gookie-profile-order-button i:last-child {
-  margin-left: auto;
-}
-
-@media (max-width: 760px) {
-  .gookies-page .brand-logo img {
-    width: 132px;
-  }
-
-  .gookies-header-flag {
-    right: 62px;
-    font-size: 14px;
-  }
-
-  .gookies-header-cart {
-    right: 8px !important;
-  }
-
-  .gookie-profile-main {
-    grid-template-columns: 1fr;
-  }
-
-  .gookie-profile-image {
-    order: -1;
-    min-height: 280px;
-    padding: 32px 30px 16px;
-  }
-
-  .gookie-profile-image img {
-    max-height: 250px;
-  }
-
-  .gookie-profile-copy {
-    padding: 24px 24px 18px;
-    text-align: center;
-  }
-
-  .gookie-profile-copy h2 {
-    font-size: 3.5rem;
-  }
-
-  .gookie-profile-facts {
-    justify-items: start;
-    width: min(310px, 100%);
-    margin-inline: auto;
-    text-align: left;
-  }
-
-  .gookie-allergen-section {
-    margin: 0 20px;
-    padding-inline: 4px;
-  }
-
-  .gookie-profile-purchase {
-    grid-template-columns: 1fr;
-    margin: 0 20px 24px;
-    text-align: center;
-  }
-
-  .gookie-profile-order-button {
-    width: 100%;
-    min-width: 0;
-  }
-}
-
-@media (max-width: 420px) {
-  .gookies-header-flag {
-    right: 58px;
-  }
-
-  .gookies-page .brand-logo img {
-    width: 122px;
-  }
-
-  .gookie-catalogue-card-copy strong {
-    font-size: 1.18rem;
-  }
-
-  .gookie-catalogue-card-copy small {
-    font-size: 0.52rem;
-  }
-}
-
 
 /* =========================================================
-   GOOKIE PROFILE MODAL — FIT IN SCREEN V3
-   Overrides earlier modal rules.
+   GOOKIE PROFILE MODAL — CLEAN V4
 ========================================================= */
 
 .gookie-profile-modal {
@@ -871,198 +623,289 @@
 }
 
 .gookie-profile-modal-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(340px, 1.05fr);
+  grid-template-rows: 1fr auto auto;
   width: min(960px, calc(100vw - 36px));
-  height: min(690px, calc(100dvh - 36px));
+  height: min(670px, calc(100dvh - 36px));
   max-height: calc(100dvh - 36px);
   overflow: hidden;
-  display: grid;
-  grid-template-rows: minmax(0, 1fr) auto auto;
-  border-radius: 28px;
+  border-radius: 30px;
+  background: #fffaf3;
+  box-shadow: 0 30px 100px rgba(40, 18, 10, 0.24);
+}
+
+.gookie-profile-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 5;
 }
 
 .gookie-profile-main {
-  min-height: 0;
-  overflow: hidden;
-  grid-template-columns: minmax(0, 0.92fr) minmax(310px, 1.08fr);
+  display: contents;
 }
 
 .gookie-profile-copy {
-  padding: 42px 24px 22px 46px;
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  padding: 48px 26px 24px 48px;
+  text-align: left;
+}
+
+.gookie-profile-kicker {
+  margin: 0 0 8px;
+  color: var(--gookie-red);
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.13em;
 }
 
 .gookie-profile-copy h2 {
-  margin-bottom: 7px;
-  font-size: clamp(3rem, 5.5vw, 5rem);
-  line-height: 0.8;
+  margin: 0 0 8px;
+  font-family: "League Spartan", sans-serif;
+  font-size: clamp(3.3rem, 5.6vw, 5.4rem);
+  font-weight: 900;
+  line-height: 0.82;
+  letter-spacing: -0.05em;
 }
 
 .gookie-profile-subtitle {
-  margin-bottom: 15px;
+  margin: 0 0 16px;
+  color: var(--gookie-red);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
 }
 
 .gookie-profile-description {
+  margin: 0;
+  color: var(--muted);
   font-size: 0.92rem;
-  line-height: 1.6;
+  line-height: 1.62;
 }
 
 .gookie-profile-facts {
-  gap: 7px;
-  margin-top: 17px;
-  padding-top: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 18px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(23, 21, 21, 0.1);
+}
+
+.gookie-profile-facts span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink);
+  font-size: 0.78rem;
+}
+
+.gookie-profile-facts i {
+  color: var(--gookie-red);
 }
 
 .gookie-profile-image {
+  grid-column: 2;
+  grid-row: 1;
+  display: grid;
+  place-items: center;
+  min-width: 0;
   min-height: 0;
-  padding: 34px 52px 18px 10px;
+  padding: 44px 46px 20px 18px;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 232, 201, 0.9) 0 36%, transparent 72%);
 }
 
 .gookie-profile-image img {
-  width: min(100%, 390px);
-  max-height: 330px;
+  width: min(100%, 410px);
+  max-height: 360px;
+  object-fit: contain;
+  filter: drop-shadow(0 24px 18px rgba(66, 29, 12, 0.22));
 }
 
 .gookie-allergen-section {
+  grid-column: 1 / -1;
+  grid-row: 2;
   margin: 0 34px;
   padding: 15px 8px 12px;
+  border-top: 1px solid rgba(23, 21, 21, 0.1);
 }
 
 .gookie-allergen-heading {
-  margin-bottom: 10px;
+  margin: 0 0 10px;
+  color: var(--gookie-red);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
 }
 
 .gookie-allergen-list {
-  display: flex !important;
+  display: flex;
   flex-wrap: wrap;
   gap: 7px;
-  min-height: 36px;
-  visibility: visible !important;
-  opacity: 1 !important;
+  min-height: 32px;
 }
 
 .gookie-allergen-chip {
-  display: inline-flex !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   min-height: 32px;
   padding: 7px 11px;
+  border-radius: 999px;
+  background: #fff1dc;
+  color: var(--ink);
   font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.gookie-allergen-chip i {
+  color: var(--gookie-red);
 }
 
 .gookie-allergen-note {
-  margin-top: 9px;
-  font-size: 0.68rem;
+  margin: 9px 0 0;
+  color: var(--muted);
+  font-size: 0.66rem;
+  line-height: 1.4;
 }
 
 .gookie-profile-purchase {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
   margin: 0 34px 24px;
   padding: 15px 18px;
   border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 12px 34px rgba(55, 26, 12, 0.07);
 }
 
 .gookie-profile-purchase p {
-  font-size: 0.82rem;
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.8rem;
+  line-height: 1.45;
 }
 
 .gookie-profile-order-button {
-  min-width: 220px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 240px;
   min-height: 50px;
+  margin: 0;
   padding: 13px 18px;
+  border-radius: 999px;
+  background: var(--gookie-red);
+  color: #fff;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
 }
+
+.gookie-profile-order-button i:last-child {
+  margin-left: auto;
+}
+
+/* ==================== TABLET / MOBILE ==================== */
 
 @media (max-width: 760px) {
   .gookie-profile-modal {
-    place-items: center;
     padding: 10px;
   }
 
   .gookie-profile-modal-card {
+    grid-template-columns: minmax(0, 1.05fr) minmax(120px, 0.95fr);
+    grid-template-rows: minmax(0, 1fr) auto auto;
     width: calc(100vw - 20px);
     height: calc(100dvh - 20px);
     max-height: calc(100dvh - 20px);
-    grid-template-rows: minmax(0, 1fr) auto auto;
     border-radius: 24px;
   }
 
   .gookie-profile-close {
-    top: 12px;
-    right: 12px;
+    top: 10px;
+    right: 10px;
     width: 38px;
     height: 38px;
     flex-basis: 38px;
     font-size: 1.65rem;
   }
 
-  .gookie-profile-main {
-    display: grid;
-    grid-template-columns: minmax(0, 1.1fr) minmax(120px, 0.9fr);
-    align-items: center;
-    min-height: 0;
-    overflow: hidden;
-  }
-
   .gookie-profile-copy {
-    order: 1;
-    padding: 54px 8px 12px 20px;
-    text-align: left;
+    grid-column: 1;
+    grid-row: 1;
+    justify-content: center;
+    padding: 46px 8px 12px 18px;
   }
 
   .gookie-profile-kicker {
-    margin-bottom: 7px;
-    font-size: 0.58rem;
+    margin-bottom: 6px;
+    font-size: 0.54rem;
   }
 
   .gookie-profile-copy h2 {
     margin-bottom: 6px;
-    font-size: clamp(2.25rem, 11vw, 3.4rem);
-    line-height: 0.82;
+    font-size: clamp(2.2rem, 11vw, 3.3rem);
   }
 
   .gookie-profile-subtitle {
-    margin-bottom: 10px;
-    font-size: 0.58rem;
-    line-height: 1.3;
+    margin-bottom: 9px;
+    font-size: 0.54rem;
+    line-height: 1.25;
   }
 
   .gookie-profile-description {
     display: -webkit-box;
     overflow: hidden;
-    font-size: 0.76rem;
-    line-height: 1.45;
+    font-size: 0.72rem;
+    line-height: 1.42;
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
   }
 
   .gookie-profile-facts {
-    width: 100%;
+    display: grid;
     gap: 5px;
-    margin-top: 11px;
-    padding-top: 10px;
+    margin-top: 10px;
+    padding-top: 9px;
   }
 
   .gookie-profile-facts span {
-    gap: 7px;
-    font-size: 0.68rem;
+    font-size: 0.64rem;
   }
 
   .gookie-profile-image {
-    order: 2;
-    min-height: 0;
-    padding: 54px 14px 12px 0;
-    background:
-      radial-gradient(circle at 50% 50%, rgba(255, 232, 201, 0.9) 0 34%, transparent 72%);
+    grid-column: 2;
+    grid-row: 1;
+    padding: 46px 12px 10px 0;
   }
 
   .gookie-profile-image img {
     width: 100%;
-    max-height: 220px;
+    max-height: 210px;
   }
 
   .gookie-allergen-section {
-    margin: 0 18px;
-    padding: 11px 2px 9px;
+    margin: 0 14px;
+    padding: 10px 2px 8px;
   }
 
   .gookie-allergen-heading {
-    margin-bottom: 7px;
-    font-size: 0.58rem;
+    margin-bottom: 6px;
+    font-size: 0.55rem;
   }
 
   .gookie-allergen-list {
@@ -1070,46 +913,44 @@
   }
 
   .gookie-allergen-chip {
-    min-height: 28px;
+    min-height: 27px;
     padding: 5px 8px;
-    font-size: 0.61rem;
+    font-size: 0.58rem;
   }
 
   .gookie-allergen-note {
-    margin-top: 7px;
-    font-size: 0.58rem;
-    line-height: 1.35;
+    margin-top: 6px;
+    font-size: 0.54rem;
   }
 
   .gookie-profile-purchase {
     grid-template-columns: 1fr;
-    gap: 9px;
-    margin: 0 14px 14px;
-    padding: 11px 12px;
+    gap: 8px;
+    margin: 0 12px 12px;
+    padding: 10px 12px;
     text-align: center;
   }
 
   .gookie-profile-purchase p {
-    font-size: 0.69rem;
-    line-height: 1.35;
+    font-size: 0.64rem;
   }
 
   .gookie-profile-order-button {
     width: 100%;
     min-width: 0;
-    min-height: 44px;
-    padding: 10px 15px;
-    font-size: 0.72rem;
+    min-height: 43px;
+    padding: 10px 14px;
+    font-size: 0.68rem;
   }
 }
 
-@media (max-width: 390px), (max-height: 720px) {
+@media (max-width: 390px), (max-height: 700px) {
   .gookie-profile-copy {
-    padding-top: 46px;
+    padding-top: 40px;
   }
 
   .gookie-profile-copy h2 {
-    font-size: 2.15rem;
+    font-size: 2rem;
   }
 
   .gookie-profile-description {
@@ -1117,14 +958,10 @@
   }
 
   .gookie-profile-image img {
-    max-height: 175px;
+    max-height: 165px;
   }
 
   .gookie-allergen-note {
     display: none;
-  }
-
-  .gookie-profile-purchase p {
-    font-size: 0.64rem;
   }
 }
