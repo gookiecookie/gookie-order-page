@@ -5855,3 +5855,68 @@ a.footer-contact-row:hover {
   }
 }
 
+/* =========================================================
+   FIX FOOTER ACCORDION HEADINGS ON DESKTOP
+========================================================= */
+
+@media (min-width: 601px) {
+
+  .footer-column-heading.footer-accordion-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+
+    width: auto;
+    min-height: 0;
+    margin: 0 0 28px;
+    padding: 0;
+
+    border: 0;
+    border-radius: 0;
+    outline: 0;
+
+    background: transparent;
+    box-shadow: none;
+
+    color: var(--gookie-red);
+    text-align: left;
+    cursor: default;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  .footer-column-heading.footer-accordion-toggle:hover,
+  .footer-column-heading.footer-accordion-toggle:focus,
+  .footer-column-heading.footer-accordion-toggle:active {
+    border: 0;
+    outline: 0;
+    background: transparent;
+    box-shadow: none;
+    transform: none;
+  }
+
+  .footer-column-heading .footer-accordion-label {
+    font-family: "League Spartan", sans-serif;
+    font-size: 1rem;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: 0.03em;
+  }
+
+  .footer-column-heading .footer-heading-icon {
+    display: grid;
+    place-items: center;
+
+    width: 30px;
+    height: 30px;
+    flex: 0 0 30px;
+
+    color: var(--gookie-red);
+    font-size: 1.35rem;
+  }
+
+  .footer-column-heading .footer-accordion-chevron {
+    display: none;
+  }
+}
