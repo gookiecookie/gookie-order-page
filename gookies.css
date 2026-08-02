@@ -858,3 +858,273 @@
     font-size: 0.52rem;
   }
 }
+
+
+/* =========================================================
+   GOOKIE PROFILE MODAL — FIT IN SCREEN V3
+   Overrides earlier modal rules.
+========================================================= */
+
+.gookie-profile-modal {
+  place-items: center;
+  padding: 18px;
+}
+
+.gookie-profile-modal-card {
+  width: min(960px, calc(100vw - 36px));
+  height: min(690px, calc(100dvh - 36px));
+  max-height: calc(100dvh - 36px);
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto auto;
+  border-radius: 28px;
+}
+
+.gookie-profile-main {
+  min-height: 0;
+  overflow: hidden;
+  grid-template-columns: minmax(0, 0.92fr) minmax(310px, 1.08fr);
+}
+
+.gookie-profile-copy {
+  padding: 42px 24px 22px 46px;
+}
+
+.gookie-profile-copy h2 {
+  margin-bottom: 7px;
+  font-size: clamp(3rem, 5.5vw, 5rem);
+  line-height: 0.8;
+}
+
+.gookie-profile-subtitle {
+  margin-bottom: 15px;
+}
+
+.gookie-profile-description {
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.gookie-profile-facts {
+  gap: 7px;
+  margin-top: 17px;
+  padding-top: 15px;
+}
+
+.gookie-profile-image {
+  min-height: 0;
+  padding: 34px 52px 18px 10px;
+}
+
+.gookie-profile-image img {
+  width: min(100%, 390px);
+  max-height: 330px;
+}
+
+.gookie-allergen-section {
+  margin: 0 34px;
+  padding: 15px 8px 12px;
+}
+
+.gookie-allergen-heading {
+  margin-bottom: 10px;
+}
+
+.gookie-allergen-list {
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: 7px;
+  min-height: 36px;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.gookie-allergen-chip {
+  display: inline-flex !important;
+  min-height: 32px;
+  padding: 7px 11px;
+  font-size: 0.7rem;
+}
+
+.gookie-allergen-note {
+  margin-top: 9px;
+  font-size: 0.68rem;
+}
+
+.gookie-profile-purchase {
+  margin: 0 34px 24px;
+  padding: 15px 18px;
+  border-radius: 18px;
+}
+
+.gookie-profile-purchase p {
+  font-size: 0.82rem;
+}
+
+.gookie-profile-order-button {
+  min-width: 220px;
+  min-height: 50px;
+  padding: 13px 18px;
+}
+
+@media (max-width: 760px) {
+  .gookie-profile-modal {
+    place-items: center;
+    padding: 10px;
+  }
+
+  .gookie-profile-modal-card {
+    width: calc(100vw - 20px);
+    height: calc(100dvh - 20px);
+    max-height: calc(100dvh - 20px);
+    grid-template-rows: minmax(0, 1fr) auto auto;
+    border-radius: 24px;
+  }
+
+  .gookie-profile-close {
+    top: 12px;
+    right: 12px;
+    width: 38px;
+    height: 38px;
+    flex-basis: 38px;
+    font-size: 1.65rem;
+  }
+
+  .gookie-profile-main {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(120px, 0.9fr);
+    align-items: center;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .gookie-profile-copy {
+    order: 1;
+    padding: 54px 8px 12px 20px;
+    text-align: left;
+  }
+
+  .gookie-profile-kicker {
+    margin-bottom: 7px;
+    font-size: 0.58rem;
+  }
+
+  .gookie-profile-copy h2 {
+    margin-bottom: 6px;
+    font-size: clamp(2.25rem, 11vw, 3.4rem);
+    line-height: 0.82;
+  }
+
+  .gookie-profile-subtitle {
+    margin-bottom: 10px;
+    font-size: 0.58rem;
+    line-height: 1.3;
+  }
+
+  .gookie-profile-description {
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: 0.76rem;
+    line-height: 1.45;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+  }
+
+  .gookie-profile-facts {
+    width: 100%;
+    gap: 5px;
+    margin-top: 11px;
+    padding-top: 10px;
+  }
+
+  .gookie-profile-facts span {
+    gap: 7px;
+    font-size: 0.68rem;
+  }
+
+  .gookie-profile-image {
+    order: 2;
+    min-height: 0;
+    padding: 54px 14px 12px 0;
+    background:
+      radial-gradient(circle at 50% 50%, rgba(255, 232, 201, 0.9) 0 34%, transparent 72%);
+  }
+
+  .gookie-profile-image img {
+    width: 100%;
+    max-height: 220px;
+  }
+
+  .gookie-allergen-section {
+    margin: 0 18px;
+    padding: 11px 2px 9px;
+  }
+
+  .gookie-allergen-heading {
+    margin-bottom: 7px;
+    font-size: 0.58rem;
+  }
+
+  .gookie-allergen-list {
+    gap: 5px;
+  }
+
+  .gookie-allergen-chip {
+    min-height: 28px;
+    padding: 5px 8px;
+    font-size: 0.61rem;
+  }
+
+  .gookie-allergen-note {
+    margin-top: 7px;
+    font-size: 0.58rem;
+    line-height: 1.35;
+  }
+
+  .gookie-profile-purchase {
+    grid-template-columns: 1fr;
+    gap: 9px;
+    margin: 0 14px 14px;
+    padding: 11px 12px;
+    text-align: center;
+  }
+
+  .gookie-profile-purchase p {
+    font-size: 0.69rem;
+    line-height: 1.35;
+  }
+
+  .gookie-profile-order-button {
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    padding: 10px 15px;
+    font-size: 0.72rem;
+  }
+}
+
+@media (max-width: 390px), (max-height: 720px) {
+  .gookie-profile-copy {
+    padding-top: 46px;
+  }
+
+  .gookie-profile-copy h2 {
+    font-size: 2.15rem;
+  }
+
+  .gookie-profile-description {
+    -webkit-line-clamp: 3;
+  }
+
+  .gookie-profile-image img {
+    max-height: 175px;
+  }
+
+  .gookie-allergen-note {
+    display: none;
+  }
+
+  .gookie-profile-purchase p {
+    font-size: 0.64rem;
+  }
+}
