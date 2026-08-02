@@ -2178,6 +2178,231 @@ if (typeof mobileFooterQuery.addEventListener === "function") {
 
 resetMobileFooterAccordion();
 
+
+/* =========================================================
+   FOOTER INFORMATION MODAL CONTENT
+========================================================= */
+
+const footerInfoModal = document.getElementById("footerInfoModal");
+const footerInfoClose = document.getElementById("footerInfoClose");
+const footerInfoEyebrow = document.getElementById("footerInfoEyebrow");
+const footerInfoTitle = document.getElementById("footerInfoTitle");
+const footerInfoBody = document.getElementById("footerInfoBody");
+
+const footerInfoPages = {
+  faq: {
+    eyebrow: "NEED HELP?",
+    title: "Frequently Asked Questions",
+    body: `
+      <div class="footer-faq-item">
+        <h3>Where does Gookie deliver?</h3>
+        <p>We currently deliver throughout Peninsular Malaysia. Delivery to Sabah and Sarawak is coming soon.</p>
+      </div>
+
+      <div class="footer-faq-item">
+        <h3>Can I place an order at any time?</h3>
+        <p>Yes. Online orders can be placed 24/7. WhatsApp and general enquiries are replied to between 9am and 5pm daily.</p>
+      </div>
+
+      <div class="footer-faq-item">
+        <h3>How do I pay?</h3>
+        <p>Payment is made using DuitNow QR during checkout. Please save your payment proof before continuing to WhatsApp.</p>
+      </div>
+
+      <div class="footer-faq-item">
+        <h3>Are Gookies less sweet?</h3>
+        <p>Yes. Gookies are made to taste rich and satisfying without being overwhelmingly sweet.</p>
+      </div>
+
+      <div class="footer-faq-item">
+        <h3>How big is each cookie?</h3>
+        <p>Our cookies are soft, chunky cookies. Exact weight may vary slightly because every batch is handmade.</p>
+      </div>
+
+      <div class="footer-faq-item">
+        <h3>Can I request a specific delivery date?</h3>
+        <p>Add your request under Order Notes during checkout. We will do our best, but courier delivery dates cannot be guaranteed.</p>
+      </div>
+
+      <div class="footer-info-actions">
+        <a class="footer-info-primary" href="mailto:heygookie@gmail.com">EMAIL GOOKIE</a>
+      </div>
+    `,
+  },
+
+  delivery: {
+    eyebrow: "NEED HELP?",
+    title: "Delivery Information",
+    body: `
+      <h3>Delivery coverage</h3>
+      <p>Gookie currently ships throughout Peninsular Malaysia. Sabah and Sarawak delivery will be introduced later.</p>
+
+      <h3>Courier delivery</h3>
+      <p>Orders are packed carefully for courier delivery. Delivery timing depends on the courier, destination and current service conditions.</p>
+
+      <h3>Tracking</h3>
+      <p>Once your order has been shipped, Gookie will send your tracking details and tracking link through WhatsApp.</p>
+
+      <h3>Delivery address</h3>
+      <p>Please check the recipient name, phone number, full address and postcode before payment. Gookie cannot guarantee changes after an order has entered packing or shipping.</p>
+
+      <div class="footer-info-note">
+        <strong>Please note</strong>
+        Courier delays and unsuccessful delivery attempts are outside Gookie's direct control, but we will help you check the available tracking information.
+      </div>
+    `,
+  },
+
+  storage: {
+    eyebrow: "NEED HELP?",
+    title: "Storage & Reheating",
+    body: `
+      <h3>Room temperature</h3>
+      <p>Keep your Gookies sealed in their individual packaging or in an airtight container, away from direct sunlight and heat.</p>
+
+      <h3>For longer storage</h3>
+      <p>Freeze the cookies in airtight packaging. Allow them to thaw before reheating.</p>
+
+      <h3>How to reheat</h3>
+      <ul>
+        <li><strong>Oven or air fryer:</strong> warm gently at a low temperature for a few minutes.</li>
+        <li><strong>Microwave:</strong> heat briefly in short intervals to avoid overheating the centre.</li>
+      </ul>
+
+      <div class="footer-info-note">
+        <strong>Best result</strong>
+        Reheat only the cookie you are ready to enjoy. Heating time varies by appliance and whether the cookie is chilled, frozen or at room temperature.
+      </div>
+    `,
+  },
+
+  contact: {
+    eyebrow: "LET'S CONNECT!",
+    title: "Contact Gookie",
+    body: `
+      <h3>Email</h3>
+      <p>heygookie@gmail.com</p>
+
+      <h3>Location</h3>
+      <p>Ampang, Selangor, Malaysia</p>
+
+      <h3>Reply hours</h3>
+      <p>WhatsApp and enquiries are replied to between 9am and 5pm daily. Online orders can still be placed 24/7.</p>
+
+      <div class="footer-info-actions">
+        <a class="footer-info-primary" href="mailto:heygookie@gmail.com">SEND AN EMAIL</a>
+        <a
+          class="footer-info-secondary"
+          href="https://whatsapp.com/channel/0029VbDaEAOGk1Fy5ZApou1n"
+          target="_blank"
+          rel="noopener noreferrer"
+        >JOIN WHATSAPP CHANNEL</a>
+      </div>
+    `,
+  },
+
+  terms: {
+    eyebrow: "THE BORING STUFF",
+    title: "Terms & Conditions",
+    body: `
+      <h3>Orders</h3>
+      <p>An order is only considered confirmed after the required payment has been completed and the order has been accepted by Gookie.</p>
+
+      <h3>Order details</h3>
+      <p>Customers are responsible for providing accurate recipient, contact and delivery information. Changes may not be possible once preparation, packing or shipping has started.</p>
+
+      <h3>Handmade products</h3>
+      <p>Gookies are handmade in small batches. Minor differences in shape, appearance, colour and weight are normal and do not affect product quality.</p>
+
+      <h3>Availability</h3>
+      <p>Flavours, box selections, prices and availability may change. Limited or monthly flavours are available while stocks last.</p>
+
+      <h3>Delivery</h3>
+      <p>Courier transit times are estimates. Gookie is not responsible for delays caused by couriers, weather, incorrect addresses or circumstances beyond reasonable control.</p>
+    `,
+  },
+
+  privacy: {
+    eyebrow: "THE BORING STUFF",
+    title: "Privacy Policy",
+    body: `
+      <h3>Information we collect</h3>
+      <p>To process an order, Gookie may collect details such as your name, phone number, email address, delivery address, postcode, order notes and payment confirmation information.</p>
+
+      <h3>How the information is used</h3>
+      <p>Your information is used to prepare, confirm, deliver and support your order, including sending payment or shipping updates.</p>
+
+      <h3>Sharing</h3>
+      <p>Relevant delivery details may be shared with courier or service providers only as needed to complete your order.</p>
+
+      <h3>Protection and retention</h3>
+      <p>Gookie takes reasonable steps to protect order information and keeps it only as long as reasonably needed for operations, records and legal obligations.</p>
+
+      <h3>Contact</h3>
+      <p>Questions about your personal information can be sent to heygookie@gmail.com.</p>
+    `,
+  },
+
+  refund: {
+    eyebrow: "THE BORING STUFF",
+    title: "Refund & Replacement Policy",
+    body: `
+      <h3>Food products</h3>
+      <p>Because Gookies are perishable food products, change-of-mind returns or refunds are generally not available.</p>
+
+      <h3>Damaged, incorrect or missing items</h3>
+      <p>Contact Gookie as soon as possible after delivery if your order is damaged, incorrect or incomplete.</p>
+
+      <h3>What to provide</h3>
+      <ul>
+        <li>Your Order ID.</li>
+        <li>Clear photos of the parcel, packaging and affected cookies.</li>
+        <li>A brief explanation of the issue.</li>
+      </ul>
+
+      <h3>Review of claims</h3>
+      <p>Eligible cases will be reviewed individually. Depending on the circumstances, Gookie may offer a replacement, store credit or refund for the affected item.</p>
+
+      <div class="footer-info-note">
+        <strong>Important</strong>
+        Do not discard the parcel or affected items before the issue has been reviewed, as photographs and packaging details may be required.
+      </div>
+
+      <div class="footer-info-actions">
+        <a class="footer-info-primary" href="mailto:heygookie@gmail.com">REPORT AN ORDER ISSUE</a>
+      </div>
+    `,
+  },
+};
+
+function openFooterInfoPage(pageKey) {
+  const page = footerInfoPages[pageKey];
+
+  if (!page || !footerInfoModal) return;
+
+  footerInfoEyebrow.textContent = page.eyebrow;
+  footerInfoTitle.textContent = page.title;
+  footerInfoBody.innerHTML = page.body;
+
+  openModal(footerInfoModal);
+}
+
+document.querySelectorAll("[data-footer-page]").forEach((button) => {
+  button.addEventListener("click", () => {
+    openFooterInfoPage(button.dataset.footerPage);
+  });
+});
+
+footerInfoClose?.addEventListener("click", () => {
+  closeModal(footerInfoModal);
+});
+
+footerInfoModal?.addEventListener("click", (event) => {
+  if (event.target === footerInfoModal) {
+    closeModal(footerInfoModal);
+  }
+});
+
 renderMarquee();
 startMarqueeAnimation();
 renderCookieSlots(buildCookieSlots, 0, []);

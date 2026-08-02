@@ -3605,3 +3605,162 @@ body {
   }
 }
 
+/* =========================================================
+   MOBILE FOOTER LINKS + INFORMATION MODAL
+========================================================= */
+
+.mobile-footer-link {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #3f3935;
+  font: inherit;
+  font-size: 0.96rem;
+  line-height: 1.55;
+  text-align: left;
+  cursor: pointer;
+}
+
+.mobile-footer-link:hover,
+.mobile-footer-link:focus-visible {
+  color: var(--gookie-red);
+}
+
+.footer-info-modal {
+  z-index: 130;
+}
+
+.footer-info-modal-card {
+  max-height: 92vh;
+  padding: 0;
+}
+
+.footer-info-header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding: 22px 22px 18px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(255, 248, 239, 0.96);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.footer-info-header h2 {
+  margin: 4px 0 0;
+  font-family: "League Spartan", sans-serif;
+  font-size: 2rem;
+  line-height: 0.95;
+}
+
+.footer-info-body {
+  padding: 24px 22px 38px;
+}
+
+.footer-info-body h3 {
+  margin: 28px 0 10px;
+  font-family: "League Spartan", sans-serif;
+  font-size: 1.3rem;
+  line-height: 1.05;
+}
+
+.footer-info-body h3:first-child {
+  margin-top: 0;
+}
+
+.footer-info-body p,
+.footer-info-body li {
+  color: #4c4540;
+  font-size: 0.96rem;
+  line-height: 1.65;
+}
+
+.footer-info-body p {
+  margin: 0 0 14px;
+}
+
+.footer-info-body ul,
+.footer-info-body ol {
+  margin: 0 0 18px;
+  padding-left: 20px;
+}
+
+.footer-info-body li + li {
+  margin-top: 8px;
+}
+
+.footer-info-note {
+  margin: 18px 0;
+  padding: 16px 17px;
+  border: 1px solid rgba(187, 25, 26, 0.25);
+  border-radius: 18px;
+  background: rgba(187, 25, 26, 0.04);
+}
+
+.footer-info-note strong {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--gookie-red);
+}
+
+.footer-info-actions {
+  display: grid;
+  gap: 11px;
+  margin-top: 22px;
+}
+
+.footer-info-actions a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 13px 18px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+.footer-info-actions .footer-info-primary {
+  background: var(--gookie-red);
+  color: var(--white);
+}
+
+.footer-info-actions .footer-info-secondary {
+  border: 1px solid var(--line);
+  background: var(--white);
+  color: var(--ink);
+}
+
+.footer-faq-item {
+  padding: 17px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.footer-faq-item:first-child {
+  padding-top: 0;
+}
+
+.footer-faq-item h3 {
+  margin: 0 0 7px;
+  font-size: 1.14rem;
+}
+
+.footer-faq-item p {
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .footer-info-modal {
+    place-items: center;
+    padding: 28px;
+  }
+
+  .footer-info-modal-card {
+    width: min(680px, 100%);
+    border-radius: 28px;
+  }
+}
+
