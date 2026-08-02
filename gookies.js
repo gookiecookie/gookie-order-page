@@ -237,3 +237,103 @@ document.addEventListener("keydown", (event) => {
     closeGookie();
   }
 });
+
+
+/* =========================================================
+   HERO VERTICAL QUARTER-CIRCLE CAROUSEL
+========================================================= */
+
+const heroWheel = document.getElementById("gookieHeroWheel");
+const heroWheelPrev = document.getElementById("gookieWheelPrev");
+const heroWheelNext = document.getElementById("gookieWheelNext");
+const heroWheelDots = document.getElementById("gookieWheelDots");
+
+if(heroWheel && heroWheelPrev && heroWheelNext && heroWheelDots){
+  const wheelCookies = gookieCatalogue.slice();
+  const step = 360 / wheelCookies.length;
+  const focusAngle = 180;
+  let activeIndex = 0;
+  let autoTimer;
+
+  function angularDistance(a,b){
+    return Math.abs(((a-b+180)%360)-180);
+  }
+
+  function buildWheel(){
+    wheelCookies.forEach((cookie,index)=>{
+      const item=document.createElement("div");
+      item.className="gookie-wheel-item";
+      item.style.setProperty("--item-angle",`${index*step}deg`);
+      item.innerHTML=`<img src="${cookie.image}" alt="">`;
+      heroWheel.appendChild(item);
+
+      const dot=document.createElement("span");
+      dot.className="gookie-wheel-dot";
+      heroWheelDots.appendChild(dot);
+    });
+
+    renderWheel(false);
+  }
+
+  function renderWheel(animate=true){
+    const rotation=focusAngle-activeIndex*step;
+
+    if(animate) heroWheel.classList.add("is-spinning");
+    heroWheel.style.setProperty("--wheel-rotation",`${rotation}deg`);
+
+    heroWheel.querySelectorAll(".gookie-wheel-item").forEach((item,index)=>{
+      item.classList.remove("is-focus","is-near","is-far");
+
+      const current=index*step+rotation;
+      const distance=angularDistance(current,focusAngle);
+
+      if(distance<step*.55) item.classList.add("is-focus");
+      else if(distance<step*1.6) item.classList.add("is-near");
+      else item.classList.add("is-far");
+    });
+
+    heroWheelDots.querySelectorAll(".gookie-wheel-dot").forEach((dot,index)=>{
+      dot.classList.toggle("is-active",index===activeIndex);
+    });
+
+    setTimeout(()=>heroWheel.classList.remove("is-spinning"),animate?920:0);
+  }
+
+  function moveWheel(direction){
+    activeIndex=(activeIndex+direction+wheelCookies.length)%wheelCookies.length;
+    renderWheel(true);
+  }
+
+  function startAuto(){
+    clearInterval(autoTimer);
+    autoTimer=setInterval(()=>moveWheel(1),3000);
+  }
+
+  heroWheelPrev.addEventListener("click",()=>{
+    moveWheel(-1);
+    startAuto();
+  });
+
+  heroWheelNext.addEventListener("click",()=>{
+    moveWheel(1);
+    startAuto();
+  });
+
+  let touchStartY=0;
+
+  heroWheel.addEventListener("touchstart",event=>{
+    touchStartY=event.touches[0].clientY;
+  },{passive:true});
+
+  heroWheel.addEventListener("touchend",event=>{
+    const delta=event.changedTouches[0].clientY-touchStartY;
+
+    if(Math.abs(delta)>35){
+      moveWheel(delta<0?1:-1);
+      startAuto();
+    }
+  },{passive:true});
+
+  buildWheel();
+  startAuto();
+}
