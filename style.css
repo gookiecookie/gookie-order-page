@@ -5992,10 +5992,6 @@ a.footer-contact-row:hover {
     background-color 240ms ease;
 }
 
-.premium-menu-item:first-child {
-  border-top: 1px solid rgba(23, 21, 21, 0.1);
-}
-
 .premium-menu-icon {
   display: grid;
   place-items: center;
@@ -6029,26 +6025,15 @@ a.footer-contact-row:hover {
   letter-spacing: 0.015em;
 }
 
-.premium-menu-copy small {
-  display: block;
+.premium-menu-copy small{
 
-  max-height: 0;
-  margin-top: 0;
-  overflow: hidden;
+    font-size:.78rem;
 
-  color: var(--muted);
-  font-size: 0.78rem;
-  line-height: 1.4;
+    font-weight:400;
 
-  opacity: 0;
-  transform: translateY(-4px);
+    color:#8a8179;
 
-  transition:
-    max-height 260ms ease,
-    margin-top 260ms ease,
-    opacity 220ms ease,
-    transform 260ms ease,
-    color 240ms ease;
+    line-height:1.55;
 }
 
 .premium-menu-arrow {
@@ -6088,7 +6073,7 @@ a.footer-contact-row:hover {
     margin-top: 6px;
     opacity: 1;
     transform: translateY(0);
-    color: var(--gookie-red);
+    color: var(--muted);
   }
 
   .premium-menu-item:hover .premium-menu-arrow {
