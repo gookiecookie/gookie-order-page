@@ -288,13 +288,6 @@ img {
   font-weight: 800;
 }
 
-.drawer-nav a::after {
-  content: "→";
-  position: absolute;
-  right: 4px;
-  color: var(--gookie-red);
-}
-
 .drawer-footer {
   margin-top: auto;
   padding-top: 22px;
