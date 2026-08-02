@@ -213,6 +213,8 @@ const $ = (id) => document.getElementById(id),
   flavourModalTitle = $("flavourModalTitle"),
   flavourSelectedCount = $("flavourSelectedCount"),
   flavourBoxCapacity = $("flavourBoxCapacity"),
+  flavourMeterSlots = $("flavourMeterSlots"),
+  flavourMeterMessage = $("flavourMeterMessage"),
   flavourNameList = $("flavourNameList"),
   saveFlavourSelection = $("saveFlavourSelection"),
   collectionGrid = $("collectionGrid"),
@@ -258,8 +260,653 @@ const $ = (id) => document.getElementById(id),
   paymentProofSaved = $("paymentProofSaved"),
   continueToWhatsAppButton = $("continueToWhatsAppButton"),
   orderCreationLoader = $("orderCreationLoader"),
-  orderCreationStatus = $("orderCreationStatus"),
-  orderCreationBox = $("orderCreationBox");
+orderCreationStatus = $("orderCreationStatus"),
+orderCreationBox = $("orderCreationBox"),
+orderCreationGif = $("orderCreationGif"),
+
+/* ==================== FOOTER MODAL ==================== */
+
+footerInfoModal = $("footerInfoModal"),
+footerInfoModalClose = $("footerInfoModalClose"),
+footerInfoModalEyebrow = $("footerInfoModalEyebrow"),
+footerInfoModalTitle = $("footerInfoModalTitle"),
+footerInfoModalBody = $("footerInfoModalBody");
+
+/* =========================================================
+   FOOTER MODAL CONTENT
+========================================================= */
+
+const FOOTER_MODAL_CONTENT = {
+
+  faq: {
+  eyebrow: "NEED HELP?",
+  title: "Frequently Asked Questions",
+  body: `
+    <div class="footer-info-card">
+      <h3>Do I need to order a whole box?</h3>
+      <p>
+        Yes. Every order starts from <strong>1 box</strong>.
+        Individual cookies are not available so your Gookies fit the packaging properly
+        and the delivery charge remains worthwhile.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Can I build my own box?</h3>
+      <p>
+        Absolutely. Choose your favourite flavours with
+        <strong>Build Your Box</strong>, or pick one of our ready-made Gookie’s Picks.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>When is my order confirmed?</h3>
+      <p>
+        Your order is confirmed after you send the completed order to Gookie through
+        WhatsApp and your payment has been verified.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Can I change my flavour or delivery address?</h3>
+      <p>
+        Flavour selections and delivery addresses cannot be changed once the order has
+        been placed. Every order is sent directly to the kitchen team, so this helps us
+        prevent confusion and preparation errors.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>What payment methods do you accept?</h3>
+      <p>
+        We currently accept payment through <strong>DuitNow QR</strong> only.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Are your cookies halal?</h3>
+      <p>
+        Our cookies are made using halal-friendly ingredients by a Muslim-owned business.
+      </p>
+      <p>
+        <strong>Gookie is not yet halal certified.</strong>
+        We’re committed to working towards halal certification so our customers can
+        enjoy every Gookie with complete confidence.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Where do you deliver?</h3>
+      <p>
+        We currently deliver throughout <strong>Peninsular Malaysia</strong>.
+        Sabah and Sarawak delivery is coming soon.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>How soon will my order be shipped?</h3>
+      <p>
+        Orders will be shipped within <strong>1–3 working days</strong> after payment
+        verification. Delivery time after shipment depends on courier operations and
+        your location.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Do you have a physical store?</h3>
+      <p>
+        Not yet. Gookie is currently available online only.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Can I cancel my order?</h3>
+      <p>
+        Orders cannot be cancelled once payment has been verified and preparation has begun.
+      </p>
+    </div>
+  `
+},
+
+  delivery: {
+  eyebrow: "DELIVERY INFORMATION",
+  title: "Freshly Baked. Carefully Shipped.",
+  body: `
+    <div class="footer-info-card">
+      <h3>Where do we deliver?</h3>
+      <p>
+        We currently deliver throughout
+        <strong>Peninsular Malaysia</strong>.
+      </p>
+      <p>
+        Sabah and Sarawak delivery is coming soon.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>When will my order be shipped?</h3>
+      <p>
+        Your order will be shipped within
+        <strong>1–3 working days</strong>
+        after payment has been verified.
+      </p>
+      <p>
+        Delivery time after shipment depends on courier operations,
+        your location and any unexpected delays during transit.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>How can I track my order?</h3>
+      <p>
+        Once your parcel has been shipped, we’ll send your tracking
+        number and tracking link through WhatsApp.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Please check your delivery details</h3>
+      <p>
+        Make sure your name, phone number, postcode and delivery address
+        are correct before placing your order.
+      </p>
+      <p>
+        Delivery details cannot be changed after the order has been placed,
+        as every confirmed order is sent directly to the kitchen team.
+      </p>
+    </div>
+
+    <div class="footer-info-alert">
+      <h3>Important</h3>
+      <p>
+        Gookie is not responsible for delays caused by courier operations,
+        incorrect delivery information, unsuccessful delivery attempts,
+        weather conditions or other circumstances outside our control.
+      </p>
+    </div>
+  `
+},
+
+ storage: {
+  eyebrow: "KEEP THEM HAPPY",
+  title: "Storage & Reheating",
+  body: `
+    <div class="footer-info-card">
+      <h3>🏠 Room Temperature</h3>
+      <p>
+        Gookies are best enjoyed within
+        <strong>3 days</strong> of receiving them.
+      </p>
+      <p>
+        Keep them in an airtight container at room temperature,
+        away from direct sunlight and heat.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>❄ Freeze for Later</h3>
+      <p>
+        Want to save some for later?
+      </p>
+      <p>
+        Store your Gookies in an airtight container or freezer-safe bag
+        for up to <strong>2 months</strong>.
+      </p>
+      <p>
+        Thaw at room temperature before reheating.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>🔥 Reheat for Freshly Baked Goodness</h3>
+
+      <p>
+        <strong>Microwave</strong><br>
+        8–12 seconds
+      </p>
+
+      <p>
+        <strong>Air Fryer</strong><br>
+        150°C for 2–3 minutes
+      </p>
+
+      <p>
+        Heating time may vary depending on your appliance.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>❤️ Our Favourite Way</h3>
+
+      <p>
+        Warm your Gookie slightly...
+      </p>
+
+      <p>
+        Grab a cup of coffee (or a glass of cold milk),
+        take a bite, and enjoy every chunky moment.
+      </p>
+    </div>
+
+    <div class="footer-info-alert">
+      <h3>A Little Reminder</h3>
+      <p>
+        Please avoid reheating for too long,
+        as this may affect the texture of your Gookies.
+      </p>
+    </div>
+  `
+},
+
+ contact: {
+  eyebrow: "LET'S CONNECT!",
+  title: "Contact Us",
+  body: `
+    <div class="footer-info-card">
+      <h3>Need Help?</h3>
+      <p>
+        We’re happy to help with questions about your order,
+        delivery, flavours or anything Gookie-related.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Email</h3>
+      <p>
+        <a href="mailto:heygookie@gmail.com">
+          heygookie@gmail.com
+        </a>
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>WhatsApp</h3>
+      <p>
+        For the fastest response, contact us through WhatsApp.
+      </p>
+      <p>
+        <a
+          href="https://wa.me/60102810487"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Message Gookie on WhatsApp
+        </a>
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Reply Hours</h3>
+      <p>
+        WhatsApp messages and enquiries are replied to daily between
+        <strong>9:00 AM and 5:00 PM</strong>.
+      </p>
+      <p>
+        Orders can still be placed online <strong>24/7</strong>.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Location</h3>
+      <p>
+        Ampang, Selangor, Malaysia
+      </p>
+    </div>
+
+    <div class="footer-info-alert">
+      <h3>Already Placed an Order?</h3>
+      <p>
+        Please include your Order ID when contacting us so we can assist you faster.
+      </p>
+    </div>
+  `
+},
+
+  allergen: {
+  eyebrow: "IMPORTANT INFORMATION",
+  title: "Allergen Information",
+  body: `
+    <div class="footer-info-alert">
+      <h3>Please Read Before Ordering</h3>
+      <p>
+        Our cookies contain or may contain:
+      </p>
+
+      <ul>
+        <li>Wheat (Gluten)</li>
+        <li>Milk</li>
+        <li>Eggs</li>
+        <li>Soy</li>
+        <li>Peanuts</li>
+        <li>Tree Nuts, including Macadamia and Pistachio</li>
+      </ul>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Shared Kitchen Notice</h3>
+      <p>
+        All Gookies are prepared in the same kitchen and may come into
+        contact with other allergens during preparation, baking or packing.
+      </p>
+      <p>
+        Although we take care when handling our ingredients, we cannot
+        guarantee that any product is completely free from allergen
+        cross-contact.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Severe Allergies</h3>
+      <p>
+        If you have a severe food allergy, we kindly recommend that you
+        do not consume our products.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Need More Information?</h3>
+      <p>
+        Please contact us before placing your order if you need more
+        information about the ingredients used in a specific flavour.
+      </p>
+    </div>
+  `
+},
+
+terms: {
+  eyebrow: "THE BORING STUFF",
+  title: "Terms & Conditions",
+  body: `
+    <div class="footer-info-card">
+      <h3>Orders</h3>
+      <p>
+        The minimum order is <strong>1 box</strong>.
+        Individual cookies are not available.
+      </p>
+      <p>
+        An order is only confirmed after it has been sent to Gookie through
+        WhatsApp and payment has been verified.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Payment</h3>
+      <p>
+        We currently accept payment through
+        <strong>DuitNow QR</strong> only.
+      </p>
+      <p>
+        Full payment is required before your order enters our preparation queue.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Order Changes</h3>
+      <p>
+        Flavour selections and delivery details cannot be changed once the order
+        has been placed.
+      </p>
+      <p>
+        Every confirmed order is sent directly to the kitchen team, so this policy
+        helps us prevent confusion and preparation errors.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Cancellations</h3>
+      <p>
+        Orders cannot be cancelled after payment has been verified and preparation
+        has begun.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Handmade Products</h3>
+      <p>
+        Every Gookie is handmade.
+      </p>
+      <p>
+        Slight differences in appearance, colour, shape or size are normal and do
+        not affect the quality of the product.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Shipping</h3>
+      <p>
+        Orders will be shipped within <strong>1–3 working days</strong> after
+        payment verification.
+      </p>
+      <p>
+        Delivery time after shipment depends on courier operations, location,
+        weather conditions and other circumstances outside our control.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Incorrect Information</h3>
+      <p>
+        Customers are responsible for ensuring that their name, phone number,
+        postcode and delivery address are correct before placing an order.
+      </p>
+      <p>
+        Gookie is not responsible for delays or failed deliveries caused by
+        incorrect information provided during checkout.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Policy Updates</h3>
+      <p>
+        Gookie Enterprise reserves the right to update products, prices,
+        availability and policies when necessary.
+      </p>
+    </div>
+
+    <div class="footer-info-alert">
+      <h3>Agreement</h3>
+      <p>
+        By placing an order with Gookie, you confirm that you have read,
+        understood and agreed to these Terms & Conditions.
+      </p>
+    </div>
+  `
+},
+
+  privacy: {
+  eyebrow: "THE BORING STUFF",
+  title: "Privacy Policy",
+  body: `
+    <div class="footer-info-card">
+      <h3>Information We Collect</h3>
+      <p>
+        We collect only the information needed to process,
+        prepare and deliver your order.
+      </p>
+      <p>
+        This may include:
+      </p>
+      <ul>
+        <li>Your name</li>
+        <li>Phone number</li>
+        <li>Delivery address</li>
+        <li>Postcode</li>
+        <li>Email address, if provided</li>
+        <li>Order and payment verification details</li>
+      </ul>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>How We Use Your Information</h3>
+      <p>
+        Your information may be used to:
+      </p>
+      <ul>
+        <li>Process and prepare your order</li>
+        <li>Verify payment</li>
+        <li>Arrange delivery</li>
+        <li>Send order and tracking updates</li>
+        <li>Respond to enquiries or order-related issues</li>
+      </ul>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Sharing Your Information</h3>
+      <p>
+        We do not sell or rent your personal information.
+      </p>
+      <p>
+        Your information may only be shared with trusted service providers
+        when required to complete your order, such as courier companies
+        and delivery partners.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Payment Information</h3>
+      <p>
+        Gookie does not store your banking login details,
+        card details or DuitNow account information.
+      </p>
+      <p>
+        Payment proof may be reviewed only for order verification purposes.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Keeping Your Information Safe</h3>
+      <p>
+        We take reasonable care to protect customer information
+        from unauthorised access, misuse or disclosure.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Your Responsibility</h3>
+      <p>
+        Please make sure the information you provide is accurate
+        and avoid sending sensitive banking details through WhatsApp
+        or email.
+      </p>
+    </div>
+
+    <div class="footer-info-alert">
+      <h3>Privacy Questions</h3>
+      <p>
+        For questions about your personal information,
+        contact us at
+        <a href="mailto:heygookie@gmail.com">
+          heygookie@gmail.com
+        </a>.
+      </p>
+    </div>
+  `
+},
+
+ refund: {
+  eyebrow: "THE BORING STUFF",
+  title: "Refund & Replacement Policy",
+  body: `
+    <div class="footer-info-card">
+      <h3>Change of Mind</h3>
+      <p>
+        Because our cookies are freshly baked food products,
+        we do not offer refunds, exchanges or cancellations
+        for change of mind.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>When We Can Help</h3>
+      <p>
+        Please contact us if:
+      </p>
+      <ul>
+        <li>You received the wrong order</li>
+        <li>Important items are missing</li>
+        <li>Your cookies arrived significantly damaged during delivery</li>
+      </ul>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Report the Issue Within 24 Hours</h3>
+      <p>
+        Please contact us within <strong>24 hours</strong>
+        of receiving your order.
+      </p>
+      <p>
+        Reports made after this period may be difficult to verify
+        and may not qualify for a refund or replacement.
+      </p>
+    </div>
+
+    <div class="footer-info-alert">
+      <h3>What We Need From You</h3>
+      <p>
+        Please include:
+      </p>
+      <ul>
+        <li>Your Order ID</li>
+        <li>A clear photo of the parcel before it is opened</li>
+        <li>Clear photos of the products after opening</li>
+        <li>A short explanation of the issue</li>
+      </ul>
+      <p>
+        Please keep the original packaging until your case has been reviewed.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Our Review</h3>
+      <p>
+        Every case will be reviewed fairly based on the information
+        and photos provided.
+      </p>
+      <p>
+        Where appropriate, Gookie may offer a replacement,
+        partial refund or full refund depending on the circumstances.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Courier Delays</h3>
+      <p>
+        Delivery times after shipment depend on courier operations.
+        Delays alone do not automatically qualify for a refund
+        if the order arrives in an acceptable condition.
+      </p>
+    </div>
+
+    <div class="footer-info-card">
+      <h3>Contact Us</h3>
+      <p>
+        For refund or replacement assistance, contact us through WhatsApp
+        and include your Order ID.
+      </p>
+      <p>
+        <a
+          href="https://wa.me/60102810487"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Message Gookie on WhatsApp
+        </a>
+      </p>
+    </div>
+
+    <div class="footer-info-alert">
+      <h3>We’re Here to Help</h3>
+      <p>
+        Your satisfaction means a lot to us.
+        If something isn’t quite right with your order,
+        we’ll always do our best to make it right. ❤️
+      </p>
+    </div>
+  `
+}
+
+};
+
 let buildBoxSize = 0,
   buildBoxName = "",
   buildSelection = [],
@@ -277,7 +924,8 @@ let buildBoxSize = 0,
   marqueeScrollStart = 0,
   marqueeDragDistance = 0,
   marqueeResumeTimer = null,
-  marqueeAutoPosition = 0;
+  marqueeAutoPosition = 0,
+  flavourMeterPreviousCount = 0;
 const getCookieById = (id) => gookieCatalogue.find((c) => c.id === id);
 function openOverlay() {
   pageOverlay.hidden = false;
@@ -367,17 +1015,13 @@ function createMarqueeCard(cookie, index) {
   `;
 
   button.addEventListener("click", (event) => {
-    event.preventDefault();
+  event.preventDefault();
 
-    if (marqueeDragDistance > 8) {
-      marqueeDragDistance = 0;
-      return;
-    }
+  pauseMarquee();
+  openCookieDetails(cookie);
 
-    pauseMarquee();
-    openCookieDetails(cookie);
-    marqueeDragDistance = 0;
-  });
+  marqueeDragDistance = 0;
+});
 
   return button;
 }
@@ -650,6 +1294,9 @@ function beginMarqueeDrag(event) {
   marqueePointerCurrentX = event.clientX;
   marqueeScrollStart = marqueeShell.scrollLeft;
 
+  marqueeShell.classList.add("is-dragging");
+  marqueeShell.setPointerCapture(event.pointerId);
+
   pauseMarquee();
 }
 
@@ -667,27 +1314,16 @@ function moveMarqueeDrag(event) {
     Math.abs(distance)
   );
 
-  if (marqueeDragDistance > 8) {
-    marqueeShell.classList.add("is-dragging");
-
-    if (
-      !marqueeShell.hasPointerCapture(event.pointerId)
-    ) {
-      marqueeShell.setPointerCapture(event.pointerId);
-    }
-
-    marqueeShell.scrollLeft =
-      marqueeScrollStart - distance;
-  }
+  marqueeShell.scrollLeft =
+    marqueeScrollStart - distance;
 }
 
 
 function endMarqueeDrag(event) {
   if (!marqueeDragging) return;
 
-  const didDrag = marqueeDragDistance > 8;
-
   marqueeDragging = false;
+
   marqueeShell.classList.remove("is-dragging");
 
   if (
@@ -698,18 +1334,14 @@ function endMarqueeDrag(event) {
     );
   }
 
-  if (didDrag) {
-    updateMarqueeIndexFromScroll();
+  updateMarqueeIndexFromScroll();
 
-    goToMarqueeSlide(
-      marqueeCurrentIndex,
-      false
-    );
+  goToMarqueeSlide(
+    marqueeCurrentIndex,
+    false
+  );
 
-    resumeMarquee(4200);
-  } else {
-    resumeMarquee(500);
-  }
+  resumeMarquee(4200);
 }
 function openCookieDetails(c) {
   modalCookieImage.src = c.image;
@@ -822,6 +1454,7 @@ function selectBuildBox(button) {
   buildBoxSize = Number(button.dataset.boxSize);
   buildBoxName = button.dataset.boxName;
   buildSelection = [];
+  flavourMeterPreviousCount = 0;
   buildSelectedBoxName.textContent = buildBoxName;
   buildSelectedCount.textContent = "0";
   buildBoxCapacity.textContent = String(buildBoxSize);
@@ -870,10 +1503,57 @@ function renderFlavourList() {
     flavourNameList.appendChild(row);
   });
 }
+
+function renderFlavourMeter() {
+  if (!flavourMeterSlots || !flavourMeterMessage) return;
+
+  const selectedCount = buildSelection.length;
+  const remaining = Math.max(buildBoxSize - selectedCount, 0);
+  const addedNewCookie = selectedCount > flavourMeterPreviousCount;
+
+  flavourMeterSlots.innerHTML = "";
+  flavourMeterSlots.style.setProperty("--meter-capacity", String(buildBoxSize));
+
+  for (let index = 0; index < buildBoxSize; index += 1) {
+    const cookie = buildSelection[index]
+      ? getCookieById(buildSelection[index])
+      : null;
+    const slot = document.createElement("span");
+
+    slot.className = "flavour-meter-slot";
+
+    if (cookie) {
+      slot.classList.add("has-cookie");
+      if (addedNewCookie && index === selectedCount - 1) {
+        slot.classList.add("is-new");
+      }
+
+      slot.innerHTML = `<img src="${cookie.image}" alt="${cookie.name}">`;
+      slot.title = cookie.name;
+    } else {
+      slot.setAttribute("aria-hidden", "true");
+      slot.innerHTML = '<span class="flavour-meter-ghost">🍪</span>';
+    }
+
+    flavourMeterSlots.appendChild(slot);
+  }
+
+  if (selectedCount === 0) {
+    flavourMeterMessage.textContent = "Choose your first Gookie.";
+  } else if (remaining === 0) {
+    flavourMeterMessage.textContent = "YOUR BOX IS READY! ♡";
+  } else {
+    flavourMeterMessage.textContent = `${remaining} MORE TO GO`;
+  }
+
+  flavourMeterPreviousCount = selectedCount;
+}
+
 function updateFlavourSelector() {
   flavourSelectedCount.textContent = String(buildSelection.length);
   flavourBoxCapacity.textContent = String(buildBoxSize);
   saveFlavourSelection.disabled = buildSelection.length !== buildBoxSize;
+  renderFlavourMeter();
   renderFlavourList();
   renderCookieSlots(
     buildCookieSlots,
@@ -895,6 +1575,7 @@ function updateFlavourSelector() {
 }
 function openBuildFlavourSelector() {
   flavourModalTitle.textContent = buildBoxName;
+  flavourMeterPreviousCount = buildSelection.length;
   updateFlavourSelector();
   openModal(flavourModal);
 }
@@ -1339,6 +2020,21 @@ function renderPaymentStep() {
 async function openPaymentStep() {
   if (!currentOrder || !customerDetails) return;
 
+  const originalButtonText =
+    proceedToPaymentButton.textContent;
+
+  proceedToPaymentButton.disabled = true;
+  proceedToPaymentButton.classList.add("is-loading");
+
+  proceedToPaymentButton.innerHTML = `
+    <span class="button-loading-dots" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+    </span>
+    <span>PLEASE WAIT</span>
+  `;
+
   try {
     const payload = buildOrderPayload();
 
@@ -1382,24 +2078,25 @@ async function openPaymentStep() {
       );
     }
 
-    /*
-     * Save the backend quote before opening payment.
-     * This does not create an order.
-     */
     currentOrder.serverQuote = {
       subtotal: Number(result.totals.subtotal),
+
       discount: Number(
         result.totals.discount || 0,
       ),
+
       shippingCharge: Number(
         result.totals.shippingCharge,
       ),
+
       grandTotal: Number(
         result.totals.grandTotal,
       ),
+
       parcelWeightG: Number(
         result.totals.parcelWeightG || 0,
       ),
+
       zoneId: result.zone?.zoneId || "",
     };
 
@@ -1417,9 +2114,13 @@ async function openPaymentStep() {
       error.message ||
         "Unable to calculate delivery charge. Please try again.",
     );
+  } finally {
+    proceedToPaymentButton.disabled = false;
+    proceedToPaymentButton.classList.remove("is-loading");
+    proceedToPaymentButton.textContent =
+      originalButtonText;
   }
 }
-
 function getWhatsAppMessage() {
   const quote = currentOrder?.serverQuote;
 
@@ -1495,6 +2196,11 @@ function showOrderCreationLoader() {
   orderCreationLoader.hidden = false;
   orderCreationLoader.setAttribute("aria-hidden", "false");
   orderCreationLoader.classList.remove("is-complete", "is-error");
+
+  if (orderCreationGif) {
+    const gifSource = orderCreationGif.getAttribute("src").split("?")[0];
+    orderCreationGif.src = `${gifSource}?restart=${Date.now()}`;
+  }
 
   if (orderCreationBox) {
     orderCreationBox.classList.remove("is-complete");
@@ -1839,6 +2545,63 @@ async function continueToWhatsApp() {
   }
 }
 
+/* =========================================================
+   FOOTER INFORMATION MODAL
+========================================================= */
+
+function openFooterInfoModal(contentKey) {
+  const content = FOOTER_MODAL_CONTENT[contentKey];
+
+  if (
+    !content ||
+    !footerInfoModal ||
+    !footerInfoModalEyebrow ||
+    !footerInfoModalTitle ||
+    !footerInfoModalBody
+  ) {
+    return;
+  }
+
+  footerInfoModalEyebrow.textContent = content.eyebrow;
+  footerInfoModalTitle.textContent = content.title;
+  footerInfoModalBody.innerHTML = content.body;
+
+  openModal(footerInfoModal);
+
+  setTimeout(() => {
+    footerInfoModalClose?.focus();
+  }, 280);
+}
+
+
+/* Open modal from footer buttons */
+
+document
+  .querySelectorAll("[data-footer-modal]")
+  .forEach((button) => {
+    button.addEventListener("click", () => {
+      openFooterInfoModal(
+        button.dataset.footerModal
+      );
+    });
+  });
+
+
+/* Close button */
+
+footerInfoModalClose?.addEventListener("click", () => {
+  closeModal(footerInfoModal);
+});
+
+
+/* Close when clicking the dark background */
+
+footerInfoModal?.addEventListener("click", (event) => {
+  if (event.target === footerInfoModal) {
+    closeModal(footerInfoModal);
+  }
+});
+    
 menuButton?.addEventListener("click", () => openDrawer(menuDrawer, menuButton));
 cartButton?.addEventListener("click", () => openDrawer(cartDrawer, cartButton));
 menuCloseButton?.addEventListener("click", () => closeDrawer(menuDrawer));
