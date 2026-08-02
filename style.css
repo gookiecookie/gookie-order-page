@@ -495,7 +495,7 @@ img {
   font-size:.9rem;
   font-weight:800;
   text-transform:uppercase;
-  letter-spacing:.06em;
+  letter-spacing:.08em;
 }
 
 .hero-actions{
@@ -5944,7 +5944,7 @@ a.footer-contact-row:hover {
     font-weight:900;
     line-height:1;
 
-    letter-spacing:.06em;
+    letter-spacing:.02em;
 
     white-space:nowrap;
 }
