@@ -8,6 +8,7 @@ const gookieCatalogue = [
     description:
       "The cookie that started the wonder — golden, chunky and loaded with chocolate in every bite.",
     image: "wonder-chip.png",
+    allergens: ["Wheat", "Milk", "Egg", "Soy"],
   },
   {
     id: "choco-loco",
@@ -16,6 +17,7 @@ const gookieCatalogue = [
     description:
       "A joyful chocolate overload for days when one kind of chocolate is simply not enough.",
     image: "choco-loco.png",
+    allergens: ["Wheat", "Milk", "Egg", "Soy"],
   },
   {
     id: "dark-crush",
@@ -24,6 +26,7 @@ const gookieCatalogue = [
     description:
       "Deep cocoa, dark chocolate and a little sea salt for the perfect bold, balanced bite.",
     image: "dark-crush.png",
+    allergens: ["Wheat", "Milk", "Egg", "Soy"],
   },
   {
     id: "red-bloom",
@@ -32,6 +35,7 @@ const gookieCatalogue = [
     description:
       "Soft red velvet charm with creamy white chocolate woven through every chunky bite.",
     image: "red-bloom.png",
+    allergens: ["Wheat", "Milk", "Egg", "Soy"],
   },
   {
     id: "matcha-matchy",
@@ -40,6 +44,7 @@ const gookieCatalogue = [
     description:
       "Earthy matcha, creamy white chocolate and roasted macadamia in one very happy match.",
     image: "matcha-matchy.png",
+    allergens: ["Wheat", "Milk", "Egg", "Soy", "Tree Nuts"],
   },
   {
     id: "dream-cream",
@@ -48,6 +53,7 @@ const gookieCatalogue = [
     description:
       "Chocolate cookie crumbs, creamy notes and the kind of comfort that disappears far too quickly.",
     image: "dream-cream.png",
+    allergens: ["Wheat", "Milk", "Egg", "Soy"],
   },
   {
     id: "mallow-melt",
@@ -56,6 +62,7 @@ const gookieCatalogue = [
     description:
       "Toasty marshmallow comfort with chocolate and cookie goodness tucked into every bite.",
     image: "mallow-melt.png",
+    allergens: ["Wheat", "Milk", "Egg", "Soy"],
   },
   {
     id: "biscoff-boom",
@@ -64,6 +71,7 @@ const gookieCatalogue = [
     description:
       "Caramelised cookie flavour with a soft Biscoff centre that goes boom the moment you bite in.",
     image: "biscoff-boom.png",
+    allergens: ["Wheat", "Milk", "Egg", "Soy"],
   },
   {
     id: "choki-chomp",
@@ -72,6 +80,7 @@ const gookieCatalogue = [
     description:
       "A playful chocolate-hazelnut centre wrapped inside a chunky cookie made for serious chomping.",
     image: "choki-chomp.png",
+    allergens: ["Wheat", "Milk", "Egg", "Soy", "Tree Nuts"],
   },
   {
     id: "coffee-kiss",
@@ -80,6 +89,7 @@ const gookieCatalogue = [
     description:
       "A gentle coffee kiss with creamy tiramisu-inspired flavour inside a soft, chunky cookie.",
     image: "coffee-kiss.png",
+    allergens: ["Wheat", "Milk", "Egg", "Soy"],
   },
   {
     id: "monthly-wonder",
@@ -88,6 +98,7 @@ const gookieCatalogue = [
     description:
       "A new chunky wonder that changes with the month — here for a delicious time, not a long time.",
     image: "monthly-wonder.png",
+    allergens: ["Wheat", "Milk", "Egg", "Soy", "Peanuts"],
   },
 ];
 
@@ -104,6 +115,7 @@ const modalImage = document.getElementById("gookieProfileImage");
 const modalSubtitle = document.getElementById("gookieProfileSubtitle");
 const modalName = document.getElementById("gookieProfileName");
 const modalDescription = document.getElementById("gookieProfileDescription");
+const allergenList = document.getElementById("gookieAllergenList");
 
 function showOverlay() {
   overlay.hidden = false;
@@ -145,6 +157,26 @@ function openGookie(cookie) {
   modalSubtitle.textContent = cookie.subtitle;
   modalName.textContent = cookie.name;
   modalDescription.textContent = cookie.description;
+
+  const iconMap = {
+    Wheat: "fa-wheat-awn",
+    Milk: "fa-bottle-droplet",
+    Egg: "fa-egg",
+    Soy: "fa-seedling",
+    Peanuts: "fa-seedling",
+    "Tree Nuts": "fa-tree",
+  };
+
+  allergenList.innerHTML = cookie.allergens
+    .map(
+      (allergen) => `
+        <span class="gookie-allergen-chip">
+          <i class="fa-solid ${iconMap[allergen] || "fa-circle-info"}" aria-hidden="true"></i>
+          ${allergen}
+        </span>
+      `
+    )
+    .join("");
 
   modal.classList.add("is-open");
   modal.setAttribute("aria-hidden", "false");
