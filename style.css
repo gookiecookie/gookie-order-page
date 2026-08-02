@@ -5580,3 +5580,278 @@ a.footer-contact-row:hover {
     margin-top: 10px;
   }
 }
+
+/* =========================================================
+   GOOKIE FOOTER — MOBILE ACCORDION V3
+   Uses the SAME links, modal buttons and social icons as desktop.
+   Desktop layout remains unchanged.
+========================================================= */
+
+.footer-accordion-toggle {
+  font: inherit;
+}
+
+.footer-accordion-chevron,
+.footer-mobile-only {
+  display: none;
+}
+
+.footer-contact-heading {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .site-footer {
+    margin-top: 38px;
+  }
+
+  .footer-hero {
+    width: calc(100% - 44px);
+    padding: 45px 0 34px;
+  }
+
+  .footer-hero h2 {
+    max-width: 360px;
+    margin-inline: auto;
+  }
+
+  .footer-message {
+    max-width: 340px;
+    margin-inline: auto;
+  }
+
+  .footer-main {
+    display: flex;
+    width: calc(100% - 44px);
+    flex-direction: column;
+    gap: 0;
+    padding: 0 0 30px;
+  }
+
+  .footer-main > * {
+    width: 100%;
+    padding: 0;
+    border: 0 !important;
+  }
+
+  .footer-help-column {
+    order: 1;
+  }
+
+  .footer-legal-column {
+    order: 2;
+  }
+
+  .footer-brand-column {
+    display: flex;
+    order: 3;
+    flex-direction: column;
+    padding: 0;
+  }
+
+  .footer-whatsapp-column {
+    display: none;
+  }
+
+  .footer-brand,
+  .footer-brand-description,
+  .footer-brand-divider {
+    display: none;
+  }
+
+  .footer-contact-section {
+    order: 1;
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid rgba(23, 21, 21, 0.1);
+  }
+
+  .footer-social-section {
+    order: 2;
+    margin: 0;
+    padding: 31px 0 28px;
+    text-align: center;
+  }
+
+  .footer-social-section h3 {
+    margin-bottom: 18px;
+    font-size: 0.82rem;
+    letter-spacing: 0.13em;
+  }
+
+  .footer-socials {
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .footer-socials a {
+    width: 48px;
+    height: 48px;
+    font-size: 1.2rem;
+  }
+
+  .footer-accordion-group {
+    border-bottom: 1px solid rgba(23, 21, 21, 0.1);
+  }
+
+  .footer-column-heading,
+  .footer-contact-heading {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 78px;
+    gap: 14px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--gookie-red);
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .footer-column-heading .footer-heading-icon,
+  .footer-contact-heading .footer-heading-icon {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+    border: 0;
+    background: transparent;
+    font-size: 1.45rem;
+  }
+
+  .footer-accordion-label {
+    min-width: 0;
+    flex: 1;
+    font-family: "League Spartan", sans-serif;
+    font-size: 1.03rem;
+    font-weight: 900;
+    letter-spacing: 0.035em;
+  }
+
+  .footer-accordion-chevron {
+    position: relative;
+    display: block;
+    width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
+    margin-right: 2px;
+    transition: transform 260ms ease;
+  }
+
+  .footer-accordion-chevron::before,
+  .footer-accordion-chevron::after {
+    content: "";
+    position: absolute;
+    top: 8px;
+    width: 10px;
+    height: 2px;
+    border-radius: 999px;
+    background: var(--ink);
+  }
+
+  .footer-accordion-chevron::before {
+    left: 1px;
+    transform: rotate(45deg);
+  }
+
+  .footer-accordion-chevron::after {
+    right: 1px;
+    transform: rotate(-45deg);
+  }
+
+  .footer-accordion-group.is-open .footer-accordion-chevron {
+    transform: rotate(180deg);
+  }
+
+  .footer-accordion-panel {
+    display: none;
+    padding: 0 52px 24px;
+  }
+
+  .footer-accordion-group.is-open > .footer-accordion-panel,
+  .footer-contact-section.is-open > .footer-accordion-panel {
+    display: grid;
+  }
+
+  .footer-link-list {
+    gap: 15px;
+  }
+
+  .footer-text-link {
+    width: 100%;
+    font-size: 0.95rem;
+    text-align: left;
+  }
+
+  .footer-allergen-button {
+    width: 100%;
+    max-width: none;
+    min-height: 58px;
+    justify-content: flex-start;
+    padding: 13px 16px;
+    font-size: 0.75rem;
+    text-align: left;
+  }
+
+  .footer-contact-panel {
+    gap: 15px;
+  }
+
+  .footer-contact-row {
+    display: grid;
+    grid-template-columns: 25px minmax(0, 1fr);
+    align-items: start;
+    gap: 10px;
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+
+  .footer-contact-icon {
+    width: 25px;
+    color: var(--gookie-red);
+    text-align: center;
+  }
+
+  .footer-mobile-only {
+    display: grid;
+  }
+
+  .footer-red-bar-inner {
+    gap: 7px;
+    padding: 27px 20px 25px;
+  }
+
+  .footer-red-bar-inner p {
+    font-size: 0.75rem;
+  }
+
+  .footer-bottom-divider {
+    display: none;
+  }
+
+  .footer-baked-line,
+  .footer-thank-you {
+    font-size: 0.95rem !important;
+  }
+}
+
+@media (min-width: 601px) {
+  .footer-accordion-panel {
+    display: grid !important;
+  }
+
+  .footer-column-heading {
+    cursor: default;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-accordion-chevron {
+    transition: none;
+  }
+}
+

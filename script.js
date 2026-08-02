@@ -2875,6 +2875,86 @@ window.addEventListener("resize", () => {
   marqueeLastTimestamp = 0;
 });
 
+
+/* =========================================================
+   GOOKIE FOOTER — MOBILE ACCORDION V3
+   Reuses the existing desktop footer buttons and modal content.
+========================================================= */
+
+const footerAccordionMedia = window.matchMedia("(max-width: 600px)");
+const footerAccordionGroups = Array.from(
+  document.querySelectorAll(".footer-accordion-group"),
+);
+
+function closeFooterAccordionGroup(group) {
+  const toggle = group.querySelector(":scope > .footer-accordion-toggle");
+  const panel = group.querySelector(":scope > .footer-accordion-panel");
+
+  group.classList.remove("is-open");
+  toggle?.setAttribute("aria-expanded", "false");
+
+  if (footerAccordionMedia.matches && panel) {
+    panel.hidden = true;
+  }
+}
+
+function openFooterAccordionGroup(group) {
+  footerAccordionGroups.forEach((item) => {
+    if (item !== group) {
+      closeFooterAccordionGroup(item);
+    }
+  });
+
+  const toggle = group.querySelector(":scope > .footer-accordion-toggle");
+  const panel = group.querySelector(":scope > .footer-accordion-panel");
+
+  group.classList.add("is-open");
+  toggle?.setAttribute("aria-expanded", "true");
+
+  if (panel) {
+    panel.hidden = false;
+  }
+}
+
+function syncFooterAccordionLayout() {
+  footerAccordionGroups.forEach((group) => {
+    const toggle = group.querySelector(":scope > .footer-accordion-toggle");
+    const panel = group.querySelector(":scope > .footer-accordion-panel");
+
+    group.classList.remove("is-open");
+
+    if (footerAccordionMedia.matches) {
+      toggle?.setAttribute("aria-expanded", "false");
+      if (panel) panel.hidden = true;
+    } else {
+      toggle?.setAttribute("aria-expanded", "true");
+      if (panel) panel.hidden = false;
+    }
+  });
+}
+
+footerAccordionGroups.forEach((group) => {
+  const toggle = group.querySelector(":scope > .footer-accordion-toggle");
+
+  toggle?.addEventListener("click", () => {
+    if (!footerAccordionMedia.matches) return;
+
+    if (group.classList.contains("is-open")) {
+      closeFooterAccordionGroup(group);
+    } else {
+      openFooterAccordionGroup(group);
+    }
+  });
+});
+
+if (typeof footerAccordionMedia.addEventListener === "function") {
+  footerAccordionMedia.addEventListener("change", syncFooterAccordionLayout);
+} else {
+  footerAccordionMedia.addListener(syncFooterAccordionLayout);
+}
+
+syncFooterAccordionLayout();
+
 renderMarquee();
 startMarqueeAnimation();
 renderCookieSlots(buildCookieSlots, 0, []);
