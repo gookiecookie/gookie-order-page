@@ -91,7 +91,7 @@
   border: 1px solid rgba(187, 25, 26, 0.1);
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.76);
-  box-shadow: 0 30px 70px rgba(55, 26, 12, 0.13);
+  box-shadow: none;
 }
 
 .about-logo-disc img {
