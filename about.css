@@ -76,7 +76,7 @@
 }
 
 .about-hero-art {
-  display: grid;
+  display: none;
   place-items: center;
   min-height: 640px;
   padding: clamp(38px, 6vw, 90px);
