@@ -6994,3 +6994,97 @@ a.footer-contact-row:hover {
     text-align: left;
   }
 }
+
+
+/* =========================================================
+   GET YOUR GOOKIES — SPRINT 5
+   - Cookie quantity shown as badges
+   - Flavour progress card stays visible while scrolling
+   - Softer price typography
+========================================================= */
+
+/* Quantity badge on each Build Your Box card */
+.order-page .box-accordion-copy small {
+  align-items: center;
+}
+
+.order-page .box-accordion-copy small b {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-height: 30px;
+  padding: 7px 15px;
+  border: 1px solid rgba(187, 25, 26, 0.32);
+  border-radius: 999px;
+  background: #fffaf4;
+  color: var(--gookie-red);
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.075em;
+}
+
+/* Price remains clear without looking overly heavy */
+.order-page .box-accordion-copy small span {
+  margin-top: 2px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 1.38rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+/* Remove the old decorative cookie-count row */
+.order-page .box-accordion-copy::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* Progress meter stays directly below the modal header */
+.order-page .flavour-box-meter {
+  position: sticky;
+  top: 91px;
+  z-index: 3;
+  margin-top: 16px;
+  box-shadow:
+    0 10px 26px rgba(55, 26, 12, 0.08),
+    0 1px 0 rgba(187, 25, 26, 0.05);
+}
+
+/* Prevent menu rows from showing through the sticky card edges */
+.order-page .flavour-box-meter::before {
+  content: "";
+  position: absolute;
+  inset: -16px -1px auto;
+  height: 16px;
+  background: var(--cream-soft);
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .order-page .flavour-box-meter {
+    top: 93px;
+  }
+}
+
+@media (max-width: 767px) {
+  .order-page .box-accordion-copy small b {
+    min-height: 27px;
+    padding: 6px 12px;
+    font-size: 0.62rem;
+  }
+
+  .order-page .box-accordion-copy small span {
+    font-size: 1.18rem;
+  }
+
+  .order-page .flavour-box-meter {
+    top: 82px;
+    margin-right: 14px;
+    margin-left: 14px;
+    padding: 14px 12px 13px;
+    border-radius: 19px;
+  }
+}
