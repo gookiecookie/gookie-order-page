@@ -6772,3 +6772,78 @@ a.footer-contact-row:hover {
     letter-spacing: 0;
   }
 }
+
+
+/* =========================================================
+   GET YOUR GOOKIES — SPRINT 3 FIXES
+   - Stable hero note typography
+   - Cleaner accordion arrow
+   - Cookie Feast icons in two rows
+========================================================= */
+
+/* Prevent the hero notes from visually shrinking after webfont load */
+.order-page .order-page-hero-notes {
+  font-family: "DM Sans", sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: 0;
+}
+
+/* Replace cookie toggle icon with a clean chevron */
+.order-page .box-accordion-arrow {
+  color: transparent;
+  font-size: 0;
+  background: #fff8ef;
+}
+
+.order-page .box-accordion-arrow::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-right: 2px solid var(--gookie-red);
+  border-bottom: 2px solid var(--gookie-red);
+  transform: rotate(45deg) translate(-1px, -1px);
+  transition: transform 220ms ease;
+}
+
+.order-page .box-size-card.is-open .box-accordion-arrow,
+.order-page .box-size-card.is-selected .box-accordion-arrow {
+  background: var(--gookie-red);
+}
+
+.order-page .box-size-card.is-open .box-accordion-arrow::before,
+.order-page .box-size-card.is-selected .box-accordion-arrow::before {
+  border-color: var(--white);
+  transform: rotate(225deg) translate(-1px, -1px);
+}
+
+/* Keep 12 cookie icons readable by splitting them into two rows */
+.order-page .box-size-card[data-box-size="12"] .box-accordion-copy::after {
+  content:
+    "🍪 🍪 🍪 🍪 🍪 🍪\A"
+    "🍪 🍪 🍪 🍪 🍪 🍪";
+  display: block;
+  width: 185px !important;
+  max-width: none;
+  overflow: visible;
+  white-space: pre;
+  text-align: center;
+  font-size: 0.82rem;
+  line-height: 1.75;
+  letter-spacing: 0.06em;
+}
+
+@media (max-width: 600px) {
+  .order-page .order-page-hero-notes {
+    font-size: 0.82rem;
+    line-height: 1.4;
+  }
+
+  .order-page .box-size-card[data-box-size="12"] .box-accordion-copy::after {
+    width: 145px !important;
+    font-size: 0.68rem;
+    line-height: 1.65;
+    letter-spacing: 0.02em;
+  }
+}
