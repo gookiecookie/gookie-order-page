@@ -6642,3 +6642,133 @@ a.footer-contact-row:hover {
     flex-basis: 34px;
   }
 }
+
+
+/* =========================================================
+   GET YOUR GOOKIES — SPRINT 2 POLISH
+   - Larger hero notes
+   - Cookie icon replaces dropdown arrow
+   - Cookie icons replace capacity dots
+========================================================= */
+
+/* Hero notes: clearer and easier to scan */
+.order-page .order-page-hero-notes {
+  gap: 12px;
+  margin-top: 22px;
+  font-family: "League Spartan", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+}
+
+.order-page .order-page-hero-notes span[aria-hidden="true"] {
+  color: var(--gookie-red);
+  font-size: 1rem;
+}
+
+/* Replace the dropdown chevron with a cookie icon */
+.order-page .box-accordion-arrow {
+  position: relative;
+  overflow: hidden;
+  color: transparent;
+  font-size: 0;
+  background: #fff4e8;
+  border: 1px solid rgba(187, 25, 26, 0.08);
+  transition:
+    transform 220ms ease,
+    background-color 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.order-page .box-accordion-arrow::before {
+  content: "🍪";
+  display: block;
+  color: initial;
+  font-size: 1.28rem;
+  line-height: 1;
+  transform: translateY(-1px);
+}
+
+.order-page .box-size-card:hover .box-accordion-arrow {
+  transform: scale(1.06);
+  border-color: rgba(187, 25, 26, 0.18);
+  box-shadow: 0 7px 16px rgba(55, 26, 12, 0.09);
+}
+
+.order-page .box-size-card.is-open .box-accordion-arrow,
+.order-page .box-size-card.is-selected .box-accordion-arrow {
+  background: #fff;
+  border-color: rgba(187, 25, 26, 0.28);
+  box-shadow: 0 8px 20px rgba(187, 25, 26, 0.12);
+  transform: scale(1.08);
+}
+
+/* Replace the decorative capacity dots with cookie icons */
+.order-page .box-accordion-copy::after {
+  display: block;
+  width: auto !important;
+  height: auto;
+  margin-top: 13px;
+  background: none !important;
+  color: var(--gookie-red);
+  font-size: 1rem;
+  line-height: 1;
+  letter-spacing: 0.24em;
+  white-space: nowrap;
+  opacity: 0.82;
+}
+
+.order-page .box-size-card[data-box-size="4"] .box-accordion-copy::after {
+  content: "🍪 🍪 🍪 🍪";
+}
+
+.order-page .box-size-card[data-box-size="6"] .box-accordion-copy::after {
+  content: "🍪 🍪 🍪 🍪 🍪 🍪";
+  font-size: 0.92rem;
+  letter-spacing: 0.15em;
+}
+
+.order-page .box-size-card[data-box-size="12"] .box-accordion-copy::after {
+  content: "🍪 🍪 🍪 🍪 🍪 🍪 🍪 🍪 🍪 🍪 🍪 🍪";
+  max-width: 230px;
+  overflow: hidden;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+}
+
+/* Mobile tuning */
+@media (max-width: 600px) {
+  .order-page .order-page-hero-notes {
+    gap: 7px;
+    max-width: 360px;
+    font-size: 0.78rem;
+    line-height: 1.35;
+  }
+
+  .order-page .order-page-hero-notes span[aria-hidden="true"] {
+    font-size: 0.78rem;
+  }
+
+  .order-page .box-accordion-arrow::before {
+    font-size: 1.1rem;
+  }
+
+  .order-page .box-accordion-copy::after {
+    margin-top: 9px;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+  }
+
+  .order-page .box-size-card[data-box-size="6"] .box-accordion-copy::after {
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+  }
+
+  .order-page .box-size-card[data-box-size="12"] .box-accordion-copy::after {
+    max-width: 155px;
+    font-size: 0.56rem;
+    letter-spacing: 0;
+  }
+}
