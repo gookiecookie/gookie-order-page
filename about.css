@@ -17,16 +17,15 @@
 }
 
 .about-hero-art{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#fff;
-  position:relative;
-  overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#fff;
+    position:relative;
+    overflow:hidden;
 }
 
 .about-logo{
-  width:min(440px,72%);
-  height:auto;
-  display:block;
+    width:min(340px,58%);
+    height:auto;
 }
