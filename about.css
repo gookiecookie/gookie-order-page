@@ -80,9 +80,6 @@
   place-items: center;
   min-height: 640px;
   padding: clamp(38px, 6vw, 90px);
-  background:
-    radial-gradient(circle at 50% 50%, rgba(255, 226, 193, 0.66), transparent 58%),
-    #fff8ef;
 }
 
 .about-logo-disc {
