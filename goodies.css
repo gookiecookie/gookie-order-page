@@ -539,3 +539,85 @@
     padding: 86px 20px;
   }
 }
+
+
+/* =========================================================
+   GOOKIE'S GOODIES — HERO PHOTO UPDATE
+   Replaces floating cookie artwork with header.png
+========================================================= */
+
+.goodies-hero-art {
+  display: grid;
+  place-items: center;
+  min-height: 640px;
+  padding: clamp(28px, 5vw, 70px);
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 226, 193, 0.6), transparent 62%),
+    #fff8ef;
+}
+
+.goodies-hero-art::before,
+.goodies-hero-art::after,
+.goodies-hero-cookie {
+  display: none !important;
+}
+
+.goodies-hero-photo-frame {
+  position: relative;
+  width: min(100%, 760px);
+  overflow: hidden;
+  border: 1px solid rgba(187, 25, 26, 0.08);
+  border-radius: 34px;
+  background: #fff;
+  box-shadow:
+    0 28px 70px rgba(55, 26, 12, 0.16),
+    0 4px 18px rgba(55, 26, 12, 0.08);
+  transform: rotate(-1.2deg);
+}
+
+.goodies-hero-photo-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+  pointer-events: none;
+}
+
+.goodies-hero-photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: center;
+}
+
+@media (max-width: 920px) {
+  .goodies-hero-art {
+    min-height: 500px;
+    padding: 34px 24px;
+  }
+
+  .goodies-hero-photo-frame {
+    width: min(100%, 720px);
+    border-radius: 28px;
+    transform: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .goodies-hero-art {
+    min-height: 340px;
+    padding: 20px 14px 8px;
+  }
+
+  .goodies-hero-photo-frame {
+    border-radius: 22px;
+  }
+
+  .goodies-hero-photo {
+    aspect-ratio: 4 / 3;
+    object-position: center;
+  }
+}
