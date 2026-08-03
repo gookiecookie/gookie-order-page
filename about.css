@@ -243,7 +243,7 @@
 
 .about-cookie-art img {
   width: min(520px, 88%);
-  filter: drop-shadow(0 30px 24px rgba(67, 29, 12, 0.2));
+  filter: none;
 }
 
 .about-cookie-copy {
