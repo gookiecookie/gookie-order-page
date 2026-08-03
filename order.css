@@ -6847,3 +6847,150 @@ a.footer-contact-row:hover {
     letter-spacing: 0.02em;
   }
 }
+
+
+/* =========================================================
+   GET YOUR GOOKIES — SPRINT 4
+   - BUILD MY BOX replaces dropdown arrow
+   - Equal-size cookie icons across all cards
+========================================================= */
+
+/* Turn the old arrow slot into a clear CTA. */
+.order-page .box-accordion-arrow {
+  position: static;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: min(100%, 210px);
+  height: auto;
+  min-height: 46px;
+  flex: 0 0 auto;
+  margin-top: 16px;
+  padding: 12px 18px;
+  overflow: visible;
+  border: 1.5px solid rgba(187, 25, 26, 0.4);
+  border-radius: 999px;
+  background: transparent;
+  color: transparent;
+  font-size: 0;
+  box-shadow: none;
+  transform: none !important;
+  transition:
+    background-color 220ms ease,
+    border-color 220ms ease,
+    color 220ms ease,
+    box-shadow 220ms ease,
+    transform 220ms ease;
+}
+
+.order-page .box-accordion-arrow::before {
+  content: "BUILD MY BOX";
+  width: auto;
+  height: auto;
+  border: 0;
+  color: var(--gookie-red);
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.76rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.07em;
+  transform: none !important;
+}
+
+.order-page .box-size-card:hover .box-accordion-arrow {
+  border-color: var(--gookie-red);
+  background: var(--gookie-red);
+  box-shadow: 0 10px 22px rgba(187, 25, 26, 0.18);
+  transform: translateY(-2px) !important;
+}
+
+.order-page .box-size-card:hover .box-accordion-arrow::before {
+  color: var(--white);
+}
+
+/* Once open, this control becomes the close/collapse action.
+   The existing CHOOSE MY GOOKIES button remains inside the expanded panel. */
+.order-page .box-size-card.is-open .box-accordion-arrow,
+.order-page .box-size-card.is-selected .box-accordion-arrow {
+  border-color: rgba(23, 21, 21, 0.14);
+  background: var(--white);
+  box-shadow: none;
+  transform: none !important;
+}
+
+.order-page .box-size-card.is-open .box-accordion-arrow::before,
+.order-page .box-size-card.is-selected .box-accordion-arrow::before {
+  content: "CLOSE";
+  color: var(--ink);
+  transform: none !important;
+}
+
+/* Equal cookie icon size on every card. */
+.order-page .box-accordion-copy::after {
+  display: block;
+  width: 210px !important;
+  max-width: 210px;
+  height: auto;
+  margin: 14px auto 0;
+  overflow: visible;
+  background: none !important;
+  color: initial;
+  font-size: 0.92rem !important;
+  line-height: 1.55;
+  letter-spacing: 0.08em !important;
+  text-align: center;
+  white-space: pre;
+  opacity: 1;
+}
+
+.order-page .box-size-card[data-box-size="4"] .box-accordion-copy::after {
+  content: "🍪 🍪 🍪 🍪";
+}
+
+.order-page .box-size-card[data-box-size="6"] .box-accordion-copy::after {
+  content:
+    "🍪 🍪 🍪\A"
+    "🍪 🍪 🍪";
+}
+
+.order-page .box-size-card[data-box-size="12"] .box-accordion-copy::after {
+  content:
+    "🍪 🍪 🍪 🍪\A"
+    "🍪 🍪 🍪 🍪\A"
+    "🍪 🍪 🍪 🍪";
+}
+
+/* Desktop: CTA sits naturally beneath the product information. */
+@media (min-width: 768px) {
+  .order-page .box-accordion-header {
+    min-height: 410px;
+  }
+
+  .order-page .box-accordion-arrow {
+    margin-top: auto;
+  }
+}
+
+/* Mobile: keep image and copy compact, then place CTA on its own row. */
+@media (max-width: 767px) {
+  .order-page .box-accordion-header {
+    flex-wrap: wrap;
+  }
+
+  .order-page .box-accordion-arrow {
+    width: 100%;
+    max-width: none;
+    flex-basis: 100%;
+    margin: 8px 4px 0;
+  }
+
+  .order-page .box-accordion-copy::after {
+    width: 170px !important;
+    max-width: 170px;
+    margin-left: 0;
+    font-size: 0.78rem !important;
+    line-height: 1.48;
+    letter-spacing: 0.04em !important;
+    text-align: left;
+  }
+}
