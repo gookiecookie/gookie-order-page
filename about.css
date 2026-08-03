@@ -33,7 +33,7 @@
   margin: 15px 0 24px;
   font-family: "League Spartan", sans-serif;
   font-size: clamp(4.8rem, 8vw, 8.4rem);
-  font-weight: 900;
+  font-weight: 600;
   line-height: 0.78;
   letter-spacing: -0.055em;
 }
