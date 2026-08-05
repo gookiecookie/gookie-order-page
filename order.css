@@ -7220,30 +7220,24 @@ a.footer-contact-row:hover {
   letter-spacing: -0.025em;
 }
 
-.gookies-pick-action {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: min(100%, 210px);
-  min-height: 46px;
-  margin: auto auto 0;
-  padding: 12px 18px;
-  border: 1.5px solid rgba(187, 25, 26, 0.4);
-  border-radius: 999px;
-  background: transparent;
-  color: var(--gookie-red);
-  font-size: 0.72rem;
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: 0.07em;
-  transition:
-    background-color 220ms ease,
-    border-color 220ms ease,
-    color 220ms ease,
-    box-shadow 220ms ease,
-    transform 220ms ease;
-}
+.gookies-pick-action{
+  display:flex;
+  justify-content:center;
+  align-items:center;
 
+  width:100%;
+  min-height:46px;
+
+  margin-top:18px;
+
+  border:1.5px solid rgba(187,25,26,.4);
+  border-radius:999px;
+
+  text-align:center;
+
+  gap:6px;          /* jarak antara text dan arrow */
+  white-space:nowrap;
+}
 .gookies-pick-card:hover .gookies-pick-action {
   border-color: var(--gookie-red);
   background: var(--gookie-red);
