@@ -7220,23 +7220,9 @@ a.footer-contact-row:hover {
   letter-spacing: -0.025em;
 }
 
-.gookies-pick-action{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-
+.gookies-pick-button{
   width:100%;
-  min-height:46px;
-
-  margin-top:18px;
-
-  border:1.5px solid rgba(187,25,26,.4);
-  border-radius:999px;
-
-  text-align:center;
-
-  gap:6px;          /* jarak antara text dan arrow */
-  white-space:nowrap;
+  margin-top:auto;
 }
 .gookies-pick-card:hover .gookies-pick-action {
   border-color: var(--gookie-red);
@@ -7418,5 +7404,67 @@ a.footer-contact-row:hover {
   .gookies-pick-action {
     min-height: 43px;
     margin-top: 8px;
+  }
+}
+
+
+/* =========================================================
+   GOOKIE'S PICKS CTA — FINAL CENTERING FIX
+   Works with either:
+   <span class="gookies-pick-action">...</span>
+   or the temporary .gookies-pick-button class.
+========================================================= */
+
+.gookies-pick-action,
+.gookies-pick-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: min(100%, 210px);
+  min-height: 44px;
+  margin: auto auto 0;
+  padding: 12px 18px;
+
+  border: 1.5px solid rgba(187, 25, 26, 0.4);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--gookie-red);
+
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.07em;
+  text-align: center;
+  white-space: nowrap;
+
+  appearance: none;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+}
+
+/* The whole card is already clickable, so the inner CTA is visual only. */
+.gookies-pick-button {
+  pointer-events: none;
+}
+
+.gookies-pick-card:hover .gookies-pick-action,
+.gookies-pick-card:hover .gookies-pick-button {
+  border-color: var(--gookie-red);
+  background: var(--gookie-red);
+  color: var(--white);
+  box-shadow: 0 10px 22px rgba(187, 25, 26, 0.18);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 600px) {
+  .gookies-pick-action,
+  .gookies-pick-button {
+    grid-area: action;
+    width: 100%;
+    max-width: none;
+    min-height: 43px;
+    margin: 8px 0 0;
   }
 }
