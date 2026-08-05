@@ -1447,26 +1447,55 @@ function updateBuildActionButton() {
 }
 
 function selectBuildBox(button) {
+  const nextBoxSize = Number(button.dataset.boxSize);
+  const nextBoxName = button.dataset.boxName;
+  const isSameBox =
+    buildBoxSize === nextBoxSize &&
+    buildBoxName === nextBoxName;
+
   buildBoxSizeOptions
     .querySelectorAll(".box-size-card")
-    .forEach((c) => c.classList.remove("is-selected"));
+    .forEach((card) => card.classList.remove("is-selected"));
+
   button.classList.add("is-selected");
-  buildBoxSize = Number(button.dataset.boxSize);
-  buildBoxName = button.dataset.boxName;
-  buildSelection = [];
-  flavourMeterPreviousCount = 0;
+
+  buildBoxSize = nextBoxSize;
+  buildBoxName = nextBoxName;
+
+  /*
+   * Keep the customer's draft when they reopen or click the same box.
+   * Reset selections only when they genuinely switch to another box size.
+   */
+  if (!isSameBox) {
+    buildSelection = [];
+    flavourMeterPreviousCount = 0;
+  }
+
+  const selectedCount = buildSelection.length;
+  const remaining = Math.max(buildBoxSize - selectedCount, 0);
+
   buildSelectedBoxName.textContent = buildBoxName;
-  buildSelectedCount.textContent = "0";
+  buildSelectedCount.textContent = String(selectedCount);
   buildBoxCapacity.textContent = String(buildBoxSize);
-  buildBoxHelper.textContent = `Pick ${buildBoxSize} cookies to complete your ${buildBoxName}.`;
+
+  buildBoxHelper.textContent =
+    remaining === 0
+      ? "Your Gookie box is ready! 🎉"
+      : `Pick ${remaining} more ${
+          remaining === 1 ? "cookie" : "cookies"
+        } to complete your ${buildBoxName}.`;
+
   renderCookieSlots(
     buildCookieSlots,
     buildBoxSize,
     buildSelection,
     removeBuildCookieAtIndex,
   );
+
+  renderMiniSlots(buildBoxSize);
   updateBuildBoxProgress();
   updateBuildActionButton();
+  updateAccordionAction();
 }
 const getBuildQuantity = (id) => buildSelection.filter((x) => x === id).length;
 function addBuildCookie(id) {
@@ -2634,7 +2663,15 @@ showGookiesChoice?.addEventListener("click", () => {
 });
 buildBoxSizeOptions
   ?.querySelectorAll(".box-size-card")
-  .forEach((b) => b.addEventListener("click", () => selectBuildBox(b)));
+  .forEach((card) => {
+    const header = card.querySelector(".box-accordion-header");
+
+    /*
+     * Select a box only from its header.
+     * Clicking EDIT MY GOOKIES must not bubble to the card and erase the draft.
+     */
+    header?.addEventListener("click", () => selectBuildBox(card));
+  });
 openFlavourSelector?.addEventListener("click", () => {
   const isComplete =
     buildBoxSize > 0 && buildSelection.length === buildBoxSize;
@@ -2800,25 +2837,18 @@ document.querySelectorAll(".box-accordion").forEach((card) => {
 });
 
 document.querySelectorAll(".box-accordion-action").forEach((button) => {
-  button.addEventListener("click", () => {
-    const selectedSize = Number(button.dataset.boxAction);
+  button.addEventListener("click", (event) => {
+    event.stopPropagation();
 
-    if (buildBoxSize !== selectedSize) {
-      buildBoxSize = selectedSize;
+    const card = button.closest(".box-accordion");
 
-      buildBoxName =
-        buildBoxSize === 4
-          ? "Treat Box"
-          : buildBoxSize === 6
-            ? "Chunky Box"
-            : "Cookie Feast";
+    if (!card) return;
 
-      buildSelection = [];
-    }
-
-    updateBuildBoxProgress();
-    renderMiniSlots(buildBoxSize);
-    updateAccordionAction();
+    /*
+     * Reopening EDIT MY GOOKIES keeps the existing draft.
+     * Switching to another box still starts a fresh selection.
+     */
+    selectBuildBox(card);
     openBuildFlavourSelector();
   });
 });
