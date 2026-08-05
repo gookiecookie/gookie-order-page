@@ -97,7 +97,7 @@ const gookiePicks = {
     description: "A friendly introduction to four different sides of Gookie.",
     quantity: 4,
     price: 36,
-    image: "first-timer-box.png",
+    image: "chunky-box.png",
     fallbackImage: "wonder-chip.png",
     cookies: [
       "wonder-chip",
@@ -114,7 +114,7 @@ const gookiePicks = {
     description: "Six Wonder Chips for anyone who knows exactly what they love.",
     quantity: 6,
     price: 52,
-    image: "the-classics-box.png",
+    image: "chunky-box.png",
     fallbackImage: "wonder-chip.png",
     cookies: Array(6).fill("wonder-chip"),
     revealFlavours: true,
@@ -127,7 +127,7 @@ const gookiePicks = {
       "Six mixed Gookies selected by Team Gookie. The flavours are part of the surprise.",
     quantity: 6,
     price: 52,
-    image: "surprise-box.png",
+    image: "chunky-box.png",
     fallbackImage: "monthly-wonder.png",
     cookies: [
       "red-bloom",
@@ -146,7 +146,7 @@ const gookiePicks = {
     description: "A full-sized tour through the colourful world of Gookie.",
     quantity: 12,
     price: 99,
-    image: "full-wonder-box.png",
+    image: "chunky-box.png",
     fallbackImage: "monthly-wonder.png",
     cookies: [
       "wonder-chip",
@@ -1447,55 +1447,26 @@ function updateBuildActionButton() {
 }
 
 function selectBuildBox(button) {
-  const nextBoxSize = Number(button.dataset.boxSize);
-  const nextBoxName = button.dataset.boxName;
-  const isSameBox =
-    buildBoxSize === nextBoxSize &&
-    buildBoxName === nextBoxName;
-
   buildBoxSizeOptions
     .querySelectorAll(".box-size-card")
-    .forEach((card) => card.classList.remove("is-selected"));
-
+    .forEach((c) => c.classList.remove("is-selected"));
   button.classList.add("is-selected");
-
-  buildBoxSize = nextBoxSize;
-  buildBoxName = nextBoxName;
-
-  /*
-   * Keep the customer's draft when they reopen or click the same box.
-   * Reset selections only when they genuinely switch to another box size.
-   */
-  if (!isSameBox) {
-    buildSelection = [];
-    flavourMeterPreviousCount = 0;
-  }
-
-  const selectedCount = buildSelection.length;
-  const remaining = Math.max(buildBoxSize - selectedCount, 0);
-
+  buildBoxSize = Number(button.dataset.boxSize);
+  buildBoxName = button.dataset.boxName;
+  buildSelection = [];
+  flavourMeterPreviousCount = 0;
   buildSelectedBoxName.textContent = buildBoxName;
-  buildSelectedCount.textContent = String(selectedCount);
+  buildSelectedCount.textContent = "0";
   buildBoxCapacity.textContent = String(buildBoxSize);
-
-  buildBoxHelper.textContent =
-    remaining === 0
-      ? "Your Gookie box is ready! 🎉"
-      : `Pick ${remaining} more ${
-          remaining === 1 ? "cookie" : "cookies"
-        } to complete your ${buildBoxName}.`;
-
+  buildBoxHelper.textContent = `Pick ${buildBoxSize} cookies to complete your ${buildBoxName}.`;
   renderCookieSlots(
     buildCookieSlots,
     buildBoxSize,
     buildSelection,
     removeBuildCookieAtIndex,
   );
-
-  renderMiniSlots(buildBoxSize);
   updateBuildBoxProgress();
   updateBuildActionButton();
-  updateAccordionAction();
 }
 const getBuildQuantity = (id) => buildSelection.filter((x) => x === id).length;
 function addBuildCookie(id) {
@@ -2663,15 +2634,7 @@ showGookiesChoice?.addEventListener("click", () => {
 });
 buildBoxSizeOptions
   ?.querySelectorAll(".box-size-card")
-  .forEach((card) => {
-    const header = card.querySelector(".box-accordion-header");
-
-    /*
-     * Select a box only from its header.
-     * Clicking EDIT MY GOOKIES must not bubble to the card and erase the draft.
-     */
-    header?.addEventListener("click", () => selectBuildBox(card));
-  });
+  .forEach((b) => b.addEventListener("click", () => selectBuildBox(b)));
 openFlavourSelector?.addEventListener("click", () => {
   const isComplete =
     buildBoxSize > 0 && buildSelection.length === buildBoxSize;
@@ -2837,18 +2800,25 @@ document.querySelectorAll(".box-accordion").forEach((card) => {
 });
 
 document.querySelectorAll(".box-accordion-action").forEach((button) => {
-  button.addEventListener("click", (event) => {
-    event.stopPropagation();
+  button.addEventListener("click", () => {
+    const selectedSize = Number(button.dataset.boxAction);
 
-    const card = button.closest(".box-accordion");
+    if (buildBoxSize !== selectedSize) {
+      buildBoxSize = selectedSize;
 
-    if (!card) return;
+      buildBoxName =
+        buildBoxSize === 4
+          ? "Treat Box"
+          : buildBoxSize === 6
+            ? "Chunky Box"
+            : "Cookie Feast";
 
-    /*
-     * Reopening EDIT MY GOOKIES keeps the existing draft.
-     * Switching to another box still starts a fresh selection.
-     */
-    selectBuildBox(card);
+      buildSelection = [];
+    }
+
+    updateBuildBoxProgress();
+    renderMiniSlots(buildBoxSize);
+    updateAccordionAction();
     openBuildFlavourSelector();
   });
 });
