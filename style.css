@@ -6236,3 +6236,565 @@ a.footer-contact-row:hover {
     transition: none;
   }
 }
+
+
+/* =========================================================
+   HOMEPAGE — MATCH GET YOUR GOOKIES CARD DESIGN
+   Uses the same visual treatment as order.html without
+   changing the homepage order flow or JavaScript behaviour.
+========================================================= */
+
+/* =========================================================
+   BUILD YOUR BOX — PREMIUM PRODUCT SELECTION
+========================================================= */
+
+.box-size-options {
+  gap: 18px;
+  width: min(100%, 1040px);
+}
+
+.box-size-card {
+  position: relative;
+  border: 1px solid rgba(23, 21, 21, 0.09);
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow:
+    0 14px 34px rgba(55, 26, 12, 0.075);
+  transition:
+    border-color 240ms ease,
+    box-shadow 240ms ease,
+    transform 240ms ease,
+    background-color 240ms ease;
+}
+
+.box-size-card:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 22px 46px rgba(55, 26, 12, 0.12);
+}
+
+.box-size-card.is-selected,
+.box-size-card.is-open {
+  border-color: rgba(187, 25, 26, 0.48);
+  background:
+    linear-gradient(rgba(255, 248, 239, 0.96), rgba(255, 248, 239, 0.96)),
+    #fff;
+  box-shadow:
+    0 22px 52px rgba(187, 25, 26, 0.13);
+}
+
+.box-accordion-header {
+  min-height: 166px;
+  padding: 18px 22px 18px 16px;
+  gap: 10px;
+}
+
+.box-size-image {
+  width: 150px;
+  flex-basis: 150px;
+  margin: -18px 0 -18px -22px;
+}
+
+.box-size-image img {
+  height: 145px;
+}
+
+.box-accordion-copy {
+  min-width: 0;
+}
+
+.box-accordion-copy strong {
+  font-size: 1.72rem;
+  line-height: 0.96;
+  letter-spacing: -0.025em;
+}
+
+.box-accordion-copy small {
+  display: grid;
+  gap: 7px;
+  margin-top: 9px;
+}
+
+.box-accordion-copy small b {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.box-accordion-copy small span {
+  color: var(--gookie-red);
+  font-family: "League Spartan", sans-serif;
+  font-size: 1.42rem;
+  font-weight: 900;
+}
+
+.box-accordion-arrow {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  border-radius: 50%;
+  background: var(--cream-soft);
+  color: var(--gookie-red);
+  font-size: 1.25rem;
+}
+
+.box-size-card.is-open .box-accordion-arrow {
+  background: var(--gookie-red);
+  color: var(--white);
+}
+
+/* Visual cookie capacity */
+.box-accordion-copy::after {
+  content: "";
+  display: block;
+  width: 112px;
+  height: 16px;
+  margin-top: 14px;
+  background:
+    radial-gradient(circle, rgba(187, 25, 26, 0.22) 0 5px, transparent 5.5px)
+    left center / 28px 16px repeat-x;
+}
+
+.box-size-card[data-box-size="6"] .box-accordion-copy::after {
+  width: 168px;
+}
+
+.box-size-card[data-box-size="12"] .box-accordion-copy::after {
+  width: 196px;
+  background-size: 24px 16px;
+}
+
+.box-accordion-body {
+  padding: 22px;
+  border-top: 1px solid rgba(23, 21, 21, 0.07);
+  background: rgba(255, 255, 255, 0.52);
+}
+
+.box-mini-slots {
+  margin-top: 0;
+  gap: 10px;
+}
+
+.box-mini-slot {
+  border-radius: 16px;
+  background: #fffaf4;
+}
+
+.box-accordion-helper {
+  margin: 16px 0;
+  font-size: 0.82rem;
+}
+
+.box-accordion-action {
+  min-height: 52px;
+}
+
+
+/* =========================================================
+   GET YOUR GOOKIES — SPRINT 2 POLISH
+   - Larger hero notes
+   - Cookie icon replaces dropdown arrow
+   - Cookie icons replace capacity dots
+========================================================= */
+
+/* Replace the dropdown chevron with a cookie icon */
+.box-accordion-arrow {
+  position: relative;
+  overflow: hidden;
+  color: transparent;
+  font-size: 0;
+  background: #fff4e8;
+  border: 1px solid rgba(187, 25, 26, 0.08);
+  transition:
+    transform 220ms ease,
+    background-color 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.box-accordion-arrow::before {
+  content: "🍪";
+  display: block;
+  color: initial;
+  font-size: 1.28rem;
+  line-height: 1;
+  transform: translateY(-1px);
+}
+
+.box-size-card:hover .box-accordion-arrow {
+  transform: scale(1.06);
+  border-color: rgba(187, 25, 26, 0.18);
+  box-shadow: 0 7px 16px rgba(55, 26, 12, 0.09);
+}
+
+.box-size-card.is-open .box-accordion-arrow,
+.box-size-card.is-selected .box-accordion-arrow {
+  background: #fff;
+  border-color: rgba(187, 25, 26, 0.28);
+  box-shadow: 0 8px 20px rgba(187, 25, 26, 0.12);
+  transform: scale(1.08);
+}
+
+/* Replace the decorative capacity dots with cookie icons */
+.box-accordion-copy::after {
+  display: block;
+  width: auto !important;
+  height: auto;
+  margin-top: 13px;
+  background: none !important;
+  color: var(--gookie-red);
+  font-size: 1rem;
+  line-height: 1;
+  letter-spacing: 0.24em;
+  white-space: nowrap;
+  opacity: 0.82;
+}
+
+.box-size-card[data-box-size="4"] .box-accordion-copy::after {
+  content: "🍪 🍪 🍪 🍪";
+}
+
+.box-size-card[data-box-size="6"] .box-accordion-copy::after {
+  content: "🍪 🍪 🍪 🍪 🍪 🍪";
+  font-size: 0.92rem;
+  letter-spacing: 0.15em;
+}
+
+.box-size-card[data-box-size="12"] .box-accordion-copy::after {
+  content: "🍪 🍪 🍪 🍪 🍪 🍪 🍪 🍪 🍪 🍪 🍪 🍪";
+  max-width: 230px;
+  overflow: hidden;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+}
+
+/* Mobile tuning */
+@media (max-width: 600px) {
+
+  .box-accordion-arrow::before {
+    font-size: 1.1rem;
+  }
+
+  .box-accordion-copy::after {
+    margin-top: 9px;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+  }
+
+  .box-size-card[data-box-size="6"] .box-accordion-copy::after {
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+  }
+
+  .box-size-card[data-box-size="12"] .box-accordion-copy::after {
+    max-width: 155px;
+    font-size: 0.56rem;
+    letter-spacing: 0;
+  }
+}
+
+
+/* =========================================================
+   GET YOUR GOOKIES — SPRINT 3 FIXES
+   - Stable hero note typography
+   - Cleaner accordion arrow
+   - Cookie Feast icons in two rows
+========================================================= */
+
+/* Replace cookie toggle icon with a clean chevron */
+.box-accordion-arrow {
+  color: transparent;
+  font-size: 0;
+  background: #fff8ef;
+}
+
+.box-accordion-arrow::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-right: 2px solid var(--gookie-red);
+  border-bottom: 2px solid var(--gookie-red);
+  transform: rotate(45deg) translate(-1px, -1px);
+  transition: transform 220ms ease;
+}
+
+.box-size-card.is-open .box-accordion-arrow,
+.box-size-card.is-selected .box-accordion-arrow {
+  background: var(--gookie-red);
+}
+
+.box-size-card.is-open .box-accordion-arrow::before,
+.box-size-card.is-selected .box-accordion-arrow::before {
+  border-color: var(--white);
+  transform: rotate(225deg) translate(-1px, -1px);
+}
+
+/* Keep 12 cookie icons readable by splitting them into two rows */
+.box-size-card[data-box-size="12"] .box-accordion-copy::after {
+  content:
+    "🍪 🍪 🍪 🍪 🍪 🍪\A"
+    "🍪 🍪 🍪 🍪 🍪 🍪";
+  display: block;
+  width: 185px !important;
+  max-width: none;
+  overflow: visible;
+  white-space: pre;
+  text-align: center;
+  font-size: 0.82rem;
+  line-height: 1.75;
+  letter-spacing: 0.06em;
+}
+
+@media (max-width: 600px) {
+
+  .box-size-card[data-box-size="12"] .box-accordion-copy::after {
+    width: 145px !important;
+    font-size: 0.68rem;
+    line-height: 1.65;
+    letter-spacing: 0.02em;
+  }
+}
+
+
+/* =========================================================
+   GET YOUR GOOKIES — SPRINT 4
+   - BUILD MY BOX replaces dropdown arrow
+   - Equal-size cookie icons across all cards
+========================================================= */
+
+/* Turn the old arrow slot into a clear CTA. */
+.box-accordion-arrow {
+  position: static;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: min(100%, 210px);
+  height: auto;
+  min-height: 46px;
+  flex: 0 0 auto;
+  margin-top: 16px;
+  padding: 12px 18px;
+  overflow: visible;
+  border: 1.5px solid rgba(187, 25, 26, 0.4);
+  border-radius: 999px;
+  background: transparent;
+  color: transparent;
+  font-size: 0;
+  box-shadow: none;
+  transform: none !important;
+  transition:
+    background-color 220ms ease,
+    border-color 220ms ease,
+    color 220ms ease,
+    box-shadow 220ms ease,
+    transform 220ms ease;
+}
+
+.box-accordion-arrow::before {
+  content: "BUILD MY BOX";
+  width: auto;
+  height: auto;
+  border: 0;
+  color: var(--gookie-red);
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.76rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.07em;
+  transform: none !important;
+}
+
+.box-size-card:hover .box-accordion-arrow {
+  border-color: var(--gookie-red);
+  background: var(--gookie-red);
+  box-shadow: 0 10px 22px rgba(187, 25, 26, 0.18);
+  transform: translateY(-2px) !important;
+}
+
+.box-size-card:hover .box-accordion-arrow::before {
+  color: var(--white);
+}
+
+/* Once open, this control becomes the close/collapse action.
+   The existing CHOOSE MY GOOKIES button remains inside the expanded panel. */
+.box-size-card.is-open .box-accordion-arrow,
+.box-size-card.is-selected .box-accordion-arrow {
+  border-color: rgba(23, 21, 21, 0.14);
+  background: var(--white);
+  box-shadow: none;
+  transform: none !important;
+}
+
+.box-size-card.is-open .box-accordion-arrow::before,
+.box-size-card.is-selected .box-accordion-arrow::before {
+  content: "CLOSE";
+  color: var(--ink);
+  transform: none !important;
+}
+
+/* Equal cookie icon size on every card. */
+.box-accordion-copy::after {
+  display: block;
+  width: 210px !important;
+  max-width: 210px;
+  height: auto;
+  margin: 14px auto 0;
+  overflow: visible;
+  background: none !important;
+  color: initial;
+  font-size: 0.92rem !important;
+  line-height: 1.55;
+  letter-spacing: 0.08em !important;
+  text-align: center;
+  white-space: pre;
+  opacity: 1;
+}
+
+.box-size-card[data-box-size="4"] .box-accordion-copy::after {
+  content: "🍪 🍪 🍪 🍪";
+}
+
+.box-size-card[data-box-size="6"] .box-accordion-copy::after {
+  content:
+    "🍪 🍪 🍪\A"
+    "🍪 🍪 🍪";
+}
+
+.box-size-card[data-box-size="12"] .box-accordion-copy::after {
+  content:
+    "🍪 🍪 🍪 🍪\A"
+    "🍪 🍪 🍪 🍪\A"
+    "🍪 🍪 🍪 🍪";
+}
+
+/* Desktop: CTA sits naturally beneath the product information. */
+@media (min-width: 768px) {
+  .box-accordion-header {
+    min-height: 410px;
+  }
+
+  .box-accordion-arrow {
+    margin-top: auto;
+  }
+}
+
+/* Mobile: keep image and copy compact, then place CTA on its own row. */
+@media (max-width: 767px) {
+  .box-accordion-header {
+    flex-wrap: wrap;
+  }
+
+  .box-accordion-arrow {
+    width: 100%;
+    max-width: none;
+    flex-basis: 100%;
+    margin: 8px 4px 0;
+  }
+
+  .box-accordion-copy::after {
+    width: 170px !important;
+    max-width: 170px;
+    margin-left: 0;
+    font-size: 0.78rem !important;
+    line-height: 1.48;
+    letter-spacing: 0.04em !important;
+    text-align: left;
+  }
+}
+
+
+/* =========================================================
+   GET YOUR GOOKIES — SPRINT 5
+   - Cookie quantity shown as badges
+   - Flavour progress card stays visible while scrolling
+   - Softer price typography
+========================================================= */
+
+/* Quantity badge on each Build Your Box card */
+.box-accordion-copy small {
+  align-items: center;
+}
+
+.box-accordion-copy small b {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-height: 30px;
+  padding: 7px 15px;
+  border: 1px solid rgba(187, 25, 26, 0.32);
+  border-radius: 999px;
+  background: #fffaf4;
+  color: var(--gookie-red);
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.075em;
+}
+
+/* Price remains clear without looking overly heavy */
+.box-accordion-copy small span {
+  margin-top: 2px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 1.38rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+/* Remove the old decorative cookie-count row */
+.box-accordion-copy::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* Progress meter stays directly below the modal header */
+.flavour-box-meter {
+  position: sticky;
+  top: 91px;
+  z-index: 3;
+  margin-top: 16px;
+  box-shadow:
+    0 10px 26px rgba(55, 26, 12, 0.08),
+    0 1px 0 rgba(187, 25, 26, 0.05);
+}
+
+/* Prevent menu rows from showing through the sticky card edges */
+.flavour-box-meter::before {
+  content: "";
+  position: absolute;
+  inset: -16px -1px auto;
+  height: 16px;
+  background: var(--cream-soft);
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .flavour-box-meter {
+    top: 93px;
+  }
+}
+
+@media (max-width: 767px) {
+  .box-accordion-copy small b {
+    min-height: 27px;
+    padding: 6px 12px;
+    font-size: 0.62rem;
+  }
+
+  .box-accordion-copy small span {
+    font-size: 1.18rem;
+  }
+
+  .flavour-box-meter {
+    top: 82px;
+    margin-right: 14px;
+    margin-left: 14px;
+    padding: 14px 12px 13px;
+    border-radius: 19px;
+  }
+}
