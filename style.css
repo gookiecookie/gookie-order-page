@@ -376,7 +376,7 @@ img {
   position: relative;
   display: grid;
   place-items: center;
-  min-height: 430px;
+  min-height: 330px;
   padding: 40px 20px 16px;
 
   background:
