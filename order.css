@@ -7468,3 +7468,326 @@ a.footer-contact-row:hover {
     margin: 8px 0 0;
   }
 }
+
+
+/* =========================================================
+   GOOKIE'S PICKS — PRODUCTION FINAL FIX
+   This final block intentionally overrides older duplicated
+   Gookie's Picks rules above it.
+========================================================= */
+
+.order-page .gookies-picks-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 18px !important;
+
+  width: min(100%, 1180px) !important;
+  margin: 0 auto !important;
+}
+
+.order-page .gookies-pick-card {
+  position: relative !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+
+  min-width: 0 !important;
+  min-height: 385px !important;
+  padding: 0 20px 20px !important;
+
+  overflow: hidden !important;
+
+  border: 1px solid rgba(23, 21, 21, 0.1) !important;
+  border-radius: 30px !important;
+
+  background: var(--white) !important;
+  color: var(--ink) !important;
+
+  text-align: center !important;
+  cursor: pointer !important;
+
+  box-shadow: 0 12px 28px rgba(55, 26, 12, 0.065) !important;
+
+  appearance: none !important;
+  -webkit-appearance: none !important;
+
+  transition:
+    transform var(--transition),
+    border-color var(--transition),
+    box-shadow var(--transition) !important;
+}
+
+.order-page .gookies-pick-card:hover {
+  transform: translateY(-4px) !important;
+  border-color: rgba(187, 25, 26, 0.32) !important;
+  box-shadow: 0 16px 34px rgba(55, 26, 12, 0.095) !important;
+}
+
+.order-page .gookies-pick-card:active {
+  transform: scale(0.985) !important;
+}
+
+.order-page .gookies-pick-card.is-selected {
+  border-color: var(--gookie-red) !important;
+  box-shadow: 0 18px 40px rgba(187, 25, 26, 0.15) !important;
+}
+
+.order-page .gookies-pick-image {
+  position: relative !important;
+
+  display: grid !important;
+  place-items: center !important;
+
+  width: 100% !important;
+  height: 210px !important;
+  aspect-ratio: auto !important;
+
+  margin: 0 auto -10px !important;
+  overflow: visible !important;
+
+  background: transparent !important;
+}
+
+.order-page .gookies-pick-image img {
+  display: block !important;
+
+  width: min(100%, 225px) !important;
+  height: 215px !important;
+
+  object-fit: contain !important;
+
+  filter: drop-shadow(0 18px 18px rgba(55, 26, 12, 0.12)) !important;
+}
+
+.order-page .gookies-pick-badge {
+  position: absolute !important;
+  top: 16px !important;
+  left: 0 !important;
+  z-index: 2 !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  min-height: 25px !important;
+  padding: 5px 10px !important;
+
+  border-radius: 999px !important;
+  background: var(--ink) !important;
+  color: var(--white) !important;
+
+  font-size: 0.56rem !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  letter-spacing: 0.08em !important;
+}
+
+.order-page .gookies-pick-copy {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+
+  width: 100% !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+}
+
+.order-page .gookies-pick-copy strong {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  min-height: 2.05em !important;
+  margin: 0 !important;
+  padding: 0 !important;
+
+  color: var(--ink) !important;
+
+  font-family: "League Spartan", sans-serif !important;
+  font-size: clamp(1.3rem, 1.8vw, 1.62rem) !important;
+  font-weight: 900 !important;
+  line-height: 0.92 !important;
+  letter-spacing: -0.025em !important;
+  text-align: center !important;
+}
+
+.order-page .gookies-pick-quantity {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  min-height: 30px !important;
+  margin-top: 10px !important;
+  padding: 7px 15px !important;
+
+  border: 1px solid rgba(187, 25, 26, 0.32) !important;
+  border-radius: 999px !important;
+
+  background: #fffaf4 !important;
+  color: var(--gookie-red) !important;
+
+  font-size: 0.68rem !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  letter-spacing: 0.075em !important;
+}
+
+.order-page .gookies-pick-price {
+  display: block !important;
+
+  margin-top: 8px !important;
+  padding: 0 !important;
+
+  color: var(--gookie-red) !important;
+
+  font-family: "DM Sans", sans-serif !important;
+  font-size: 1.35rem !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  letter-spacing: -0.025em !important;
+}
+
+.order-page .gookies-pick-action {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  width: min(100%, 210px) !important;
+  min-height: 44px !important;
+
+  margin: auto auto 0 !important;
+  padding: 12px 18px !important;
+
+  border: 1.5px solid rgba(187, 25, 26, 0.4) !important;
+  border-radius: 999px !important;
+
+  background: transparent !important;
+  color: var(--gookie-red) !important;
+
+  font-size: 0.72rem !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  letter-spacing: 0.07em !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+
+  box-sizing: border-box !important;
+
+  transition:
+    background-color 220ms ease,
+    border-color 220ms ease,
+    color 220ms ease,
+    box-shadow 220ms ease,
+    transform 220ms ease !important;
+}
+
+.order-page .gookies-pick-card:hover .gookies-pick-action {
+  border-color: var(--gookie-red) !important;
+  background: var(--gookie-red) !important;
+  color: var(--white) !important;
+
+  box-shadow: 0 10px 22px rgba(187, 25, 26, 0.18) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* Tablet */
+@media (max-width: 1050px) {
+  .order-page .gookies-picks-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    width: min(100%, 760px) !important;
+  }
+
+  .order-page .gookies-pick-card {
+    min-height: 375px !important;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .order-page .gookies-picks-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+    width: 100% !important;
+  }
+
+  .order-page .gookies-pick-card {
+    display: grid !important;
+    grid-template-columns: 118px minmax(0, 1fr) !important;
+    grid-template-areas:
+      "image copy"
+      "action action" !important;
+
+    column-gap: 14px !important;
+
+    min-height: 0 !important;
+    padding: 14px !important;
+
+    border-radius: 24px !important;
+    text-align: left !important;
+  }
+
+  .order-page .gookies-pick-image {
+    grid-area: image !important;
+
+    width: 118px !important;
+    height: 126px !important;
+
+    margin: 0 !important;
+  }
+
+  .order-page .gookies-pick-image img {
+    width: 118px !important;
+    height: 122px !important;
+  }
+
+  .order-page .gookies-pick-badge {
+    top: -4px !important;
+    left: -3px !important;
+
+    min-height: 22px !important;
+    padding: 4px 7px !important;
+
+    font-size: 0.48rem !important;
+  }
+
+  .order-page .gookies-pick-copy {
+    grid-area: copy !important;
+
+    align-items: flex-start !important;
+    justify-content: center !important;
+  }
+
+  .order-page .gookies-pick-copy strong {
+    justify-content: flex-start !important;
+
+    min-height: 0 !important;
+
+    font-size: 1.28rem !important;
+    line-height: 0.96 !important;
+    text-align: left !important;
+  }
+
+  .order-page .gookies-pick-quantity {
+    min-height: 27px !important;
+    margin-top: 9px !important;
+    padding: 6px 11px !important;
+
+    font-size: 0.6rem !important;
+  }
+
+  .order-page .gookies-pick-price {
+    margin-top: 8px !important;
+    font-size: 1.18rem !important;
+  }
+
+  .order-page .gookies-pick-action {
+    grid-area: action !important;
+
+    width: 100% !important;
+    max-width: none !important;
+    min-height: 43px !important;
+
+    margin: 8px 0 0 !important;
+  }
+}
