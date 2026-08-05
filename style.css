@@ -393,7 +393,7 @@ img {
 .hero-cookie-image {
   position: relative;
   z-index: 2;
-  width: min(96vw, 560px);
+  width: min(86vw, 560px);
   filter: drop-shadow(0 24px 18px rgba(73, 31, 12, 0.18));
 }
 
