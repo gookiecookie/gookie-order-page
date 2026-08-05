@@ -6935,4 +6935,8 @@ a.footer-contact-row:hover {
     transform: scale(0.75);
     transform-origin: center bottom;
   }
+
+   .hero-cookie-image{
+    width: clamp(420px, 33vw, 500px);
+  }
 }
