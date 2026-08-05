@@ -368,7 +368,7 @@ img {
 }
 
 .hero-section {
-  overflow: hidden;
+  overflow: visible;
   background: #ffffff;
 }
 
