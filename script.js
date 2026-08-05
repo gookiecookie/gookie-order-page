@@ -97,7 +97,7 @@ const gookiePicks = {
     description: "A friendly introduction to four different sides of Gookie.",
     quantity: 4,
     price: 36,
-    image: "first-timer-box.png",
+    image: "chunky-box.png",
     fallbackImage: "wonder-chip.png",
     cookies: [
       "wonder-chip",
@@ -114,7 +114,7 @@ const gookiePicks = {
     description: "Six Wonder Chips for anyone who knows exactly what they love.",
     quantity: 6,
     price: 52,
-    image: "the-classics-box.png",
+    image: "chunky-box.png",
     fallbackImage: "wonder-chip.png",
     cookies: Array(6).fill("wonder-chip"),
     revealFlavours: true,
@@ -127,7 +127,7 @@ const gookiePicks = {
       "Six mixed Gookies selected by Team Gookie. The flavours are part of the surprise.",
     quantity: 6,
     price: 52,
-    image: "surprise-box.png",
+    image: "chunky-box.png",
     fallbackImage: "monthly-wonder.png",
     cookies: [
       "red-bloom",
@@ -146,7 +146,7 @@ const gookiePicks = {
     description: "A full-sized tour through the colourful world of Gookie.",
     quantity: 12,
     price: 99,
-    image: "full-wonder-box.png",
+    image: "chunky-box.png",
     fallbackImage: "monthly-wonder.png",
     cookies: [
       "wonder-chip",
