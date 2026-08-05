@@ -6982,6 +6982,10 @@ a.footer-contact-row:hover {
 
   transition:.25s;
 }
-.gookies-pick-card:hover .gookies-pick-action{border-color:var(--gookie-red);background:var(--gookie-red);color:var(--white);box-shadow:0 10px 22px rgba(187,25,26,.18);transform:translateY(-2px)}
+.gookies-pick-card:hover .gookies-pick-action{
+  background:var(--gookie-red);
+  color:#fff;
+  border-color:var(--gookie-red);
+}
 @media(max-width:1050px){.gookies-picks-grid{grid-template-columns:repeat(2,minmax(0,1fr));width:min(100%,760px)}.gookies-pick-card{min-height:375px}}
 @media(max-width:600px){.gookies-picks-grid{grid-template-columns:1fr;gap:16px;width:100%}.gookies-pick-card{display:grid;grid-template-columns:118px minmax(0,1fr);grid-template-areas:"image copy" "action action";column-gap:14px;min-height:0;padding:14px;border-radius:24px;text-align:left}.gookies-pick-image{grid-area:image;width:118px;height:126px;margin:0}.gookies-pick-image img{width:118px;height:122px}.gookies-pick-badge{top:-4px;left:-3px;min-height:22px;padding:4px 7px;font-size:.48rem}.gookies-pick-copy{grid-area:copy;align-items:flex-start;justify-content:center}.gookies-pick-copy strong{justify-content:flex-start;min-height:0;font-size:1.28rem;line-height:.96;text-align:left}.gookies-pick-quantity{min-height:27px;margin-top:9px;padding:6px 11px;font-size:.6rem}.gookies-pick-price{margin-top:8px;font-size:1.18rem}.gookies-pick-action{grid-area:action;width:100%;max-width:none;min-height:43px;margin:12px 0 0}}
