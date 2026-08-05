@@ -6869,3 +6869,70 @@ a.footer-contact-row:hover {
     max-width: none;
   }
 }
+
+/* =========================================================
+   DESKTOP SCALE POLISH — HOMEPAGE HERO
+   Compact hero so the full content fits better on screen
+========================================================= */
+
+@media (min-width: 921px) {
+
+  .hero-section {
+    min-height: calc(86svh - var(--header-height-desktop));
+    padding-top: 34px;
+    padding-bottom: 26px;
+  }
+
+  .hero-inner {
+    width: min(1180px, calc(100% - 56px));
+    min-height: auto;
+  }
+
+  .hero-copy {
+    padding-top: 18px;
+    padding-bottom: 18px;
+  }
+
+  .hero-title {
+    font-size: clamp(4.6rem, 6.3vw, 7.2rem);
+    line-height: 0.84;
+  }
+
+  .hero-kicker {
+    margin-bottom: 10px;
+  }
+
+  .hero-subtitle {
+    margin-top: 18px;
+    font-size: 0.96rem;
+    line-height: 1.55;
+  }
+
+  .hero-highlights {
+    gap: 54px;
+    margin: 24px 0 28px;
+  }
+
+  .hero-highlight span {
+    font-size: 16px;
+  }
+
+  .hero-highlight strong {
+    font-size: 0.78rem;
+  }
+
+  .hero-actions {
+    gap: 14px;
+  }
+
+  .hero-button {
+    min-height: 52px;
+    padding: 14px 25px;
+    font-size: 0.78rem;
+  }
+
+  .hero-visual {
+    transform: scale(0.86);
+    transform-origin: center bottom;
+  }
+}
