@@ -7338,3 +7338,91 @@ a.footer-contact-row:hover {
     margin-top: 10px;
   }
 }
+
+
+/* =========================================================
+   GOOKIE'S PICKS — FINAL CARD POLISH
+   - Shorter cards
+   - Larger box image
+   - Tighter spacing
+   - Softer shadow
+   - CTA wording: WHAT'S INSIDE →
+========================================================= */
+
+.gookies-pick-card {
+  min-height: 385px;
+  padding: 0 20px 20px;
+  box-shadow: 0 12px 28px rgba(55, 26, 12, 0.065);
+}
+
+.gookies-pick-card:hover {
+  box-shadow: 0 16px 34px rgba(55, 26, 12, 0.095);
+}
+
+.gookies-pick-image {
+  height: 210px;
+  margin-bottom: -10px;
+}
+
+.gookies-pick-image img {
+  width: min(100%, 225px);
+  height: 215px;
+}
+
+.gookies-pick-copy strong {
+  min-height: 2.05em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(1.3rem, 1.8vw, 1.62rem);
+  line-height: 0.92;
+}
+
+.gookies-pick-quantity {
+  margin-top: 10px;
+}
+
+.gookies-pick-price {
+  margin-top: 8px;
+}
+
+.gookies-pick-action {
+  min-height: 44px;
+  margin-top: 18px;
+}
+
+@media (max-width: 1050px) {
+  .gookies-pick-card {
+    min-height: 375px;
+  }
+}
+
+@media (max-width: 600px) {
+  .gookies-pick-card {
+    min-height: 0;
+    padding: 14px;
+    box-shadow: 0 10px 24px rgba(55, 26, 12, 0.06);
+  }
+
+  .gookies-pick-image {
+    width: 118px;
+    height: 126px;
+  }
+
+  .gookies-pick-image img {
+    width: 118px;
+    height: 122px;
+  }
+
+  .gookies-pick-copy strong {
+    min-height: 0;
+    justify-content: flex-start;
+    font-size: 1.28rem;
+    line-height: 0.96;
+  }
+
+  .gookies-pick-action {
+    min-height: 43px;
+    margin-top: 8px;
+  }
+}
