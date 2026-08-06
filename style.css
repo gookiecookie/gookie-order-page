@@ -426,7 +426,7 @@ img {
   margin: 13px 0 24px;
   font-family: "League Spartan", sans-serif;
   font-size: clamp(3.3rem, 15vw, 7rem);
-  font-weight: 900;
+  font-weight: 700;
   line-height: 0.88;
   letter-spacing: -0.045em;
 }
