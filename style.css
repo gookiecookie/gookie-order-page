@@ -367,12 +367,23 @@ img {
   color: var(--ink);
 }
 
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 .hero-section {
-  background: #ffffff;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+   background: #ffffff;
 }
 
 .hero-cookie-area {
   position: relative;
+   overflow: hidden;
   display: grid;
   place-items: center;
   min-height: 330px;
