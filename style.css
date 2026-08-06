@@ -7266,3 +7266,41 @@ a.footer-contact-row:hover {
     margin: 12px 0 0;
   }
 }
+
+/* =========================================================
+   GOOKIE'S PICKS CTA — TRUE FINAL FIX
+========================================================= */
+
+.gookies-pick-card > .gookies-pick-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  min-height: 44px;
+
+  margin: 22px 0 0;
+  padding: 0 18px;
+
+  border: 1.5px solid rgba(187, 25, 26, 0.35);
+  border-radius: 999px;
+
+  background: transparent;
+  color: var(--gookie-red);
+
+  font-family: "League Spartan", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  text-align: center;
+  white-space: nowrap;
+
+  box-sizing: border-box;
+}
+
+.gookies-pick-card:hover > .gookies-pick-action {
+  background: var(--gookie-red);
+  border-color: var(--gookie-red);
+  color: var(--white);
+}
