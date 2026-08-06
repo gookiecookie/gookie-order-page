@@ -6944,48 +6944,325 @@ a.footer-contact-row:hover {
 /* =========================================================
    HOMEPAGE GOOKIE'S PICKS — PRODUCTION DESIGN SYNC
 ========================================================= */
-.gookies-picks-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;width:min(100%,1180px);margin:0 auto}
-.gookies-pick-card{position:relative;display:flex;flex-direction:column;align-items:center;min-width:0;min-height:385px;padding:0 20px 20px;overflow:hidden;border:1px solid rgba(23,21,21,.1);border-radius:30px;background:var(--white);color:var(--ink);text-align:center;cursor:pointer;box-shadow:0 12px 28px rgba(55,26,12,.065);appearance:none;-webkit-appearance:none;transition:transform var(--transition),border-color var(--transition),box-shadow var(--transition)}
-.gookies-pick-card:hover{transform:translateY(-4px);border-color:rgba(187,25,26,.32);box-shadow:0 16px 34px rgba(55,26,12,.095)}
-.gookies-pick-card:active{transform:scale(.985)}
-.gookies-pick-card.is-selected{border-color:var(--gookie-red);box-shadow:0 18px 40px rgba(187,25,26,.15)}
-.gookies-pick-image{position:relative;display:grid;place-items:center;width:100%;height:210px;aspect-ratio:auto;margin:0 auto -10px;overflow:visible;background:transparent}
-.gookies-pick-image img{display:block;width:min(100%,225px);height:215px;object-fit:contain;filter:drop-shadow(0 18px 18px rgba(55,26,12,.12))}
-.gookies-pick-badge{position:absolute;top:16px;left:0;z-index:2;display:inline-flex;align-items:center;justify-content:center;min-height:25px;padding:5px 10px;border-radius:999px;background:var(--ink);color:var(--white);font-size:.56rem;font-weight:800;line-height:1;letter-spacing:.08em}
-.gookies-pick-copy{display:flex;flex-direction:column;align-items:center;width:100%;min-width:0;padding:0}
-.gookies-pick-copy strong{display:flex;align-items:center;justify-content:center;min-height:2.05em;margin:0;padding:0;color:var(--ink);font-family:"League Spartan",sans-serif;font-size:clamp(1.3rem,1.8vw,1.62rem);font-weight:900;line-height:.92;letter-spacing:-.025em;text-align:center}
-.gookies-pick-quantity{display:inline-flex;align-items:center;justify-content:center;min-height:30px;margin-top:10px;padding:7px 15px;border:1px solid rgba(187,25,26,.32);border-radius:999px;background:#fffaf4;color:var(--gookie-red);font-size:.68rem;font-weight:700;line-height:1;letter-spacing:.075em}
-.gookies-pick-price{display:block;margin-top:8px;padding:0;color:var(--gookie-red);font-family:"DM Sans",sans-serif;font-size:1.35rem;font-weight:700;line-height:1;letter-spacing:-.025em}
-.gookies-pick-action{
-  display:flex;
-  align-items:center;
-  justify-content:center;
 
-  width:100%;
-  height:44px;
+.gookies-picks-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
 
-  margin-top:22px;
-  padding:0 18px;
-
-  border:1.5px solid rgba(187,25,26,.35);
-  border-radius:999px;
-
-  color:var(--gookie-red);
-  background:transparent;
-
-  font-size:.72rem;
-  font-weight:800;
-  letter-spacing:.06em;
-
-  text-align:center;
-  white-space:nowrap;
-
-  transition:.25s;
+  width: min(100%, 1180px);
+  margin: 0 auto;
 }
-.gookies-pick-card:hover .gookies-pick-action{
-  background:var(--gookie-red);
-  color:#fff;
-  border-color:var(--gookie-red);
+
+.gookies-pick-card {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  min-width: 0;
+  min-height: 385px;
+  padding: 0 20px 20px;
+
+  overflow: hidden;
+
+  border: 1px solid rgba(23, 21, 21, 0.1);
+  border-radius: 30px;
+
+  background: var(--white);
+  color: var(--ink);
+
+  text-align: center;
+  cursor: pointer;
+
+  box-shadow: 0 12px 28px rgba(55, 26, 12, 0.065);
+
+  appearance: none;
+  -webkit-appearance: none;
+
+  transition:
+    transform var(--transition),
+    border-color var(--transition),
+    box-shadow var(--transition);
 }
-@media(max-width:1050px){.gookies-picks-grid{grid-template-columns:repeat(2,minmax(0,1fr));width:min(100%,760px)}.gookies-pick-card{min-height:375px}}
-@media(max-width:600px){.gookies-picks-grid{grid-template-columns:1fr;gap:16px;width:100%}.gookies-pick-card{display:grid;grid-template-columns:118px minmax(0,1fr);grid-template-areas:"image copy" "action action";column-gap:14px;min-height:0;padding:14px;border-radius:24px;text-align:left}.gookies-pick-image{grid-area:image;width:118px;height:126px;margin:0}.gookies-pick-image img{width:118px;height:122px}.gookies-pick-badge{top:-4px;left:-3px;min-height:22px;padding:4px 7px;font-size:.48rem}.gookies-pick-copy{grid-area:copy;align-items:flex-start;justify-content:center}.gookies-pick-copy strong{justify-content:flex-start;min-height:0;font-size:1.28rem;line-height:.96;text-align:left}.gookies-pick-quantity{min-height:27px;margin-top:9px;padding:6px 11px;font-size:.6rem}.gookies-pick-price{margin-top:8px;font-size:1.18rem}.gookies-pick-action{grid-area:action;width:100%;max-width:none;min-height:43px;margin:12px 0 0}}
+
+.gookies-pick-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(187, 25, 26, 0.32);
+  box-shadow: 0 16px 34px rgba(55, 26, 12, 0.095);
+}
+
+.gookies-pick-card:active {
+  transform: scale(0.985);
+}
+
+.gookies-pick-card.is-selected {
+  border-color: var(--gookie-red);
+  box-shadow: 0 18px 40px rgba(187, 25, 26, 0.15);
+}
+
+/* ==================== IMAGE ==================== */
+
+.gookies-pick-image {
+  position: relative;
+
+  display: grid;
+  place-items: center;
+
+  width: 100%;
+  height: 210px;
+  margin: 0 auto -10px;
+
+  overflow: visible;
+  background: transparent;
+}
+
+.gookies-pick-image img {
+  display: block;
+
+  width: min(100%, 225px);
+  height: 215px;
+
+  object-fit: contain;
+
+  filter: drop-shadow(
+    0 18px 18px rgba(55, 26, 12, 0.12)
+  );
+}
+
+.gookies-pick-badge {
+  position: absolute;
+  top: 16px;
+  left: 0;
+  z-index: 2;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 25px;
+  padding: 5px 10px;
+
+  border-radius: 999px;
+
+  background: var(--ink);
+  color: var(--white);
+
+  font-size: 0.56rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.08em;
+}
+
+/* ==================== COPY ==================== */
+
+.gookies-pick-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 100%;
+  min-width: 0;
+}
+
+.gookies-pick-copy strong {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 2.05em;
+  margin: 0;
+
+  color: var(--ink);
+
+  font-family: "League Spartan", sans-serif;
+  font-size: clamp(1.3rem, 1.8vw, 1.62rem);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: -0.025em;
+  text-align: center;
+}
+
+.gookies-pick-quantity {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 30px;
+  margin-top: 10px;
+  padding: 7px 15px;
+
+  border: 1px solid rgba(187, 25, 26, 0.32);
+  border-radius: 999px;
+
+  background: #fffaf4;
+  color: var(--gookie-red);
+
+  font-size: 0.68rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.075em;
+}
+
+.gookies-pick-price {
+  display: block;
+
+  margin-top: 8px;
+
+  color: var(--gookie-red);
+
+  font-family: "DM Sans", sans-serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.025em;
+}
+
+/* ==================== CTA ==================== */
+
+.gookies-pick-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  min-height: 48px;
+
+  margin-top: 22px;
+  padding: 0 18px;
+
+  border: 1.5px solid rgba(187, 25, 26, 0.35);
+  border-radius: 999px;
+
+  background: transparent;
+  color: var(--gookie-red);
+
+  font-family: "League Spartan", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  text-align: center;
+  white-space: nowrap;
+
+  flex-shrink: 0;
+
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.gookies-pick-card:hover .gookies-pick-action {
+  background: var(--gookie-red);
+  border-color: var(--gookie-red);
+  color: var(--white);
+  transform: translateY(-2px);
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1050px) {
+  .gookies-picks-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: min(100%, 760px);
+  }
+
+  .gookies-pick-card {
+    min-height: 375px;
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+  .gookies-picks-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    width: 100%;
+  }
+
+  .gookies-pick-card {
+    display: grid;
+    grid-template-columns: 118px minmax(0, 1fr);
+    grid-template-areas:
+      "image copy"
+      "action action";
+
+    column-gap: 14px;
+
+    min-height: 0;
+    padding: 14px;
+
+    border-radius: 24px;
+    text-align: left;
+  }
+
+  .gookies-pick-image {
+    grid-area: image;
+
+    width: 118px;
+    height: 126px;
+    margin: 0;
+  }
+
+  .gookies-pick-image img {
+    width: 118px;
+    height: 122px;
+  }
+
+  .gookies-pick-badge {
+    top: -4px;
+    left: -3px;
+
+    min-height: 22px;
+    padding: 4px 7px;
+
+    font-size: 0.48rem;
+  }
+
+  .gookies-pick-copy {
+    grid-area: copy;
+
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .gookies-pick-copy strong {
+    justify-content: flex-start;
+
+    min-height: 0;
+
+    font-size: 1.28rem;
+    line-height: 0.96;
+    text-align: left;
+  }
+
+  .gookies-pick-quantity {
+    min-height: 27px;
+    margin-top: 9px;
+    padding: 6px 11px;
+
+    font-size: 0.6rem;
+  }
+
+  .gookies-pick-price {
+    margin-top: 8px;
+    font-size: 1.18rem;
+  }
+
+  .gookies-pick-action {
+    grid-area: action;
+
+    width: 100%;
+    min-height: 43px;
+
+    margin: 12px 0 0;
+  }
+}
