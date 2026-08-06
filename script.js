@@ -1014,7 +1014,14 @@ function createMarqueeCard(cookie, index) {
     </span>
   `;
 
- button.addEventListener("click"
+  button.addEventListener("click", (event) => {
+  event.preventDefault();
+
+  pauseMarquee();
+  openCookieDetails(cookie);
+
+  marqueeDragDistance = 0;
+});
 
   return button;
 }
@@ -1272,13 +1279,6 @@ function resumeMarquee(delay = 0) {
 
 /* DESKTOP MOUSE DRAG */
 
-/* =========================================================
-   MEET THE GOOKIES — DESKTOP CLICK + DRAG FIX
-========================================================= */
-
-let marqueePointerIsDown = false;
-let marqueePointerId = null;
-
 function beginMarqueeDrag(event) {
   if (
     event.pointerType !== "mouse" ||
@@ -1287,94 +1287,61 @@ function beginMarqueeDrag(event) {
     return;
   }
 
-  marqueePointerIsDown = true;
-  marqueeDragging = false;
+  marqueeDragging = true;
   marqueeDragDistance = 0;
-  marqueePointerId = event.pointerId;
 
   marqueePointerStartX = event.clientX;
   marqueePointerCurrentX = event.clientX;
   marqueeScrollStart = marqueeShell.scrollLeft;
+
+  marqueeShell.classList.add("is-dragging");
+  marqueeShell.setPointerCapture(event.pointerId);
+
+  pauseMarquee();
 }
 
+
 function moveMarqueeDrag(event) {
-  if (!marqueePointerIsDown) return;
+  if (!marqueeDragging) return;
+
+  marqueePointerCurrentX = event.clientX;
 
   const distance =
     event.clientX - marqueePointerStartX;
-
-  marqueePointerCurrentX = event.clientX;
 
   marqueeDragDistance = Math.max(
     marqueeDragDistance,
     Math.abs(distance)
   );
 
-  /*
-   * Only activate carousel dragging after the mouse
-   * has genuinely moved. A normal click remains a click.
-   */
-  if (
-    !marqueeDragging &&
-    marqueeDragDistance > 8
-  ) {
-    marqueeDragging = true;
-
-    marqueeShell.classList.add("is-dragging");
-    pauseMarquee();
-
-    if (
-      marqueePointerId !== null &&
-      !marqueeShell.hasPointerCapture(marqueePointerId)
-    ) {
-      marqueeShell.setPointerCapture(marqueePointerId);
-    }
-  }
-
-  if (!marqueeDragging) return;
-
-  event.preventDefault();
-
   marqueeShell.scrollLeft =
     marqueeScrollStart - distance;
 }
 
+
 function endMarqueeDrag(event) {
-  if (!marqueePointerIsDown) return;
+  if (!marqueeDragging) return;
 
-  const wasDragging = marqueeDragging;
-
-  marqueePointerIsDown = false;
   marqueeDragging = false;
 
   marqueeShell.classList.remove("is-dragging");
 
   if (
-    marqueePointerId !== null &&
-    marqueeShell.hasPointerCapture(marqueePointerId)
+    marqueeShell.hasPointerCapture(event.pointerId)
   ) {
     marqueeShell.releasePointerCapture(
-      marqueePointerId
+      event.pointerId
     );
   }
 
-  marqueePointerId = null;
+  updateMarqueeIndexFromScroll();
 
-  /*
-   * Only snap the carousel when customer actually dragged.
-   * A simple click is left untouched so the card can open
-   * its cookie-details popup.
-   */
-  if (wasDragging) {
-    updateMarqueeIndexFromScroll();
+  goToMarqueeSlide(
+    marqueeCurrentIndex,
+    false
+  );
 
-    goToMarqueeSlide(
-      marqueeCurrentIndex,
-      false
-    );
-
-    resumeMarquee(4200);
-  }
+  resumeMarquee(4200);
 }
 function openCookieDetails(c) {
   modalCookieImage.src = c.image;
