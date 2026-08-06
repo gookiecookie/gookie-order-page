@@ -3039,15 +3039,6 @@ button.cookie-slot {
   line-height: 1;
 }
 
-.gookies-pick-card > span:last-child {
-  display: block;
-  padding: 0 14px 15px;
-  color: var(--gookie-red);
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 0.03em;
-}
-
 @media (min-width: 700px) {
   .gookies-picks-grid {
     gap: 18px;
@@ -3060,11 +3051,6 @@ button.cookie-slot {
   .gookies-pick-card > strong {
     padding: 18px 18px 5px;
     font-size: 1.35rem;
-  }
-
-  .gookies-pick-card > span:last-child {
-    padding: 0 18px 18px;
-    font-size: 0.8rem;
   }
 }
 
