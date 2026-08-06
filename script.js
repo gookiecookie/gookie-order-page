@@ -920,6 +920,8 @@ let buildBoxSize = 0,
   marqueeLastTimestamp = 0,
   marqueePaused = false,
   marqueeDragging = false,
+  marqueePointerIsDown = false,
+  marqueePointerId = null,
   marqueePointerStartX = 0,
   marqueeScrollStart = 0,
   marqueeDragDistance = 0,
@@ -1015,13 +1017,21 @@ function createMarqueeCard(cookie, index) {
   `;
 
   button.addEventListener("click", (event) => {
-  event.preventDefault();
+    event.preventDefault();
 
-  pauseMarquee();
-  openCookieDetails(cookie);
+    /*
+     * A genuine click opens the cookie popup.
+     * A mouse drag must not accidentally open it.
+     */
+    if (marqueeDragDistance > 8) {
+      marqueeDragDistance = 0;
+      return;
+    }
 
-  marqueeDragDistance = 0;
-});
+    pauseMarquee();
+    openCookieDetails(cookie);
+    marqueeDragDistance = 0;
+  });
 
   return button;
 }
@@ -1287,22 +1297,23 @@ function beginMarqueeDrag(event) {
     return;
   }
 
-  marqueeDragging = true;
+  /*
+   * Do not start dragging immediately.
+   * This preserves normal desktop clicks on the cookie card.
+   */
+  marqueePointerIsDown = true;
+  marqueeDragging = false;
   marqueeDragDistance = 0;
+  marqueePointerId = event.pointerId;
 
   marqueePointerStartX = event.clientX;
   marqueePointerCurrentX = event.clientX;
   marqueeScrollStart = marqueeShell.scrollLeft;
-
-  marqueeShell.classList.add("is-dragging");
-  marqueeShell.setPointerCapture(event.pointerId);
-
-  pauseMarquee();
 }
 
 
 function moveMarqueeDrag(event) {
-  if (!marqueeDragging) return;
+  if (!marqueePointerIsDown) return;
 
   marqueePointerCurrentX = event.clientX;
 
@@ -1314,34 +1325,67 @@ function moveMarqueeDrag(event) {
     Math.abs(distance)
   );
 
+  /*
+   * Only become a drag after the mouse moves more than 8px.
+   * Until then, the browser is free to treat it as a normal click.
+   */
+  if (
+    !marqueeDragging &&
+    marqueeDragDistance > 8
+  ) {
+    marqueeDragging = true;
+    marqueeShell.classList.add("is-dragging");
+    pauseMarquee();
+
+    if (
+      marqueePointerId !== null &&
+      !marqueeShell.hasPointerCapture(marqueePointerId)
+    ) {
+      marqueeShell.setPointerCapture(marqueePointerId);
+    }
+  }
+
+  if (!marqueeDragging) return;
+
+  event.preventDefault();
+
   marqueeShell.scrollLeft =
     marqueeScrollStart - distance;
 }
 
 
-function endMarqueeDrag(event) {
-  if (!marqueeDragging) return;
+function endMarqueeDrag() {
+  if (!marqueePointerIsDown) return;
 
+  const wasDragging = marqueeDragging;
+
+  marqueePointerIsDown = false;
   marqueeDragging = false;
-
   marqueeShell.classList.remove("is-dragging");
 
   if (
-    marqueeShell.hasPointerCapture(event.pointerId)
+    marqueePointerId !== null &&
+    marqueeShell.hasPointerCapture(marqueePointerId)
   ) {
-    marqueeShell.releasePointerCapture(
-      event.pointerId
-    );
+    marqueeShell.releasePointerCapture(marqueePointerId);
   }
 
-  updateMarqueeIndexFromScroll();
+  marqueePointerId = null;
 
-  goToMarqueeSlide(
-    marqueeCurrentIndex,
-    false
-  );
+  /*
+   * Only snap and resume after an actual drag.
+   * A simple click continues to the card click handler.
+   */
+  if (wasDragging) {
+    updateMarqueeIndexFromScroll();
 
-  resumeMarquee(4200);
+    goToMarqueeSlide(
+      marqueeCurrentIndex,
+      false
+    );
+
+    resumeMarquee(4200);
+  }
 }
 function openCookieDetails(c) {
   modalCookieImage.src = c.image;
