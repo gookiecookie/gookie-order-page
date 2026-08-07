@@ -1433,7 +1433,7 @@ body {
 }
 
 .cookie-detail-modal {
-  padding: 22px;
+  padding: 14px;
 }
 
 .cookie-detail-modal .modal-close-button {
@@ -1444,7 +1444,7 @@ body {
   display: grid;
   place-items: center;
   min-height: 310px;
-  margin-top: 12px;
+  margin-top: 4px;
   border-radius: 26px;
   background: var(--cream);
 }
@@ -1457,12 +1457,12 @@ body {
 }
 
 .cookie-detail-content {
-  padding: 28px 4px 8px;
+  padding: 14px 4px 4px;
   text-align: center;
 }
 
 .modal-cookie-subtitle {
-  margin: 0 0 8px;
+  margin: 0 0 4px;
   color: var(--gookie-red);
   font-size: 0.72rem;
   font-weight: 800;
@@ -1470,7 +1470,7 @@ body {
 }
 
 .cookie-detail-content h2 {
-  margin: 0 0 14px;
+  margin: 0 0 8px;
   font-family: "League Spartan", sans-serif;
   font-size: clamp(2.8rem, 12vw, 5rem);
   line-height: 0.9;
@@ -1479,9 +1479,20 @@ body {
 
 .cookie-detail-content > p:not(.modal-cookie-subtitle) {
   max-width: 530px;
-  margin: 0 auto 26px;
+  margin: 0 auto 14px;
   color: var(--muted);
-  line-height: 1.65;
+  line-height: 1.5;
+}
+
+
+
+/* =========================================================
+   COOKIE DETAILS POPUP — COMPACT CTA
+========================================================= */
+
+.cookie-detail-content #getYourGookiesButton {
+  min-height: 50px;
+  padding-block: 12px;
 }
 
 .flavour-selector-modal {
@@ -1873,7 +1884,7 @@ body {
   }
 
   .cookie-detail-modal {
-    padding: 28px;
+    padding: 18px;
   }
 
   .flavour-selector-modal {

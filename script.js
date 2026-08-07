@@ -2657,9 +2657,7 @@ pageOverlay?.addEventListener("click", () => {
 });
 cookieModalClose?.addEventListener("click", () => closeCookieDetails(true));
 getYourGookiesButton?.addEventListener("click", () => {
-  closeCookieDetails(false);
-  scrollToSection($("choose-your-way"));
-  setTimeout(resumeMarquee, 800);
+  window.location.href = "order.html";
 });
 showBuildYourBox?.addEventListener("click", () => {
   showBuildYourBox.classList.add("is-active");
