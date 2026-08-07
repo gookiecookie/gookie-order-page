@@ -1485,8 +1485,14 @@ function updateBuildActionButton() {
       ? "EDIT MY GOOKIES"
       : "CHOOSE MY GOOKIES";
 
+  const isEditingCurrentBuildOrder =
+    currentOrder?.type === "Build Your Box" &&
+    Number(currentOrder.boxSize) === Number(buildBoxSize);
+
   saveFlavourSelection.textContent = isComplete
-    ? "✓ ADD TO CART"
+    ? isEditingCurrentBuildOrder
+      ? "✓ UPDATE CART"
+      : "✓ ADD TO CART"
     : "COMPLETE YOUR BOX";
 }
 
@@ -1624,7 +1630,21 @@ function openBuildFlavourSelector() {
   openModal(flavourModal);
 }
 function saveBuildOrder() {
-  if (buildSelection.length !== buildBoxSize) return;
+  const normalizedBoxSize = Number(buildBoxSize);
+  const validSelection = buildSelection.filter((cookieId) =>
+    Boolean(getCookieById(cookieId)),
+  );
+
+  if (
+    !normalizedBoxSize ||
+    validSelection.length !== normalizedBoxSize
+  ) {
+    updateFlavourSelector();
+    return;
+  }
+
+  buildBoxSize = normalizedBoxSize;
+  buildSelection = [...validSelection];
 
   currentOrder = {
     type: "Build Your Box",
@@ -1640,7 +1660,10 @@ function saveBuildOrder() {
   updateAccordionAction();
 
   closeModal(flavourModal);
-  openDrawer(cartDrawer, cartButton);
+
+  requestAnimationFrame(() => {
+    openDrawer(cartDrawer, cartButton);
+  });
 }
 
 function renderGookiePickIncluded(pick) {
@@ -1736,16 +1759,64 @@ function addSelectedGookiePickToCart() {
   openDrawer(cartDrawer, cartButton);
 }
 
+function restoreBuildStateFromCurrentOrder() {
+  if (!currentOrder || currentOrder.type !== "Build Your Box") {
+    return false;
+  }
+
+  const restoredSize = Number(currentOrder.boxSize);
+  const restoredCookies = Array.isArray(currentOrder.cookies)
+    ? currentOrder.cookies.filter((cookieId) => Boolean(getCookieById(cookieId)))
+    : [];
+
+  if (!restoredSize || restoredCookies.length > restoredSize) {
+    return false;
+  }
+
+  buildBoxSize = restoredSize;
+  buildBoxName =
+    currentOrder.boxName ||
+    (restoredSize === 4
+      ? "Treat Box"
+      : restoredSize === 6
+        ? "Chunky Box"
+        : "Cookie Feast");
+
+  buildSelection = [...restoredCookies];
+  flavourMeterPreviousCount = buildSelection.length;
+
+  buildSelectedBoxName.textContent = buildBoxName;
+  buildSelectedCount.textContent = String(buildSelection.length);
+  buildBoxCapacity.textContent = String(buildBoxSize);
+
+  document.querySelectorAll(".box-size-card").forEach((card) => {
+    card.classList.toggle(
+      "is-selected",
+      Number(card.dataset.boxSize) === buildBoxSize,
+    );
+  });
+
+  updateFlavourSelector();
+  renderMiniSlots(buildBoxSize);
+  updateAccordionAction();
+
+  return true;
+}
+
+
 function editCurrentOrder() {
   if (!currentOrder) return;
 
   closeDrawer(cartDrawer);
 
   if (currentOrder.type === "Build Your Box") {
+    restoreBuildStateFromCurrentOrder();
     showOrderSection(buildYourBoxSection, gookiesChoiceSection);
+
     setTimeout(() => {
       openBuildFlavourSelector();
     }, 380);
+
     return;
   }
 
@@ -2689,7 +2760,10 @@ openFlavourSelector?.addEventListener("click", () => {
   openBuildFlavourSelector();
 });
 flavourModalClose?.addEventListener("click", () => closeModal(flavourModal));
-saveFlavourSelection?.addEventListener("click", saveBuildOrder);
+saveFlavourSelection?.addEventListener("click", (event) => {
+  event.preventDefault();
+  saveBuildOrder();
+});
 
 checkoutButton?.addEventListener("click", openCheckout);
 checkoutModalClose?.addEventListener("click", () => closeModal(checkoutModal));
