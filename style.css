@@ -83,6 +83,81 @@ img {
   letter-spacing: 0.15em;
 }
 
+/* =========================================================
+   GOOKIE TOP MARQUEE
+========================================================= */
+
+.gookie-top-marquee{
+  position:relative;
+  z-index:51;
+
+  width:100%;
+  height:32px;
+
+  overflow:hidden;
+
+  background:var(--gookie-red);
+  color:#fff;
+
+  /* line separating marquee + header */
+  border-bottom:1px solid rgba(255,255,255,.28);
+}
+
+.gookie-top-marquee-track{
+  display:flex;
+  align-items:center;
+
+  width:max-content;
+  height:100%;
+
+  animation:gookieTopMarquee 26s linear infinite;
+
+  will-change:transform;
+}
+
+.gookie-top-marquee-track span{
+  position:relative;
+
+  flex:0 0 auto;
+
+  padding:0 30px;
+
+  font-family:"DM Sans",sans-serif;
+  font-size:.68rem;
+  font-weight:600;
+
+  line-height:1;
+
+  letter-spacing:.10em;
+  text-transform:uppercase;
+
+  white-space:nowrap;
+}
+
+.gookie-top-marquee-track span::after{
+  content:"•";
+
+  position:absolute;
+  right:-2px;
+  top:50%;
+
+  transform:translateY(-50%);
+
+  opacity:.65;
+}
+
+@keyframes gookieTopMarquee{
+
+  from{
+    transform:translateX(0);
+  }
+
+  to{
+    transform:translateX(-50%);
+  }
+
+}
+
 .site-header {
   position: sticky;
   top: 0;
@@ -2128,7 +2203,27 @@ button.cookie-slot {
     margin-top: 18px;
     font-size: 0.78rem;
   }
+   
+ /* MOBILE TOP MARQUEE */
+
+ .gookie-top-marquee{
+    height:30px;
+  }
+
+  .gookie-top-marquee-track{
+    animation-duration:22s;
+  }
+
+  .gookie-top-marquee-track span{
+    padding:0 22px;
+    font-size:.61rem;
+    letter-spacing:.08em;
+  }
 }
+
+/* =========================================================
+   SEE FULL MENU
+========================================================= */
 
 .meet-full-menu{
   margin-top:32px;
@@ -2155,6 +2250,7 @@ button.cookie-slot {
 .meet-full-menu a:hover{
   letter-spacing:.12em;
 }
+
 /* =========================================================
    CHECKOUT: CUSTOMER DETAILS & ORDER REVIEW
    ========================================================= */
