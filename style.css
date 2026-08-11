@@ -7059,7 +7059,7 @@ a.footer-contact-row:hover {
   }
 
   .hero-visual {
-    transform: translateX(55px) scale(0.75);
+    transform: translateX(75px) scale(0.75);
     transform-origin: center bottom;
   }
 
