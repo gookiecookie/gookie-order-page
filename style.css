@@ -627,136 +627,288 @@ body {
 }
 
 /* =========================================================
-   HOW GOOKIE WORKS — CLEAN DESKTOP
+   HOW GOOKIE WORKS — RESPONSIVE FINAL
 ========================================================= */
 
 .how-section{
-  padding: 0 20px 72px;
-  background: var(--white);
+  padding:0 20px 72px;
+  background:var(--white);
 }
 
 .how-banner{
-  display: grid;
-  grid-template-columns: 165px repeat(4, minmax(0, 1fr));
-  align-items: center;
-  gap: 22px;
+  display:grid;
+  grid-template-columns:
+    clamp(150px, 12vw, 180px)
+    repeat(4, minmax(0, 1fr));
 
-  width: min(1180px, 100%);
-  margin: 0 auto;
+  align-items:center;
 
-  padding: 34px 40px;
+  gap:clamp(14px, 1.4vw, 22px);
 
-  border: 1px solid rgba(187,25,26,.16);
-  border-radius: 28px;
+  width:min(1180px, 100%);
+  margin:0 auto;
 
-  background: #fff8ef;
-  box-shadow: none;
+  padding:
+    clamp(26px, 2vw, 34px)
+    clamp(24px, 2.5vw, 40px);
+
+  border:1px solid rgba(187,25,26,.16);
+  border-radius:28px;
+
+  background:#fff8ef;
+  box-shadow:none;
 }
 
 
-/* TITLE */
+/* =========================================================
+   TITLE
+========================================================= */
 
 .how-title{
-  padding-right: 6px;
+  padding-right:0;
 }
 
 .how-title h2{
-  margin: 0;
+  margin:0;
 
-  font-family: "League Spartan", sans-serif;
-  font-size: 2.25rem;
-  font-weight: 700;
-  line-height: .86;
-  letter-spacing: -.035em;
+  font-family:"League Spartan",sans-serif;
+
+  font-size:clamp(2rem, 2.4vw, 2.35rem);
+  font-weight:700;
+
+  line-height:.86;
+  letter-spacing:-.035em;
 }
 
 
-/* STEP */
+/* =========================================================
+   STEPS
+========================================================= */
 
 .how-step{
-  position: relative;
+  position:relative;
 
-  display: grid;
-  grid-template-columns: 64px minmax(0, 1fr);
-  align-items: center;
-  gap: 14px;
+  display:grid;
+  grid-template-columns:
+    clamp(54px, 4vw, 64px)
+    minmax(0,1fr);
 
-  min-width: 0;
+  align-items:center;
+
+  gap:clamp(10px, 1vw, 14px);
+
+  min-width:0;
 }
 
 
-/* ARROW BETWEEN STEPS */
+/* hide HTML arrows */
 
 .how-arrow{
-  display: none;
+  display:none;
 }
+
+
+/* create arrows automatically */
 
 .how-step:not(:last-child)::after{
-  content: "→";
+  content:"→";
 
-  position: absolute;
-  right: -21px;
-  top: 50%;
+  position:absolute;
 
-  color: rgba(187,25,26,.48);
+  right:calc(-1 * clamp(17px, 1.35vw, 22px));
+  top:50%;
 
-  font-size: 1.15rem;
-  font-weight: 400;
+  color:rgba(187,25,26,.48);
 
-  transform: translateY(-50%);
+  font-size:clamp(1rem, 1.1vw, 1.2rem);
+
+  transform:translateY(-50%);
 }
 
 
-/* ICON */
+/* =========================================================
+   ICONS
+========================================================= */
 
 .how-icon{
-  display: grid;
-  place-items: center;
+  display:grid;
+  place-items:center;
 
-  width: 64px;
-  height: 64px;
+  width:clamp(54px, 4vw, 64px);
+  height:clamp(54px, 4vw, 64px);
 
-  border-radius: 18px;
+  border-radius:clamp(15px, 1.2vw, 18px);
 
-  background: rgba(187,25,26,.08);
-  color: var(--gookie-red);
+  background:rgba(187,25,26,.08);
+  color:var(--gookie-red);
 
-  font-size: 1.7rem;
+  font-size:clamp(1.45rem, 1.6vw, 1.7rem);
 }
 
 .how-icon i{
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
 
-/* COPY */
+/* =========================================================
+   COPY
+========================================================= */
 
 .how-step strong{
-  display: block;
+  display:block;
 
-  margin-bottom: 5px;
+  margin-bottom:5px;
 
-  color: var(--ink);
+  color:var(--ink);
 
-  font-family: "League Spartan", sans-serif;
-  font-size: 1.18rem;
-  font-weight: 700;
-  line-height: 1;
+  font-family:"League Spartan",sans-serif;
 
-  white-space: nowrap;
+  font-size:clamp(1rem, 1.05vw, 1.18rem);
+  font-weight:700;
+
+  line-height:1.05;
+
+  white-space:nowrap;
 }
 
 .how-step p{
-  margin: 0;
+  margin:0;
 
-  color: var(--muted);
+  color:var(--muted);
 
-  font-family: "DM Sans", sans-serif;
-  font-size: .84rem;
-  font-weight: 400;
-  line-height: 1.42;
+  font-family:"DM Sans",sans-serif;
+
+  font-size:clamp(.75rem, .78vw, .84rem);
+  font-weight:400;
+
+  line-height:1.42;
+}
+
+/* =========================================================
+   HOW GOOKIE WORKS — TABLET
+========================================================= */
+
+@media (max-width:900px){
+
+  .how-section{
+    padding:0 18px 60px;
+  }
+
+  .how-banner{
+    grid-template-columns:1fr 1fr;
+
+    gap:26px 30px;
+
+    padding:30px;
+
+    border-radius:24px;
+  }
+
+  .how-title{
+    grid-column:1 / -1;
+  }
+
+  .how-title h2{
+    font-size:2rem;
+    line-height:.9;
+  }
+
+  .how-title h2 br{
+    display:none;
+  }
+
+  .how-step{
+    grid-template-columns:58px 1fr;
+    gap:14px;
+  }
+
+  .how-icon{
+    width:58px;
+    height:58px;
+    font-size:1.55rem;
+  }
+
+  .how-step strong{
+    font-size:1.08rem;
+  }
+
+  .how-step p{
+    font-size:.8rem;
+  }
+
+  .how-step::after{
+    display:none;
+  }
+}
+
+/* =========================================================
+   HOW GOOKIE WORKS — MOBILE
+========================================================= */
+
+@media (max-width:600px){
+
+  .how-section{
+    padding:0 16px 48px;
+  }
+
+  .how-banner{
+    display:block;
+
+    padding:26px 22px;
+
+    border-radius:22px;
+  }
+
+  .how-title{
+    margin-bottom:20px;
+  }
+
+  .how-title h2{
+    font-size:1.9rem;
+    line-height:.92;
+  }
+
+  .how-title h2 br{
+    display:none;
+  }
+
+  .how-step{
+    display:grid;
+    grid-template-columns:56px 1fr;
+    gap:14px;
+
+    padding:16px 0;
+  }
+
+  .how-step + .how-step{
+    border-top:1px solid rgba(23,21,21,.08);
+  }
+
+  .how-icon{
+    width:56px;
+    height:56px;
+
+    border-radius:16px;
+
+    font-size:1.5rem;
+  }
+
+  .how-step strong{
+    font-size:1.08rem;
+  }
+
+  .how-step p{
+    margin-top:4px;
+
+    font-size:.8rem;
+    line-height:1.45;
+  }
+
+  .how-step::after{
+    display:none;
+  }
 }
 
 .meet-section {
