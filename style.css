@@ -637,9 +637,9 @@ body {
 
 .how-banner{
   display: grid;
-  grid-template-columns: 190px repeat(4, minmax(0, 1fr));
+  grid-template-columns: 165px repeat(4, minmax(0, 1fr));
   align-items: center;
-  gap: 26px;
+  gap: 22px;
 
   width: min(1180px, 100%);
   margin: 0 auto;
@@ -692,7 +692,7 @@ body {
   position: relative;
 
   display: grid;
-  grid-template-columns: 58px minmax(0, 1fr);
+  grid-template-columns: 64px minmax(0, 1fr);
   align-items: center;
   gap: 14px;
 
@@ -728,15 +728,15 @@ body {
   display: grid;
   place-items: center;
 
-  width: 58px;
-  height: 58px;
+  width: 64px;
+  height: 64px;
 
-  border-radius: 16px;
+  border-radius: 18px;
 
   background: rgba(187,25,26,.08);
   color: var(--gookie-red);
 
-  font-size: 1.55rem;
+  font-size: 1.7rem;
 }
 
 .how-icon i{
@@ -756,7 +756,7 @@ body {
   color: var(--ink);
 
   font-family: "League Spartan", sans-serif;
-  font-size: 1.1rem;
+  font-size: 1.18rem;
   font-weight: 700;
   line-height: 1;
 
@@ -769,9 +769,9 @@ body {
   color: var(--muted);
 
   font-family: "DM Sans", sans-serif;
-  font-size: .80rem;
+  font-size: .84rem;
   font-weight: 400;
-  line-height: 1.45;
+  line-height: 1.42;
 }
 
 .meet-section {
