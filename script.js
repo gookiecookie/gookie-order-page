@@ -3076,3 +3076,94 @@ startMarqueeAnimation();
 renderCookieSlots(buildCookieSlots, 0, []);
 updateBuildBoxProgress();
 updateCart();
+
+/* =========================================================
+   HERO — IMAGE + HEADLINE CAROUSEL
+========================================================= */
+
+const heroSlides = Array.from(
+  document.querySelectorAll(".hero-carousel-slide")
+);
+
+const heroDots = Array.from(
+  document.querySelectorAll(".hero-carousel-dot")
+);
+
+let heroSlideIndex = 0;
+let heroSlideTimer = null;
+
+const HERO_SLIDE_DELAY = 5500;
+
+
+function showHeroSlide(index){
+
+  if (!heroSlides.length) return;
+
+  heroSlideIndex =
+    (index + heroSlides.length) %
+    heroSlides.length;
+
+  heroSlides.forEach((slide, i) => {
+
+    slide.classList.toggle(
+      "is-active",
+      i === heroSlideIndex
+    );
+
+  });
+
+
+  heroDots.forEach((dot, i) => {
+
+    dot.classList.toggle(
+      "is-active",
+      i === heroSlideIndex
+    );
+
+  });
+
+}
+
+
+function nextHeroSlide(){
+
+  showHeroSlide(
+    heroSlideIndex + 1
+  );
+
+}
+
+
+function startHeroCarousel(){
+
+  if (heroSlides.length < 2) return;
+
+  clearInterval(heroSlideTimer);
+
+  heroSlideTimer =
+    setInterval(
+      nextHeroSlide,
+      HERO_SLIDE_DELAY
+    );
+
+}
+
+
+heroDots.forEach((dot, index) => {
+
+  dot.addEventListener(
+    "click",
+    () => {
+
+      showHeroSlide(index);
+
+      startHeroCarousel();
+
+    }
+  );
+
+});
+
+
+showHeroSlide(0);
+startHeroCarousel();
