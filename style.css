@@ -866,9 +866,12 @@ body {
   }
 
   .how-title h2{
-    font-size:1.9rem;
-    line-height:.92;
-  }
+  font-size:1.75rem;
+  line-height:1;
+  letter-spacing:-0.02em;
+  word-spacing:0.08em;
+  white-space:nowrap;
+}
 
   .how-title h2 br{
     display:none;
