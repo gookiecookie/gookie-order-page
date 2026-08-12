@@ -3099,28 +3099,50 @@ function showHeroSlide(index){
 
   if (!heroSlides.length) return;
 
+  const oldIndex = heroSlideIndex;
+
   heroSlideIndex =
     (index + heroSlides.length) %
     heroSlides.length;
 
-  heroSlides.forEach((slide, i) => {
-
-    slide.classList.toggle(
+  heroSlides.forEach((slide) => {
+    slide.classList.remove(
       "is-active",
-      i === heroSlideIndex
+      "is-leaving"
     );
-
   });
+
+  if (
+    oldIndex !== heroSlideIndex &&
+    heroSlides[oldIndex]
+  ) {
+    heroSlides[oldIndex].classList.add(
+      "is-leaving"
+    );
+  }
+
+  heroSlides[heroSlideIndex].classList.add(
+    "is-active"
+  );
 
 
   heroDots.forEach((dot, i) => {
-
     dot.classList.toggle(
       "is-active",
       i === heroSlideIndex
     );
-
   });
+
+
+  setTimeout(() => {
+    heroSlides.forEach((slide, i) => {
+      if (i !== heroSlideIndex) {
+        slide.classList.remove(
+          "is-leaving"
+        );
+      }
+    });
+  }, 700);
 
 }
 
