@@ -7500,7 +7500,7 @@ a.footer-contact-row:hover {
 .hero-carousel-stage{
   position:relative;
 
-  min-height:540px;
+  min-height:590px;
 }
 
 
@@ -7578,7 +7578,7 @@ a.footer-contact-row:hover {
   display:flex;
   flex-direction:column;
   justify-content:center;
-
+transform:translateY(-38px);
   padding:18px 0;
 }
 
@@ -7621,8 +7621,9 @@ a.footer-contact-row:hover {
 
 .hero-fixed{
   position:absolute;
+
   right:0;
-  bottom:48px;
+  bottom:18px;
 
   width:50%;
 
@@ -7722,7 +7723,7 @@ a.footer-contact-row:hover {
 
   .hero-slide-copy{
     padding:18px 22px 0;
-
+   transform:none;
     text-align:center;
   }
 
