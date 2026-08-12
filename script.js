@@ -3073,8 +3073,16 @@ syncFooterAccordionLayout();
 
 renderMarquee();
 startMarqueeAnimation();
-renderCookieSlots(buildCookieSlots, 0, []);
-updateBuildBoxProgress();
+
+/* Old homepage order builder has been removed */
+if (buildCookieSlots) {
+  renderCookieSlots(buildCookieSlots, 0, []);
+}
+
+if (buildBoxProgress && buildBoxProgressFill && buildBoxProgressText) {
+  updateBuildBoxProgress();
+}
+
 updateCart();
 
 /* =========================================================
