@@ -7943,3 +7943,246 @@ transform:translateY(-38px);
   }
 
 }
+
+/* =========================================================
+   WHAT'S GOOKIN'?
+========================================================= */
+
+.whats-gookin-section{
+  padding:80px 20px 88px;
+  background:#fff;
+}
+
+.whats-gookin-shell{
+  width:min(1180px,100%);
+  margin:0 auto;
+}
+
+.whats-gookin-header{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:24px;
+
+  margin-bottom:30px;
+}
+
+.whats-gookin-kicker{
+  margin:0 0 8px;
+
+  color:var(--gookie-red);
+
+  font-family:"DM Sans",sans-serif;
+  font-size:.7rem;
+  font-weight:700;
+
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+
+.whats-gookin-header h2{
+  margin:0;
+
+  font-family:"League Spartan",sans-serif;
+  font-size:clamp(2.5rem,4vw,4rem);
+  font-weight:700;
+
+  line-height:.95;
+  letter-spacing:-.035em;
+}
+
+.whats-gookin-shop-all{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+
+  padding:10px 16px;
+
+  border:1px solid rgba(187,25,26,.18);
+  border-radius:999px;
+
+  color:var(--gookie-red);
+  background:#fff;
+
+  font-size:.72rem;
+  font-weight:700;
+  letter-spacing:.05em;
+}
+
+.whats-gookin-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:18px;
+}
+
+.whats-gookin-card{
+  overflow:hidden;
+
+  border:1px solid rgba(23,21,21,.08);
+  border-radius:22px;
+
+  background:#fff;
+
+  transition:
+    transform .25s ease,
+    border-color .25s ease;
+}
+
+.whats-gookin-card:hover{
+  transform:translateY(-4px);
+  border-color:rgba(187,25,26,.2);
+}
+
+.whats-gookin-image{
+  position:relative;
+
+  display:grid;
+  place-items:center;
+
+  aspect-ratio:1/1;
+
+  overflow:hidden;
+
+  background:#fff8ef;
+}
+
+.whats-gookin-image img{
+  width:86%;
+  height:86%;
+
+  object-fit:contain;
+
+  transition:transform .25s ease;
+}
+
+.whats-gookin-card:hover .whats-gookin-image img{
+  transform:scale(1.03);
+}
+
+.whats-gookin-badge{
+  position:absolute;
+  top:14px;
+  left:14px;
+
+  padding:6px 9px;
+
+  border-radius:999px;
+
+  background:var(--gookie-red);
+  color:#fff;
+
+  font-size:.57rem;
+  font-weight:700;
+  letter-spacing:.07em;
+}
+
+.whats-gookin-copy{
+  padding:18px 18px 20px;
+}
+
+.whats-gookin-copy h3{
+  margin:0 0 6px;
+
+  font-family:"League Spartan",sans-serif;
+  font-size:1.3rem;
+  font-weight:700;
+
+  letter-spacing:-.02em;
+}
+
+.whats-gookin-copy p{
+  margin:0 0 14px;
+
+  color:var(--muted);
+
+  font-size:.82rem;
+  line-height:1.5;
+}
+
+.whats-gookin-link{
+  color:var(--gookie-red);
+
+  font-size:.74rem;
+  font-weight:700;
+}
+
+
+/* =========================================================
+   WHAT'S GOOKIN' — TABLET
+========================================================= */
+
+@media (max-width:900px){
+
+  .whats-gookin-section{
+    padding:68px 18px 74px;
+  }
+
+  .whats-gookin-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+}
+
+
+/* =========================================================
+   WHAT'S GOOKIN' — MOBILE
+========================================================= */
+
+@media (max-width:600px){
+
+  .whats-gookin-section{
+    padding:56px 16px 62px;
+  }
+
+  .whats-gookin-header{
+    align-items:flex-start;
+    gap:12px;
+
+    margin-bottom:22px;
+  }
+
+  .whats-gookin-header h2{
+    font-size:2.35rem;
+  }
+
+  .whats-gookin-shop-all{
+    padding:8px 11px;
+    font-size:.63rem;
+    white-space:nowrap;
+  }
+
+  .whats-gookin-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:12px;
+  }
+
+  .whats-gookin-card{
+    border-radius:18px;
+  }
+
+  .whats-gookin-badge{
+    top:9px;
+    left:9px;
+
+    padding:5px 7px;
+
+    font-size:.49rem;
+  }
+
+  .whats-gookin-copy{
+    padding:13px;
+  }
+
+  .whats-gookin-copy h3{
+    font-size:1.05rem;
+  }
+
+  .whats-gookin-copy p{
+    font-size:.7rem;
+  }
+
+  .whats-gookin-link{
+    font-size:.66rem;
+  }
+
+}
