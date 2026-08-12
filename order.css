@@ -8618,3 +8618,8 @@ margin-bottom: 0;
     font-size:1rem;
   }
 }
+
+/* BIG BOX — hide the 4/8 size selector in fixed 12-cookie mode */
+.order-page .single-flavour-size-row[hidden]{
+  display:none !important;
+}
