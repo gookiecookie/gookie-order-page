@@ -168,8 +168,8 @@ const gookiePicks = {
 
 const GOOKIE_PRICING = Object.freeze({
   4: 39,
-  6: 56,
-  12: 108,
+  8: 74,
+  12: 108, // Big Box: keep current value until final Big Box price is locked.
 });
 const GOOKIE_WHATSAPP_NUMBER = "60102810487";
 const GOOKIE_DELIVERY_FEE = 0; // Update here when courier pricing is final.
@@ -1550,29 +1550,61 @@ function renderFlavourMeter() {
 }
 
 function updateFlavourSelector() {
-  flavourSelectedCount.textContent = String(buildSelection.length);
-  flavourBoxCapacity.textContent = String(buildBoxSize);
-  saveFlavourSelection.disabled = buildSelection.length !== buildBoxSize;
+  if (flavourSelectedCount) {
+    flavourSelectedCount.textContent = String(buildSelection.length);
+  }
+
+  if (flavourBoxCapacity) {
+    flavourBoxCapacity.textContent = String(buildBoxSize);
+  }
+
+  if (saveFlavourSelection) {
+    saveFlavourSelection.disabled =
+      buildSelection.length !== buildBoxSize;
+  }
+
   renderFlavourMeter();
   renderFlavourList();
-  renderCookieSlots(
-    buildCookieSlots,
-    buildBoxSize,
-    buildSelection,
-    removeBuildCookieAtIndex,
-  );
-  buildSelectedCount.textContent = String(buildSelection.length);
-  updateBuildBoxProgress();
-  updateBuildActionButton();
+
+  if (buildCookieSlots) {
+    renderCookieSlots(
+      buildCookieSlots,
+      buildBoxSize,
+      buildSelection,
+      removeBuildCookieAtIndex,
+    );
+  }
+
+  if (buildSelectedCount) {
+    buildSelectedCount.textContent =
+      String(buildSelection.length);
+  }
+
+  if (
+    buildBoxProgress &&
+    buildBoxProgressFill &&
+    buildBoxProgressText
+  ) {
+    updateBuildBoxProgress();
+  }
+
+  if (openFlavourSelector) {
+    updateBuildActionButton();
+  }
+
   renderMiniSlots(buildBoxSize);
   updateAccordionAction();
 
-  const r = buildBoxSize - buildSelection.length;
-  buildBoxHelper.textContent =
-    r === 0
-      ? "Your Gookie box is ready! 🎉"
-      : `Pick ${r} more ${r === 1 ? "cookie" : "cookies"} to complete your ${buildBoxName}.`;
+  if (buildBoxHelper) {
+    const r = buildBoxSize - buildSelection.length;
+
+    buildBoxHelper.textContent =
+      r === 0
+        ? "Your Gookie box is ready! 🎉"
+        : `Pick ${r} more ${r === 1 ? "cookie" : "cookies"} to complete your ${buildBoxName}.`;
+  }
 }
+
 function openBuildFlavourSelector() {
   flavourModalTitle.textContent = buildBoxName;
   flavourMeterPreviousCount = buildSelection.length;
@@ -1592,6 +1624,7 @@ function saveBuildOrder() {
   currentOrderId = null;
 
   updateCart();
+
   renderMiniSlots(buildBoxSize);
   updateAccordionAction();
 
@@ -2876,6 +2909,382 @@ window.addEventListener("resize", () => {
 });
 
 
+
+/* =========================================================
+   GET YOUR GOOKIES V2 — SHOP CATEGORIES
+========================================================= */
+
+const shopCategoryTabs = Array.from(
+  document.querySelectorAll("[data-shop-tab]")
+);
+
+const shopCategoryPanels = Array.from(
+  document.querySelectorAll("[data-shop-panel]")
+);
+
+function showShopCategory(category) {
+  shopCategoryTabs.forEach((tab) => {
+    const isActive = tab.dataset.shopTab === category;
+
+    tab.classList.toggle("is-active", isActive);
+    tab.setAttribute(
+      "aria-selected",
+      isActive ? "true" : "false"
+    );
+  });
+
+  shopCategoryPanels.forEach((panel) => {
+    const isActive =
+      panel.dataset.shopPanel === category;
+
+    panel.classList.toggle("is-active", isActive);
+    panel.hidden = !isActive;
+  });
+}
+
+shopCategoryTabs.forEach((tab) => {
+  tab.addEventListener("click", () => {
+    showShopCategory(tab.dataset.shopTab);
+  });
+});
+
+document
+  .querySelectorAll("[data-open-shop-tab]")
+  .forEach((button) => {
+    button.addEventListener("click", () => {
+      const category = button.dataset.openShopTab;
+
+      showShopCategory(category);
+
+      document
+        .querySelector(".shop-category-tabs")
+        ?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+    });
+  });
+
+
+/* =========================================================
+   BUILD YOUR OWN — BOX OF 4 / BOX OF 8
+========================================================= */
+
+document
+  .querySelectorAll("[data-new-build-size]")
+  .forEach((button) => {
+    button.addEventListener("click", () => {
+      const size =
+        Number(button.dataset.newBuildSize);
+
+      if (![4, 8].includes(size)) return;
+
+      buildBoxSize = size;
+      buildBoxName = `Build Your Own · Box of ${size}`;
+      buildSelection = [];
+
+      openBuildFlavourSelector();
+    });
+  });
+
+
+/* =========================================================
+   SINGLE FLAVOUR BOXES
+========================================================= */
+
+const singleFlavourShopModal =
+  $("singleFlavourShopModal");
+
+const singleFlavourShopClose =
+  $("singleFlavourShopClose");
+
+const confirmSingleFlavourShop =
+  $("confirmSingleFlavourShop");
+
+const singleFlavourSizeRow =
+  document.querySelector(".single-flavour-size-row");
+
+const singleFlavourSizeButtons = Array.from(
+  document.querySelectorAll("[data-single-size]")
+);
+
+const singleFlavourButtons = Array.from(
+  document.querySelectorAll("[data-single-cookie]")
+);
+
+let singleFlavourSize = 4;
+let singleFlavourCookieId = "";
+let singleFlavourIsBigBox = false;
+
+
+function resetSingleFlavourChoice() {
+  singleFlavourCookieId = "";
+
+  singleFlavourButtons.forEach((button) => {
+    button.classList.remove("is-selected");
+  });
+
+  if (confirmSingleFlavourShop) {
+    confirmSingleFlavourShop.disabled = true;
+    confirmSingleFlavourShop.textContent =
+      "CHOOSE A FLAVOUR";
+  }
+}
+
+
+function setSingleFlavourSize(size) {
+  singleFlavourSize = size;
+
+  singleFlavourSizeButtons.forEach((button) => {
+    button.classList.toggle(
+      "is-active",
+      Number(button.dataset.singleSize) === size
+    );
+  });
+}
+
+
+function openSingleFlavourShop({
+  size = 4,
+  bigBox = false,
+} = {}) {
+  if (!singleFlavourShopModal) return;
+
+  singleFlavourIsBigBox = bigBox;
+  resetSingleFlavourChoice();
+  setSingleFlavourSize(size);
+
+  if (singleFlavourSizeRow) {
+    singleFlavourSizeRow.hidden = bigBox;
+  }
+
+  const title =
+    singleFlavourShopModal.querySelector(
+      ".modal-sticky-header h2"
+    );
+
+  const eyebrow =
+    singleFlavourShopModal.querySelector(
+      ".drawer-eyebrow"
+    );
+
+  if (bigBox) {
+    if (eyebrow) eyebrow.textContent = "GOOKIE BIG BOX";
+    if (title) title.textContent = "Choose one flavour.";
+  } else {
+    if (eyebrow) eyebrow.textContent = "SINGLE FLAVOUR BOX";
+    if (title) title.textContent = "Pick your favourite.";
+  }
+
+  openModal(singleFlavourShopModal);
+}
+
+
+document
+  .querySelectorAll(
+    "#openSingleFlavourShop, [data-single-flavour-trigger]"
+  )
+  .forEach((button) => {
+    button.addEventListener("click", () => {
+      openSingleFlavourShop({
+        size: 4,
+        bigBox: false,
+      });
+    });
+  });
+
+
+document
+  .querySelectorAll('[data-shop-action="big-box"]')
+  .forEach((button) => {
+    button.addEventListener("click", () => {
+      openSingleFlavourShop({
+        size: 12,
+        bigBox: true,
+      });
+    });
+  });
+
+
+singleFlavourSizeButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const size =
+      Number(button.dataset.singleSize);
+
+    if (![4, 8].includes(size)) return;
+
+    setSingleFlavourSize(size);
+  });
+});
+
+
+singleFlavourButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    singleFlavourCookieId =
+      button.dataset.singleCookie;
+
+    singleFlavourButtons.forEach((item) => {
+      item.classList.toggle(
+        "is-selected",
+        item === button
+      );
+    });
+
+    const cookie =
+      getCookieById(singleFlavourCookieId);
+
+    if (
+      confirmSingleFlavourShop &&
+      cookie
+    ) {
+      confirmSingleFlavourShop.disabled = false;
+      confirmSingleFlavourShop.textContent =
+        `ADD ${cookie.name.toUpperCase()} →`;
+    }
+  });
+});
+
+
+singleFlavourShopClose?.addEventListener(
+  "click",
+  () => {
+    closeModal(singleFlavourShopModal);
+  }
+);
+
+
+confirmSingleFlavourShop?.addEventListener(
+  "click",
+  () => {
+    if (!singleFlavourCookieId) return;
+
+    const cookie =
+      getCookieById(singleFlavourCookieId);
+
+    if (!cookie) return;
+
+    const size = singleFlavourIsBigBox
+      ? 12
+      : singleFlavourSize;
+
+    currentOrder = {
+      type: singleFlavourIsBigBox
+        ? "Gookie Big Box"
+        : "Single Flavour Box",
+
+      boxName: singleFlavourIsBigBox
+        ? "Gookie Big Box"
+        : `Single Flavour · Box of ${size}`,
+
+      boxSize: size,
+
+      price:
+        GOOKIE_PRICING[size] || 0,
+
+      cookies:
+        Array(size).fill(singleFlavourCookieId),
+    };
+
+    currentOrderId = null;
+
+    updateCart();
+    closeModal(singleFlavourShopModal);
+    openDrawer(cartDrawer, cartButton);
+  }
+);
+
+
+/* =========================================================
+   READY-MADE ASSORTED BOXES
+   The Whole Crew is fully defined from the 8 core flavours.
+   Best-Seller composition remains intentionally separate
+   until its exact 4-flavour recipe is locked.
+========================================================= */
+
+const WHOLE_CREW_COOKIE_IDS = [
+  "wonder-chip",
+  "dark-crush",
+  "red-bloom",
+  "coffee-kiss",
+  "matcha-matchy",
+  "dream-cream",
+  "mallow-melt",
+  "biscoff-boom",
+];
+
+
+document
+  .querySelectorAll('[data-shop-action="whole-crew"]')
+  .forEach((button) => {
+    button.addEventListener("click", () => {
+      currentOrder = {
+        type: "Assorted Box",
+        boxName: "The Whole Crew",
+        collectionName: "The Whole Crew",
+        boxSize: 8,
+        price: GOOKIE_PRICING[8],
+        cookies: [...WHOLE_CREW_COOKIE_IDS],
+      };
+
+      currentOrderId = null;
+
+      updateCart();
+      openDrawer(cartDrawer, cartButton);
+    });
+  });
+
+
+/*
+ * Best-Seller Box:
+ * Do not silently invent the final four-flavour composition.
+ * For now the button moves the user to Build Your Own.
+ */
+document
+  .querySelectorAll('[data-shop-action="best-seller"]')
+  .forEach((button) => {
+    button.addEventListener("click", () => {
+      showShopCategory("build");
+
+      document
+        .querySelector(".shop-category-tabs")
+        ?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+    });
+  });
+
+
+/* =========================================================
+   ADD-ONS — UI STATE ONLY FOR NOW
+   Checkout data model will be extended in the next wiring pass.
+========================================================= */
+
+document
+  .querySelectorAll("[data-addon]")
+  .forEach((button) => {
+    button.addEventListener("click", () => {
+      const added =
+        button.classList.toggle("is-added");
+
+      const label =
+        button.dataset.addon === "party-kit"
+          ? "PARTY KIT"
+          : "WISHCARD";
+
+      button.textContent =
+        added
+          ? `✓ ${label} SELECTED`
+          : `ADD ${label} →`;
+    });
+  });
+
+
+if (shopCategoryTabs.length) {
+  showShopCategory("all");
+}
+
+
 /* =========================================================
    GOOKIE FOOTER — MOBILE ACCORDION V3
    Reuses the existing desktop footer buttons and modal content.
@@ -2955,8 +3364,21 @@ if (typeof footerAccordionMedia.addEventListener === "function") {
 
 syncFooterAccordionLayout();
 
-renderMarquee();
-startMarqueeAnimation();
-renderCookieSlots(buildCookieSlots, 0, []);
-updateBuildBoxProgress();
+if (marqueeTrack && marqueeShell) {
+  renderMarquee();
+  startMarqueeAnimation();
+}
+
+if (buildCookieSlots) {
+  renderCookieSlots(buildCookieSlots, 0, []);
+}
+
+if (
+  buildBoxProgress &&
+  buildBoxProgressFill &&
+  buildBoxProgressText
+) {
+  updateBuildBoxProgress();
+}
+
 updateCart();
