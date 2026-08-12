@@ -715,7 +715,7 @@ body {
 
   position:absolute;
 
-  right:calc(-1 * clamp(20px, 1.65vw, 27px));
+  right:calc(-1 * clamp(10px, 1.65vw, 27px));
   top:50%;
 
   color:rgba(187,25,26,.48);
