@@ -3014,11 +3014,13 @@ const singleFlavourButtons = Array.from(
 
 let singleFlavourSize = 4;
 let singleFlavourCookieId = "";
+let singleFlavourCookieIds = [];
 let singleFlavourIsBigBox = false;
 
 
 function resetSingleFlavourChoice() {
   singleFlavourCookieId = "";
+  singleFlavourCookieIds = [];
 
   singleFlavourButtons.forEach((button) => {
     button.classList.remove("is-selected");
@@ -3027,7 +3029,9 @@ function resetSingleFlavourChoice() {
   if (confirmSingleFlavourShop) {
     confirmSingleFlavourShop.disabled = true;
     confirmSingleFlavourShop.textContent =
-      "CHOOSE A FLAVOUR";
+      singleFlavourIsBigBox
+        ? "CHOOSE UP TO 2 FLAVOURS"
+        : "CHOOSE A FLAVOUR";
   }
 }
 
@@ -3069,8 +3073,8 @@ function openSingleFlavourShop({
     );
 
   if (bigBox) {
-    if (eyebrow) eyebrow.textContent = "GOOKIE BIG BOX";
-    if (title) title.textContent = "Choose one flavour.";
+    if (eyebrow) eyebrow.textContent = "GOOKIE BIG BOX · 12 COOKIES";
+    if (title) title.textContent = "Pick up to 2 flavours.";
   } else {
     if (eyebrow) eyebrow.textContent = "SINGLE FLAVOUR BOX";
     if (title) title.textContent = "Pick your favourite.";
@@ -3120,23 +3124,48 @@ singleFlavourSizeButtons.forEach((button) => {
 
 singleFlavourButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    singleFlavourCookieId =
-      button.dataset.singleCookie;
+    const cookieId = button.dataset.singleCookie;
+    if (!cookieId) return;
+
+    /* BIG BOX: 12 cookies, maximum 2 flavours */
+    if (singleFlavourIsBigBox) {
+      const index = singleFlavourCookieIds.indexOf(cookieId);
+
+      if (index >= 0) {
+        singleFlavourCookieIds.splice(index, 1);
+        button.classList.remove("is-selected");
+      } else {
+        if (singleFlavourCookieIds.length >= 2) return;
+
+        singleFlavourCookieIds.push(cookieId);
+        button.classList.add("is-selected");
+      }
+
+      if (confirmSingleFlavourShop) {
+        confirmSingleFlavourShop.disabled =
+          singleFlavourCookieIds.length === 0;
+
+        confirmSingleFlavourShop.textContent =
+          singleFlavourCookieIds.length === 0
+            ? "CHOOSE UP TO 2 FLAVOURS"
+            : singleFlavourCookieIds.length === 1
+              ? "ADD BIG BOX · 1 FLAVOUR →"
+              : "ADD BIG BOX · 2 FLAVOURS →";
+      }
+
+      return;
+    }
+
+    /* Standard Single Flavour Box: exactly one flavour */
+    singleFlavourCookieId = cookieId;
 
     singleFlavourButtons.forEach((item) => {
-      item.classList.toggle(
-        "is-selected",
-        item === button
-      );
+      item.classList.toggle("is-selected", item === button);
     });
 
-    const cookie =
-      getCookieById(singleFlavourCookieId);
+    const cookie = getCookieById(singleFlavourCookieId);
 
-    if (
-      confirmSingleFlavourShop &&
-      cookie
-    ) {
+    if (confirmSingleFlavourShop && cookie) {
       confirmSingleFlavourShop.disabled = false;
       confirmSingleFlavourShop.textContent =
         `ADD ${cookie.name.toUpperCase()} →`;
@@ -3156,37 +3185,53 @@ singleFlavourShopClose?.addEventListener(
 confirmSingleFlavourShop?.addEventListener(
   "click",
   () => {
+    /* BIG BOX: 12 of one flavour, or 6 + 6 when two are selected */
+    if (singleFlavourIsBigBox) {
+      if (
+        singleFlavourCookieIds.length < 1 ||
+        singleFlavourCookieIds.length > 2
+      ) return;
+
+      const bigBoxCookies =
+        singleFlavourCookieIds.length === 1
+          ? Array(12).fill(singleFlavourCookieIds[0])
+          : [
+              ...Array(6).fill(singleFlavourCookieIds[0]),
+              ...Array(6).fill(singleFlavourCookieIds[1]),
+            ];
+
+      currentOrder = {
+        type: "Gookie Big Box",
+        boxName: "Gookie Big Box",
+        boxSize: 12,
+        price: GOOKIE_PRICING[12] || 0,
+        cookies: bigBoxCookies,
+      };
+
+      currentOrderId = null;
+      updateCart();
+      closeModal(singleFlavourShopModal);
+      openDrawer(cartDrawer, cartButton);
+      return;
+    }
+
+    /* STANDARD SINGLE FLAVOUR BOX */
     if (!singleFlavourCookieId) return;
 
-    const cookie =
-      getCookieById(singleFlavourCookieId);
-
+    const cookie = getCookieById(singleFlavourCookieId);
     if (!cookie) return;
 
-    const size = singleFlavourIsBigBox
-      ? 12
-      : singleFlavourSize;
+    const size = singleFlavourSize;
 
     currentOrder = {
-      type: singleFlavourIsBigBox
-        ? "Gookie Big Box"
-        : "Single Flavour Box",
-
-      boxName: singleFlavourIsBigBox
-        ? "Gookie Big Box"
-        : `Single Flavour · Box of ${size}`,
-
+      type: "Single Flavour Box",
+      boxName: `Single Flavour · Box of ${size}`,
       boxSize: size,
-
-      price:
-        GOOKIE_PRICING[size] || 0,
-
-      cookies:
-        Array(size).fill(singleFlavourCookieId),
+      price: GOOKIE_PRICING[size] || 0,
+      cookies: Array(size).fill(singleFlavourCookieId),
     };
 
     currentOrderId = null;
-
     updateCart();
     closeModal(singleFlavourShopModal);
     openDrawer(cartDrawer, cartButton);
