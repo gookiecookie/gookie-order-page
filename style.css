@@ -7474,3 +7474,324 @@ a.footer-contact-row:hover {
   }
 }
 
+/* =========================================================
+   HERO — IMAGE + HEADLINE CAROUSEL
+========================================================= */
+
+.hero-section{
+  display:block;
+  width:100%;
+  overflow:hidden;
+  background:#fff;
+}
+
+.hero-inner{
+  position:relative;
+
+  width:min(1180px, calc(100% - 56px));
+  margin:0 auto;
+}
+
+
+/* ========================
+   CAROUSEL STAGE
+======================== */
+
+.hero-carousel-stage{
+  position:relative;
+
+  min-height:540px;
+}
+
+
+/* ========================
+   SLIDES
+======================== */
+
+.hero-carousel-slide{
+  position:absolute;
+  inset:0;
+
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  align-items:center;
+
+  opacity:0;
+  visibility:hidden;
+
+  transform:translateY(10px);
+
+  transition:
+    opacity .6s ease,
+    transform .6s ease,
+    visibility .6s ease;
+}
+
+.hero-carousel-slide.is-active{
+  position:relative;
+
+  opacity:1;
+  visibility:visible;
+
+  transform:translateY(0);
+}
+
+
+/* ========================
+   IMAGE
+======================== */
+
+.hero-visual{
+  position:relative;
+
+  display:grid;
+  place-items:center;
+
+  min-height:520px;
+
+  transform:translateX(55px) scale(.75);
+  transform-origin:center bottom;
+}
+
+.hero-cookie-image{
+  position:relative;
+  z-index:2;
+
+  width:clamp(420px, 33vw, 500px);
+  max-height:480px;
+
+  object-fit:contain;
+}
+
+
+/* ========================
+   COPY
+======================== */
+
+.hero-slide-copy{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+
+  padding:18px 0;
+}
+
+.hero-kicker{
+  margin:0 0 10px;
+
+  color:var(--gookie-red);
+
+  font-size:.72rem;
+  font-weight:700;
+
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+
+.hero-title{
+  margin:0;
+
+  font-family:"League Spartan",sans-serif;
+
+  font-size:clamp(4.6rem, 6.3vw, 7.2rem);
+  font-weight:900;
+
+  line-height:.84;
+  letter-spacing:-.045em;
+}
+
+.hero-title span{
+  display:block;
+}
+
+.hero-title span:not(:first-child){
+  color:var(--gookie-red);
+}
+
+
+/* ========================
+   FIXED CONTENT
+======================== */
+
+.hero-fixed{
+  position:absolute;
+  right:0;
+  bottom:48px;
+
+  width:50%;
+
+  z-index:5;
+}
+
+.hero-highlights{
+  display:flex;
+  justify-content:center;
+
+  gap:54px;
+
+  margin:0 0 28px;
+}
+
+.hero-actions{
+  display:flex;
+  justify-content:center;
+
+  gap:14px;
+}
+
+
+/* ========================
+   DOTS
+======================== */
+
+.hero-carousel-dots{
+  position:absolute;
+
+  left:25%;
+  bottom:18px;
+
+  display:flex;
+  gap:8px;
+
+  transform:translateX(-50%);
+
+  z-index:8;
+}
+
+.hero-carousel-dot{
+  width:8px;
+  height:8px;
+
+  padding:0;
+
+  border:0;
+  border-radius:999px;
+
+  background:rgba(187,25,26,.20);
+
+  cursor:pointer;
+
+  transition:
+    width .25s ease,
+    background .25s ease;
+}
+
+.hero-carousel-dot.is-active{
+  width:24px;
+
+  background:var(--gookie-red);
+}
+
+
+/* =========================================================
+   HERO CAROUSEL — MOBILE
+========================================================= */
+
+@media (max-width:920px){
+
+  .hero-inner{
+    width:100%;
+  }
+
+  .hero-carousel-stage{
+    min-height:640px;
+  }
+
+  .hero-carousel-slide{
+    grid-template-columns:1fr;
+  }
+
+  .hero-visual{
+    min-height:300px;
+
+    transform:none;
+
+    padding:24px 20px 0;
+  }
+
+  .hero-cookie-image{
+    width:min(84vw, 420px);
+    max-height:290px;
+  }
+
+  .hero-slide-copy{
+    padding:18px 22px 0;
+
+    text-align:center;
+  }
+
+  .hero-title{
+    font-size:clamp(3rem, 13vw, 5rem);
+  }
+
+  .hero-fixed{
+    position:absolute;
+
+    left:0;
+    right:0;
+    bottom:34px;
+
+    width:100%;
+
+    padding:0 18px;
+  }
+
+  .hero-highlights{
+    display:grid;
+    grid-template-columns:repeat(3, minmax(0,1fr));
+
+    gap:6px;
+
+    margin:0 0 26px;
+  }
+
+  .hero-actions{
+    display:flex;
+
+    gap:12px;
+  }
+
+  .hero-actions .hero-button{
+    flex:1;
+
+    min-width:0;
+  }
+
+  .hero-carousel-dots{
+    left:50%;
+    bottom:180px;
+  }
+}
+
+
+/* =========================================================
+   HERO CAROUSEL — SMALL MOBILE
+========================================================= */
+
+@media (max-width:600px){
+
+  .hero-carousel-stage{
+    min-height:690px;
+  }
+
+  .hero-title{
+    font-size:clamp(2.9rem, 13vw, 4.2rem);
+  }
+
+  .hero-fixed{
+    bottom:24px;
+  }
+
+  .hero-actions .hero-button{
+    min-height:54px;
+
+    padding:12px 10px;
+
+    font-size:.74rem;
+  }
+
+  .hero-carousel-dots{
+    bottom:190px;
+  }
+
+}
