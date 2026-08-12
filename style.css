@@ -7519,12 +7519,18 @@ a.footer-contact-row:hover {
   opacity:0;
   visibility:hidden;
 
-  transform:translateY(10px);
+  transform:translateX(70px);
 
   transition:
-    opacity .6s ease,
-    transform .6s ease,
-    visibility .6s ease;
+    opacity .55s ease,
+    transform .65s cubic-bezier(.22,.8,.22,1),
+    visibility .55s ease;
+}
+
+.hero-carousel-slide.is-leaving{
+  opacity:0;
+  visibility:visible;
+  transform:translateX(-70px);
 }
 
 .hero-carousel-slide.is-active{
@@ -7533,7 +7539,7 @@ a.footer-contact-row:hover {
   opacity:1;
   visibility:visible;
 
-  transform:translateY(0);
+  transform:translateX(0);
 }
 
 
