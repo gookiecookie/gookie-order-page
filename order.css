@@ -7794,3 +7794,827 @@ margin-bottom: 0;
     margin: 8px 0 0 !important;
   }
 }
+
+
+/* =========================================================
+   GOOKIE SHOP V2 — NEW GET YOUR GOOKIES CATALOGUE
+   Added for:
+   ALL PRODUCTS · ASSORTED BOXES · BUILD YOUR OWN · MINI BOX
+========================================================= */
+
+.gookie-shop-page{
+  background:#fff;
+}
+
+/* Keep the approved hero, but remove the old extra notes spacing */
+.order-page .order-page-hero{
+  padding-bottom:54px;
+}
+
+.order-page .order-page-hero-copy{
+  max-width:560px;
+  margin:0 auto;
+}
+
+/* =========================================================
+   SHOP CATALOGUE SHELL
+========================================================= */
+
+.order-page .shop-catalogue{
+  padding:36px 20px 92px;
+  background:#fff8ef;
+}
+
+.order-page .shop-category-tabs{
+  position:sticky;
+  top:calc(var(--header-height-desktop) + 12px);
+  z-index:20;
+
+  display:grid;
+  grid-template-columns:repeat(4, minmax(0,1fr));
+  gap:6px;
+
+  width:min(980px,100%);
+  margin:0 auto 52px;
+  padding:6px;
+
+  border:1px solid rgba(23,21,21,.09);
+  border-radius:999px;
+
+  background:rgba(255,255,255,.96);
+  box-shadow:0 10px 30px rgba(55,26,12,.06);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+}
+
+.order-page .shop-category-tab{
+  min-height:50px;
+  padding:12px 16px;
+
+  border:0;
+  border-radius:999px;
+
+  background:transparent;
+  color:#766d66;
+
+  font-family:"DM Sans",sans-serif;
+  font-size:.73rem;
+  font-weight:800;
+  letter-spacing:.045em;
+
+  cursor:pointer;
+
+  transition:
+    background-color .2s ease,
+    color .2s ease,
+    transform .2s ease;
+}
+
+.order-page .shop-category-tab:hover{
+  color:var(--gookie-red);
+}
+
+.order-page .shop-category-tab.is-active{
+  background:var(--gookie-red);
+  color:#fff;
+}
+
+.order-page .shop-category-panel{
+  width:min(1180px,100%);
+  margin:0 auto;
+}
+
+.order-page .shop-category-panel[hidden]{
+  display:none !important;
+}
+
+.order-page .shop-panel-heading{
+  width:min(720px,100%);
+  margin:0 auto 30px;
+  text-align:center;
+}
+
+.order-page .shop-panel-heading h2{
+  margin:8px 0 10px;
+
+  font-family:"League Spartan",sans-serif;
+  font-size:clamp(2.55rem,4.8vw,4.5rem);
+  font-weight:900;
+  line-height:.92;
+  letter-spacing:-.04em;
+}
+
+.order-page .shop-panel-heading > p:last-child{
+  margin:0 auto;
+  color:var(--muted);
+  font-size:.9rem;
+  line-height:1.55;
+}
+
+/* =========================================================
+   PRODUCT CARDS
+========================================================= */
+
+.order-page .shop-product-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
+}
+
+.order-page .shop-product-grid-assorted{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+}
+
+.order-page .shop-product-card{
+  overflow:hidden;
+
+  border:1px solid rgba(23,21,21,.08);
+  border-radius:24px;
+
+  background:#fff;
+
+  transition:
+    transform .22s ease,
+    border-color .22s ease;
+}
+
+.order-page .shop-product-card:hover{
+  transform:translateY(-4px);
+  border-color:rgba(187,25,26,.2);
+}
+
+.order-page .shop-product-visual{
+  position:relative;
+
+  display:grid;
+  place-items:center;
+
+  aspect-ratio:1/.93;
+  overflow:hidden;
+
+  background:#fff7ec;
+}
+
+.order-page .shop-product-visual img{
+  width:88%;
+  height:88%;
+  object-fit:contain;
+
+  transition:transform .25s ease;
+}
+
+.order-page .shop-product-card:hover .shop-product-visual img{
+  transform:scale(1.025);
+}
+
+.order-page .shop-card-badge{
+  position:absolute;
+  top:14px;
+  left:14px;
+  z-index:2;
+
+  display:inline-flex;
+  align-items:center;
+
+  min-height:28px;
+  padding:6px 11px;
+
+  border-radius:999px;
+
+  background:var(--gookie-red);
+  color:#fff;
+
+  font-size:.56rem;
+  font-weight:800;
+  line-height:1;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+
+.order-page .shop-product-info{
+  padding:19px 19px 21px;
+}
+
+.order-page .shop-product-eyebrow{
+  margin:0 0 6px;
+
+  color:var(--gookie-red);
+
+  font-size:.67rem;
+  font-weight:800;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+
+.order-page .shop-product-info h3{
+  margin:0 0 7px;
+
+  font-family:"League Spartan",sans-serif;
+  font-size:1.45rem;
+  font-weight:800;
+  line-height:1.04;
+  letter-spacing:-.025em;
+}
+
+.order-page .shop-product-info > p:not(.shop-product-eyebrow){
+  min-height:44px;
+  margin:0 0 16px;
+
+  color:var(--muted);
+
+  font-size:.8rem;
+  line-height:1.48;
+}
+
+.order-page .shop-card-action{
+  display:inline-flex;
+  align-items:center;
+
+  padding:0;
+  border:0;
+
+  background:transparent;
+  color:var(--gookie-red);
+
+  font-family:"DM Sans",sans-serif;
+  font-size:.73rem;
+  font-weight:800;
+
+  cursor:pointer;
+}
+
+.order-page .shop-product-card-featured{
+  border-color:rgba(187,25,26,.18);
+}
+
+.order-page .shop-product-card-featured .shop-product-visual{
+  background:#fff1dc;
+}
+
+/* =========================================================
+   BUILD YOUR OWN
+========================================================= */
+
+.order-page .shop-build-size-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px;
+
+  width:min(860px,100%);
+  margin:0 auto;
+}
+
+.order-page .shop-build-size-card{
+  display:grid;
+  grid-template-columns:150px 1fr;
+  grid-template-areas:
+    "image copy"
+    "image action";
+  align-items:center;
+  gap:8px 20px;
+
+  min-height:220px;
+  padding:22px;
+
+  border:1px solid rgba(23,21,21,.08);
+  border-radius:24px;
+
+  background:#fff;
+  color:var(--ink);
+
+  text-align:left;
+  cursor:pointer;
+
+  transition:
+    transform .22s ease,
+    border-color .22s ease;
+}
+
+.order-page .shop-build-size-card:hover{
+  transform:translateY(-4px);
+  border-color:rgba(187,25,26,.2);
+}
+
+.order-page .shop-build-size-card img{
+  grid-area:image;
+
+  width:150px;
+  height:150px;
+
+  object-fit:contain;
+}
+
+.order-page .shop-build-size-card > span{
+  grid-area:copy;
+}
+
+.order-page .shop-build-size-card small{
+  display:block;
+  margin-bottom:6px;
+
+  color:var(--gookie-red);
+
+  font-size:.62rem;
+  font-style:normal;
+  font-weight:800;
+  letter-spacing:.08em;
+}
+
+.order-page .shop-build-size-card strong{
+  display:block;
+
+  font-family:"League Spartan",sans-serif;
+  font-size:1.65rem;
+  line-height:1;
+}
+
+.order-page .shop-build-size-card b{
+  display:block;
+  margin-top:8px;
+
+  color:var(--gookie-red);
+
+  font-size:1rem;
+}
+
+.order-page .shop-build-size-card em{
+  grid-area:action;
+
+  color:var(--gookie-red);
+
+  font-size:.72rem;
+  font-style:normal;
+  font-weight:800;
+}
+
+.order-page .shop-build-note{
+  margin:22px auto 0;
+
+  color:var(--muted);
+
+  font-size:.77rem;
+  text-align:center;
+}
+
+/* =========================================================
+   MINI BOX
+========================================================= */
+
+.order-page .shop-mini-feature{
+  display:grid;
+  grid-template-columns:minmax(280px,.9fr) 1.1fr;
+  align-items:center;
+  gap:36px;
+
+  width:min(900px,100%);
+  margin:0 auto;
+
+  overflow:hidden;
+
+  border:1px solid rgba(23,21,21,.08);
+  border-radius:26px;
+
+  background:#fff;
+}
+
+.order-page .shop-mini-image{
+  display:grid;
+  place-items:center;
+
+  min-height:340px;
+
+  background:#fff7ec;
+}
+
+.order-page .shop-mini-image img{
+  width:min(82%,360px);
+  max-height:300px;
+  object-fit:contain;
+}
+
+.order-page .shop-mini-copy{
+  padding:34px 38px 34px 0;
+}
+
+.order-page .shop-mini-copy .shop-card-badge{
+  position:static;
+  width:max-content;
+  margin-bottom:14px;
+}
+
+.order-page .shop-mini-copy h3{
+  margin:0 0 8px;
+
+  font-family:"League Spartan",sans-serif;
+  font-size:2.25rem;
+  font-weight:900;
+  line-height:1;
+}
+
+.order-page .shop-mini-copy p{
+  max-width:470px;
+  margin:0 0 18px;
+
+  color:var(--muted);
+  line-height:1.55;
+}
+
+/* =========================================================
+   ADD-ONS
+========================================================= */
+
+.order-page .shop-addons-block{
+  margin-top:70px;
+  padding-top:44px;
+
+  border-top:1px solid rgba(23,21,21,.08);
+}
+
+.order-page .shop-addons-heading{
+  margin-bottom:22px;
+}
+
+.order-page .shop-addons-heading h2{
+  margin:7px 0 5px;
+
+  font-family:"League Spartan",sans-serif;
+  font-size:2.4rem;
+  line-height:1;
+}
+
+.order-page .shop-addons-heading > p:last-child{
+  margin:0;
+  color:var(--muted);
+  font-size:.82rem;
+}
+
+.order-page .shop-addons-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px;
+}
+
+.order-page .shop-addon-card{
+  display:grid;
+  grid-template-columns:110px 1fr;
+  align-items:center;
+  gap:20px;
+
+  padding:18px;
+
+  border:1px solid rgba(23,21,21,.08);
+  border-radius:22px;
+
+  background:#fff;
+}
+
+.order-page .shop-addon-visual{
+  display:grid;
+  place-items:center;
+
+  width:110px;
+  aspect-ratio:1;
+
+  border-radius:18px;
+
+  background:#fff1dc;
+  color:var(--gookie-red);
+
+  font-size:2.1rem;
+}
+
+.order-page .shop-addon-copy h3{
+  margin:0 0 5px;
+
+  font-family:"League Spartan",sans-serif;
+  font-size:1.35rem;
+  font-weight:800;
+}
+
+.order-page .shop-addon-copy p{
+  margin:0 0 12px;
+
+  color:var(--muted);
+
+  font-size:.78rem;
+  line-height:1.45;
+}
+
+.order-page .shop-addon-copy button{
+  padding:0;
+  border:0;
+
+  background:transparent;
+  color:var(--gookie-red);
+
+  font-size:.7rem;
+  font-weight:800;
+
+  cursor:pointer;
+}
+
+/* =========================================================
+   SINGLE FLAVOUR MODAL
+========================================================= */
+
+.order-page .shop-choice-modal-card{
+  width:min(720px,100%);
+}
+
+.order-page .single-flavour-size-row{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+
+  padding:20px 20px 12px;
+}
+
+.order-page .single-flavour-size{
+  min-height:48px;
+  padding:10px 16px;
+
+  border:1px solid rgba(187,25,26,.14);
+  border-radius:999px;
+
+  background:#fff;
+  color:var(--ink);
+
+  font-size:.73rem;
+  font-weight:800;
+
+  cursor:pointer;
+}
+
+.order-page .single-flavour-size.is-active{
+  background:var(--gookie-red);
+  color:#fff;
+}
+
+.order-page .single-flavour-list{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+
+  padding:10px 20px 20px;
+}
+
+.order-page .single-flavour-list button{
+  min-height:54px;
+  padding:12px 14px;
+
+  border:1px solid rgba(23,21,21,.08);
+  border-radius:16px;
+
+  background:#fff;
+  color:var(--ink);
+
+  text-align:left;
+  font-size:.82rem;
+  font-weight:700;
+
+  cursor:pointer;
+}
+
+.order-page .single-flavour-list button.is-selected{
+  border-color:rgba(187,25,26,.4);
+  background:#fff1dc;
+  color:var(--gookie-red);
+}
+
+.order-page .shop-choice-footer{
+  position:sticky;
+  bottom:0;
+
+  padding:16px 20px 20px;
+
+  border-top:1px solid rgba(23,21,21,.08);
+
+  background:var(--cream-soft);
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width:980px){
+
+  .order-page .shop-category-tabs{
+    top:calc(var(--header-height-mobile) + 10px);
+  }
+
+  .order-page .shop-product-grid,
+  .order-page .shop-product-grid-assorted{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .order-page .shop-build-size-grid{
+    width:min(720px,100%);
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width:700px){
+
+  .order-page .order-page-hero{
+    padding:52px 18px 34px;
+  }
+
+  .order-page .order-page-hero h1{
+    font-size:clamp(3.35rem,17vw,5rem);
+  }
+
+  .order-page .order-page-hero-copy{
+    max-width:330px;
+    font-size:.82rem;
+  }
+
+  .order-page .shop-catalogue{
+    padding:24px 14px 68px;
+  }
+
+  .order-page .shop-category-tabs{
+    top:calc(var(--header-height-mobile) + 7px);
+
+    display:flex;
+    justify-content:flex-start;
+    gap:5px;
+
+    width:100%;
+    margin-bottom:32px;
+    padding:5px;
+
+    overflow-x:auto;
+
+    border-radius:18px;
+
+    scrollbar-width:none;
+  }
+
+  .order-page .shop-category-tabs::-webkit-scrollbar{
+    display:none;
+  }
+
+  .order-page .shop-category-tab{
+    flex:0 0 auto;
+
+    min-width:132px;
+    min-height:44px;
+
+    padding:10px 13px;
+
+    font-size:.64rem;
+  }
+
+  .order-page .shop-panel-heading{
+    margin-bottom:20px;
+  }
+
+  .order-page .shop-panel-heading h2{
+    font-size:2.35rem;
+  }
+
+  .order-page .shop-panel-heading > p:last-child{
+    max-width:320px;
+    font-size:.78rem;
+  }
+
+  .order-page .shop-product-grid,
+  .order-page .shop-product-grid-assorted{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:11px;
+  }
+
+  .order-page .shop-product-card{
+    border-radius:18px;
+  }
+
+  .order-page .shop-product-visual{
+    aspect-ratio:1/.96;
+  }
+
+  .order-page .shop-card-badge{
+    top:9px;
+    left:9px;
+
+    min-height:24px;
+    padding:5px 7px;
+
+    font-size:.46rem;
+  }
+
+  .order-page .shop-product-info{
+    padding:13px 12px 15px;
+  }
+
+  .order-page .shop-product-eyebrow{
+    font-size:.56rem;
+  }
+
+  .order-page .shop-product-info h3{
+    font-size:1.07rem;
+  }
+
+  .order-page .shop-product-info > p:not(.shop-product-eyebrow){
+    min-height:auto;
+
+    margin-bottom:12px;
+
+    font-size:.68rem;
+    line-height:1.42;
+  }
+
+  .order-page .shop-card-action{
+    font-size:.62rem;
+  }
+
+  .order-page .shop-build-size-grid{
+    grid-template-columns:1fr;
+    gap:12px;
+  }
+
+  .order-page .shop-build-size-card{
+    grid-template-columns:118px 1fr;
+    min-height:170px;
+    padding:15px;
+  }
+
+  .order-page .shop-build-size-card img{
+    width:112px;
+    height:112px;
+  }
+
+  .order-page .shop-build-size-card strong{
+    font-size:1.4rem;
+  }
+
+  .order-page .shop-build-note{
+    max-width:320px;
+    font-size:.7rem;
+  }
+
+  .order-page .shop-mini-feature{
+    grid-template-columns:1fr;
+    gap:0;
+  }
+
+  .order-page .shop-mini-image{
+    min-height:250px;
+  }
+
+  .order-page .shop-mini-copy{
+    padding:22px;
+  }
+
+  .order-page .shop-mini-copy h3{
+    font-size:1.8rem;
+  }
+
+  .order-page .shop-addons-block{
+    margin-top:52px;
+    padding-top:34px;
+  }
+
+  .order-page .shop-addons-grid{
+    grid-template-columns:1fr;
+    gap:11px;
+  }
+
+  .order-page .shop-addon-card{
+    grid-template-columns:82px 1fr;
+    gap:14px;
+    padding:13px;
+  }
+
+  .order-page .shop-addon-visual{
+    width:82px;
+    border-radius:15px;
+    font-size:1.65rem;
+  }
+
+  .order-page .single-flavour-list{
+    grid-template-columns:1fr;
+  }
+}
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width:390px){
+
+  .order-page .shop-product-grid,
+  .order-page .shop-product-grid-assorted{
+    gap:9px;
+  }
+
+  .order-page .shop-product-info{
+    padding:11px;
+  }
+
+  .order-page .shop-product-info h3{
+    font-size:1rem;
+  }
+}
