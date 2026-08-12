@@ -704,26 +704,26 @@ body {
 /* hide HTML arrows */
 
 .how-arrow{
-  display:none;
+  display:grid;
+  place-items:center;
+
+  width:34px;
+  height:34px;
+
+  justify-self:center;
+  align-self:center;
+
+  color:rgba(187,25,26,.48);
+
+  font-size:1.15rem;
+  line-height:1;
 }
 
 
 /* create arrows automatically */
 
 .how-step:not(:last-child)::after{
-  content:"→";
-
-  position:absolute;
-
-  right:calc(-1 * clamp(20px, 1.65vw, 27px));
-  top:50%;
-
-  color:rgba(187,25,26,.48);
-
-  font-size:clamp(1rem, 1.1vw, 1.2rem);
-  line-height:1;
-
-  transform:translate(50%, -50%);
+  display:none;
 }
 
 
@@ -798,14 +798,34 @@ body {
   }
 
   .how-banner{
-    grid-template-columns:1fr 1fr;
+  display:grid;
 
-    gap:26px 30px;
+  grid-template-columns:
+    170px
+    minmax(0,1fr)
+    34px
+    minmax(0,1fr)
+    34px
+    minmax(0,1fr)
+    34px
+    minmax(0,1fr);
 
-    padding:30px;
+  align-items:center;
+  column-gap:8px;
 
-    border-radius:24px;
-  }
+  width:min(1180px,100%);
+  margin:0 auto;
+
+  padding:
+    clamp(26px,2vw,34px)
+    clamp(24px,2.5vw,40px);
+
+  border:1px solid rgba(187,25,26,.16);
+  border-radius:28px;
+
+  background:#fff8ef;
+  box-shadow:none;
+}
 
   .how-title{
     grid-column:1 / -1;
@@ -842,6 +862,10 @@ body {
   .how-step::after{
     display:none;
   }
+
+   .how-arrow{
+  display:none;
+}
 }
 
 /* =========================================================
@@ -913,6 +937,10 @@ body {
   .how-step::after{
     display:none;
   }
+
+   .how-arrow{
+  display:none;
+}
 }
 
 .meet-section {
