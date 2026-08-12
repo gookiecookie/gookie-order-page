@@ -7805,3 +7805,141 @@ transform:translateY(-38px);
   }
 
 }
+
+/* =========================================================
+   HERO CAROUSEL — TABLET / IPAD FIX
+========================================================= */
+
+@media (min-width:601px) and (max-width:920px){
+
+  .hero-section{
+    padding:28px 0 42px;
+  }
+
+  .hero-inner{
+    width:min(820px, calc(100% - 40px));
+    margin:0 auto;
+  }
+
+
+  /* CAROUSEL AREA */
+
+  .hero-carousel-stage{
+    position:relative;
+    min-height:650px;
+    overflow:hidden;
+  }
+
+  .hero-carousel-slide{
+    grid-template-columns:1fr;
+    grid-template-rows:330px auto;
+    align-items:start;
+  }
+
+
+  /* IMAGE */
+
+  .hero-visual{
+    min-height:330px;
+    padding:10px 20px 0;
+
+    transform:none;
+  }
+
+  .hero-cookie-image{
+    width:min(52vw, 420px);
+    max-height:310px;
+    object-fit:contain;
+  }
+
+
+  /* HEADLINE */
+
+  .hero-slide-copy{
+    padding:14px 30px 0;
+
+    text-align:center;
+
+    transform:none;
+  }
+
+  .hero-kicker{
+    margin-bottom:9px;
+    font-size:.72rem;
+  }
+
+  .hero-title{
+    font-size:clamp(3.8rem, 9vw, 5.2rem);
+    line-height:.86;
+  }
+
+
+  /* DOTS */
+
+  .hero-carousel-dots{
+    left:50%;
+    top:auto;
+    bottom:12px;
+
+    transform:translateX(-50%);
+  }
+
+
+  /* FIXED ICONS + BUTTONS
+     IMPORTANT: no absolute positioning on tablet
+  */
+
+  .hero-fixed{
+    position:static;
+
+    width:100%;
+
+    padding:0;
+    margin-top:20px;
+  }
+
+  .hero-highlights{
+    display:grid;
+    grid-template-columns:repeat(3, minmax(0,1fr));
+
+    width:min(650px, 100%);
+    margin:0 auto 26px;
+
+    gap:24px;
+  }
+
+  .hero-highlight{
+    text-align:center;
+  }
+
+  .hero-highlight span{
+    font-size:1.2rem;
+  }
+
+  .hero-highlight strong{
+    font-size:.72rem;
+  }
+
+
+  /* BUTTONS */
+
+  .hero-actions{
+    display:flex;
+    flex-direction:row;
+
+    width:min(650px, 100%);
+    margin:0 auto;
+
+    gap:14px;
+  }
+
+  .hero-actions .hero-button{
+    flex:1;
+
+    width:auto;
+    min-height:54px;
+
+    padding:13px 18px;
+  }
+
+}
