@@ -708,25 +708,6 @@ body {
 }
 
 
-/* create arrows automatically */
-
-.how-step:not(:last-child)::after{
-  content:"→";
-
-  position:absolute;
-
-  right:calc(-1 * clamp(0px, 1.65vw, 27px));
-  top:50%;
-
-  color:rgba(187,25,26,.48);
-
-  font-size:clamp(1rem, 1.1vw, 1.2rem);
-  line-height:1;
-
-  transform:translate(50%, -50%);
-}
-
-
 /* =========================================================
    ICONS
 ========================================================= */
