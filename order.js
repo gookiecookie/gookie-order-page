@@ -936,7 +936,11 @@ let buildBoxSize = 0,
   buildBoxName = "",
   buildSelection = [],
   activeGookiePick = null,
+
+  /* MULTI-BOX CART */
+  cart = [],
   currentOrder = null,
+
   customerDetails = null,
   currentOrderId = null,
   isCreatingOrder = false,
