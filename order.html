@@ -355,7 +355,7 @@
               type="button"
               data-shop-action="whole-crew"
             >
-              SHOP NOW →
+              DISCOVER MORE →
             </button>
           </div>
         </article>
@@ -539,7 +539,7 @@
             <h3>The Whole Crew</h3>
             <p>Meet every Gookie in one box.</p>
             <button class="shop-card-action" type="button" data-shop-action="whole-crew">
-              SHOP NOW →
+              DISCOVER MORE →
             </button>
           </div>
         </article>
@@ -1487,47 +1487,128 @@
     </div>
 
 <section
-  class="modal"
+  class="modal gookie-product-modal"
   id="gookiePickModal"
   aria-hidden="true"
-  aria-label="Gookie's Pick details"
+  aria-label="Gookie product details"
 >
-  <div class="modal-card gookie-pick-modal-card">
+  <div class="modal-card gookie-pick-modal-card gookie-product-modal-card">
+
     <button
-      class="modal-close-button"
+      class="modal-close-button gookie-product-close"
       id="gookiePickModalClose"
       type="button"
-      aria-label="Close Gookie's Pick details"
+      aria-label="Close product details"
     >
       ×
     </button>
 
-    <div class="gookie-pick-modal-image">
-      <img id="gookiePickModalImage" src="" alt="" />
-    </div>
+    <div class="gookie-product-modal-layout">
 
-    <div class="gookie-pick-modal-content">
-      <p class="section-kicker" id="gookiePickModalKicker"></p>
-      <h2 id="gookiePickModalTitle"></h2>
-      <p id="gookiePickModalDescription"></p>
-
-      <div class="gookie-pick-included">
-        <p class="mini-heading">WHAT'S INSIDE</p>
-        <div id="gookiePickModalIncluded"></div>
+      <div class="gookie-pick-modal-image gookie-product-media">
+        <img id="gookiePickModalImage" src="" alt="" />
       </div>
 
-      <div class="gookie-pick-modal-meta">
-        <span id="gookiePickModalQuantity"></span>
-        <strong id="gookiePickModalPrice"></strong>
-      </div>
+      <div class="gookie-pick-modal-content gookie-product-info">
 
-      <button
-        class="primary-button"
-        id="addGookiePickToCart"
-        type="button"
-      >
-        ADD TO CART
-      </button>
+        <p class="section-kicker" id="gookiePickModalKicker"></p>
+
+        <h2 id="gookiePickModalTitle"></h2>
+
+        <div class="gookie-product-meta">
+          <span id="gookiePickModalQuantity"></span>
+          <strong id="gookiePickModalPrice"></strong>
+        </div>
+
+        <p
+          class="gookie-product-description"
+          id="gookiePickModalDescription"
+        ></p>
+
+        <p
+          class="gookie-product-flavour-preview"
+          id="gookiePickModalPreview"
+        ></p>
+
+        <button
+          class="primary-button gookie-product-add-button"
+          id="addGookiePickToCart"
+          type="button"
+        >
+          ADD TO CART
+        </button>
+
+        <div class="gookie-product-accordions">
+
+          <details class="gookie-product-accordion">
+            <summary>
+              <span>WHAT'S INSIDE</span>
+              <span class="gookie-product-accordion-icon" aria-hidden="true">+</span>
+            </summary>
+
+            <div class="gookie-product-accordion-body">
+              <div id="gookiePickModalIncluded"></div>
+            </div>
+          </details>
+
+          <details class="gookie-product-accordion">
+            <summary>
+              <span>INGREDIENTS &amp; ALLERGENS</span>
+              <span class="gookie-product-accordion-icon" aria-hidden="true">+</span>
+            </summary>
+
+            <div class="gookie-product-accordion-body">
+              <p>
+                Ingredients vary by flavour. Please contact Gookie if you need
+                the ingredient information for a specific cookie before ordering.
+              </p>
+
+              <p><strong>Our cookies contain or may contain:</strong></p>
+
+              <ul>
+                <li>Wheat (Gluten)</li>
+                <li>Milk</li>
+                <li>Eggs</li>
+                <li>Soy</li>
+                <li>Peanuts</li>
+                <li>Tree Nuts, including Macadamia and Pistachio</li>
+              </ul>
+
+              <p class="gookie-product-allergen-note">
+                All Gookies are prepared in the same kitchen and may come into
+                contact with other allergens. We cannot guarantee that any
+                product is completely free from allergen cross-contact.
+              </p>
+            </div>
+          </details>
+
+          <details class="gookie-product-accordion">
+            <summary>
+              <span>STORAGE &amp; REHEATING</span>
+              <span class="gookie-product-accordion-icon" aria-hidden="true">+</span>
+            </summary>
+
+            <div class="gookie-product-accordion-body">
+              <p>
+                Best enjoyed within <strong>3 days</strong>. Keep in an airtight
+                container at room temperature, away from direct sunlight and heat.
+              </p>
+
+              <p>
+                Freeze in an airtight container or freezer-safe bag for up to
+                <strong>2 months</strong>.
+              </p>
+
+              <p>
+                <strong>Microwave:</strong> 8–12 seconds.<br />
+                <strong>Air fryer:</strong> 150°C for 2–3 minutes.
+              </p>
+            </div>
+          </details>
+
+        </div>
+
+      </div>
     </div>
   </div>
 </section>

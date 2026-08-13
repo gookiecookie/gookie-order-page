@@ -8623,3 +8623,272 @@ margin-bottom: 0;
 .order-page .single-flavour-size-row[hidden]{
   display:none !important;
 }
+
+
+/* =========================================================
+   GOOKIE PRODUCT MODAL V2
+   Universal curated-product detail popup
+========================================================= */
+
+.gookie-product-modal{
+  padding:18px;
+  place-items:center;
+}
+
+.gookie-product-modal-card{
+  position:relative;
+  width:min(94vw, 1040px);
+  max-height:min(88vh, 760px);
+  padding:18px;
+  overflow:auto;
+  border-radius:28px;
+  background:var(--cream-soft);
+}
+
+.gookie-product-modal-card > .gookie-product-close{
+  position:absolute;
+  top:18px;
+  right:18px;
+  z-index:8;
+  margin:0;
+}
+
+.gookie-product-modal-layout{
+  display:grid;
+  grid-template-columns:minmax(0, .92fr) minmax(360px, 1.08fr);
+  gap:28px;
+  align-items:start;
+}
+
+.gookie-product-media{
+  position:sticky;
+  top:0;
+  min-height:0;
+  height:min(64vh, 590px);
+  margin:0;
+  padding:18px;
+  overflow:hidden;
+  border-radius:22px;
+  background:var(--cream);
+}
+
+.gookie-product-media img{
+  display:block;
+  width:100%;
+  height:100%;
+  max-height:none;
+  object-fit:contain;
+  object-position:center;
+}
+
+.gookie-product-info{
+  padding:28px 12px 8px 0;
+}
+
+.gookie-product-info .section-kicker{
+  margin-bottom:8px;
+  font-size:.67rem;
+  letter-spacing:.13em;
+}
+
+.gookie-product-info h2{
+  margin:0 0 10px;
+  font-family:"League Spartan",sans-serif;
+  font-size:clamp(2rem,3.1vw,3rem);
+  font-weight:800;
+  line-height:1;
+  letter-spacing:-.035em;
+}
+
+.gookie-product-meta{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  margin:0 0 16px;
+  padding:12px 0;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+}
+
+.gookie-product-meta span{
+  color:var(--muted);
+  font-size:.78rem;
+  font-weight:800;
+  letter-spacing:.06em;
+}
+
+.gookie-product-meta strong{
+  color:var(--gookie-red);
+  font-size:1.15rem;
+}
+
+.gookie-product-description{
+  margin:0 0 12px !important;
+  color:var(--muted);
+  font-size:.85rem;
+  line-height:1.5 !important;
+}
+
+.gookie-product-flavour-preview{
+  margin:0 0 18px !important;
+  color:var(--ink) !important;
+  font-size:.78rem !important;
+  font-weight:700;
+  line-height:1.55 !important;
+}
+
+.gookie-product-add-button{
+  min-height:54px;
+  margin-bottom:16px;
+  font-size:.78rem;
+}
+
+.gookie-product-accordions{
+  border-top:1px solid var(--line);
+}
+
+.gookie-product-accordion{
+  border-bottom:1px solid var(--line);
+}
+
+.gookie-product-accordion summary{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  min-height:54px;
+  padding:0 2px;
+  list-style:none;
+  cursor:pointer;
+  color:var(--ink);
+  font-size:.73rem;
+  font-weight:800;
+  letter-spacing:.055em;
+}
+
+.gookie-product-accordion summary::-webkit-details-marker{
+  display:none;
+}
+
+.gookie-product-accordion-icon{
+  color:var(--gookie-red);
+  font-size:1.1rem;
+  transition:transform .2s ease;
+}
+
+.gookie-product-accordion[open] .gookie-product-accordion-icon{
+  transform:rotate(45deg);
+}
+
+.gookie-product-accordion-body{
+  padding:0 2px 18px;
+  color:var(--muted);
+  font-size:.78rem;
+  line-height:1.55;
+}
+
+.gookie-product-accordion-body p{
+  margin:0 0 10px;
+}
+
+.gookie-product-accordion-body p:last-child{
+  margin-bottom:0;
+}
+
+.gookie-product-accordion-body ul{
+  margin:8px 0 12px;
+  padding-left:20px;
+}
+
+.gookie-product-allergen-note{
+  padding:12px 14px;
+  border-radius:14px;
+  background:#fff1dc;
+}
+
+.gookie-product-accordion #gookiePickModalIncluded{
+  display:grid;
+  gap:8px;
+}
+
+.gookie-product-accordion .gookie-pick-included-row{
+  padding:0 0 8px;
+}
+
+@media (max-width:759px){
+
+  .gookie-product-modal{
+    padding:0;
+    place-items:end center;
+  }
+
+  .gookie-product-modal-card{
+    width:100%;
+    max-height:96svh;
+    padding:0 18px 24px;
+    border-radius:26px 26px 0 0;
+  }
+
+  .gookie-product-modal-card > .gookie-product-close{
+    position:sticky;
+    top:12px;
+    float:right;
+    margin:12px 0 -48px auto;
+  }
+
+  .gookie-product-modal-layout{
+    display:block;
+  }
+
+  .gookie-product-media{
+    position:relative;
+    top:auto;
+    width:100%;
+    height:min(54svh, 470px);
+    margin:0;
+    padding:14px;
+    border-radius:0 0 22px 22px;
+  }
+
+  .gookie-product-media img{
+    object-fit:contain;
+  }
+
+  .gookie-product-info{
+    clear:both;
+    padding:22px 2px 0;
+  }
+
+  .gookie-product-info h2{
+    font-size:2rem;
+  }
+
+  .gookie-product-meta{
+    margin-bottom:14px;
+  }
+
+  .gookie-product-description{
+    font-size:.82rem;
+  }
+
+  .gookie-product-flavour-preview{
+    font-size:.75rem !important;
+  }
+
+  .gookie-product-add-button{
+    position:relative;
+    min-height:56px;
+  }
+}
+
+@media (max-width:390px){
+  .gookie-product-modal-card{
+    padding-left:14px;
+    padding-right:14px;
+  }
+
+  .gookie-product-media{
+    height:min(48svh, 410px);
+  }
+}

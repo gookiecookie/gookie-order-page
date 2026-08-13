@@ -182,7 +182,7 @@ gookiePicks["best-seller-box"] = {
   orderType: "Assorted Box",
   kicker: "THE CROWD FAVOURITES",
   description:
-    "Four Gookie favourites, picked for the easiest first bite into the crew.",
+    "Four Gookie favourites, picked for an easy taste of the crew.",
   quantity: 4,
   price: GOOKIE_PRICING[4],
   image: "treat-box.png",
@@ -248,6 +248,7 @@ const $ = (id) => document.getElementById(id),
   gookiePickModalKicker = $("gookiePickModalKicker"),
   gookiePickModalTitle = $("gookiePickModalTitle"),
   gookiePickModalDescription = $("gookiePickModalDescription"),
+  gookiePickModalPreview = $("gookiePickModalPreview"),
   gookiePickModalIncluded = $("gookiePickModalIncluded"),
   gookiePickModalQuantity = $("gookiePickModalQuantity"),
   gookiePickModalPrice = $("gookiePickModalPrice"),
@@ -1704,7 +1705,7 @@ function openGookiePickDetails(pickId) {
     !gookiePickModalQuantity ||
     !gookiePickModalPrice
   ) {
-    console.error("Gookie's Picks popup HTML is missing.");
+    console.error("Gookie product popup HTML is missing.");
     return;
   }
 
@@ -1718,13 +1719,41 @@ function openGookiePickDetails(pickId) {
     gookiePickModalImage.onerror = null;
     gookiePickModalImage.src = pick.fallbackImage;
   };
+
   gookiePickModalImage.src = pick.image;
   gookiePickModalImage.alt = `${pick.name} Gookie box`;
+
   gookiePickModalKicker.textContent = pick.kicker;
   gookiePickModalTitle.textContent = pick.name;
   gookiePickModalDescription.textContent = pick.description;
-  gookiePickModalQuantity.textContent = `${pick.quantity} Cookies`;
+  gookiePickModalQuantity.textContent = `BOX OF ${pick.quantity}`;
   gookiePickModalPrice.textContent = formatMoney(pick.price);
+
+  if (gookiePickModalPreview) {
+    const flavourNames = [];
+
+    pick.cookies.forEach((cookieId) => {
+      const cookie = getCookieById(cookieId);
+      if (!cookie) return;
+      if (!flavourNames.includes(cookie.name)) {
+        flavourNames.push(cookie.name);
+      }
+    });
+
+    gookiePickModalPreview.textContent =
+      flavourNames.join(" · ");
+  }
+
+  if (addGookiePickToCart) {
+    addGookiePickToCart.textContent =
+      `ADD TO CART — ${formatMoney(pick.price)}`;
+  }
+
+  gookiePickModal
+    .querySelectorAll(".gookie-product-accordion")
+    .forEach((details) => {
+      details.open = false;
+    });
 
   renderGookiePickIncluded(pick);
   openModal(gookiePickModal);
@@ -3281,39 +3310,42 @@ const WHOLE_CREW_COOKIE_IDS = [
   "biscoff-boom",
 ];
 
+gookiePicks["whole-crew-box"] = {
+  id: "whole-crew-box",
+  name: "The Whole Crew",
+  orderType: "Assorted Box",
+  kicker: "MEET THE WHOLE CREW",
+  description:
+    "Eight core Gookies, all together in one very happy box.",
+  quantity: 8,
+  price: GOOKIE_PRICING[8],
+  image: "chunky-box.png",
+  fallbackImage: "wonder-chip.png",
+  cookies: [...WHOLE_CREW_COOKIE_IDS],
+  revealFlavours: true,
+};
+
 
 document
   .querySelectorAll('[data-shop-action="whole-crew"]')
   .forEach((button) => {
     button.addEventListener("click", () => {
-      currentOrder = {
-        type: "Assorted Box",
-        boxName: "The Whole Crew",
-        collectionName: "The Whole Crew",
-        boxSize: 8,
-        price: GOOKIE_PRICING[8],
-        cookies: [...WHOLE_CREW_COOKIE_IDS],
-      };
-
-      currentOrderId = null;
-
-      updateCart();
-      openDrawer(cartDrawer, cartButton);
+      openGookiePickDetails("whole-crew-box");
     });
+  });
   });
 
 
 /* =========================================================
    BEST-SELLER BOX — DISCOVER MORE
-   Fixed Box of 4:
-   Wonder Chip · Dark Crush · Dream Cream · Biscoff Boom
 ========================================================= */
-
 document
   .querySelectorAll('[data-shop-action="best-seller"]')
   .forEach((button) => {
     button.addEventListener("click", () => {
       openGookiePickDetails("best-seller-box");
+    });
+  });
     });
   });
 
