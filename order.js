@@ -3333,7 +3333,6 @@ document
       openGookiePickDetails("whole-crew-box");
     });
   });
-  });
 
 
 /* =========================================================
@@ -3344,8 +3343,6 @@ document
   .forEach((button) => {
     button.addEventListener("click", () => {
       openGookiePickDetails("best-seller-box");
-    });
-  });
     });
   });
 
