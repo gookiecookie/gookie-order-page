@@ -171,6 +171,30 @@ const GOOKIE_PRICING = Object.freeze({
   8: 74,
   12: 108, // Big Box: keep current value until final Big Box price is locked.
 });
+
+/* =========================================================
+   BEST-SELLER BOX — FIXED CURATED BOX
+========================================================= */
+
+gookiePicks["best-seller-box"] = {
+  id: "best-seller-box",
+  name: "Best-Seller Box",
+  orderType: "Assorted Box",
+  kicker: "THE CROWD FAVOURITES",
+  description:
+    "Four Gookie favourites, picked for the easiest first bite into the crew.",
+  quantity: 4,
+  price: GOOKIE_PRICING[4],
+  image: "treat-box.png",
+  fallbackImage: "wonder-chip.png",
+  cookies: [
+    "wonder-chip",
+    "dark-crush",
+    "dream-cream",
+    "biscoff-boom",
+  ],
+  revealFlavours: true,
+};
 const GOOKIE_WHATSAPP_NUMBER = "60102810487";
 const GOOKIE_DELIVERY_FEE = 0; // Update here when courier pricing is final.
 
@@ -1710,7 +1734,7 @@ function addSelectedGookiePickToCart() {
   if (!activeGookiePick) return;
 
   currentOrder = {
-    type: "Gookie's Picks",
+    type: activeGookiePick.orderType || "Gookie's Picks",
     pickId: activeGookiePick.id,
     collectionName: activeGookiePick.name,
     boxName: activeGookiePick.name,
@@ -3279,23 +3303,17 @@ document
   });
 
 
-/*
- * Best-Seller Box:
- * Do not silently invent the final four-flavour composition.
- * For now the button moves the user to Build Your Own.
- */
+/* =========================================================
+   BEST-SELLER BOX — DISCOVER MORE
+   Fixed Box of 4:
+   Wonder Chip · Dark Crush · Dream Cream · Biscoff Boom
+========================================================= */
+
 document
   .querySelectorAll('[data-shop-action="best-seller"]')
   .forEach((button) => {
     button.addEventListener("click", () => {
-      showShopCategory("build");
-
-      document
-        .querySelector(".shop-category-tabs")
-        ?.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
+      openGookiePickDetails("best-seller-box");
     });
   });
 
