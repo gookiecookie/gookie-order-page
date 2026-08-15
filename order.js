@@ -259,6 +259,7 @@ const $ = (id) => document.getElementById(id),
   cartContent = $("cartContent"),
   cartOrderSummary = $("cartOrderSummary"),
   checkoutButton = $("checkoutButton"),
+  continueShoppingButton = $("continueShoppingButton"),
   checkoutModal = $("checkoutModal"),
   checkoutModalClose = $("checkoutModalClose"),
   checkoutModalTitle = $("checkoutModalTitle"),
@@ -939,7 +940,17 @@ let buildBoxSize = 0,
 
   /* MULTI-BOX CART */
   cart = [],
+  editingCartIndex = null,
   currentOrder = null,
+
+  /* CHECKOUT STATE FOR THE WHOLE CART */
+  checkoutState = {
+    serverQuote: null,
+    clientRequestId: null,
+    orderId: null,
+    paymentStatus: null,
+    workflow: null,
+  },
 
   customerDetails = null,
   currentOrderId = null,
@@ -1640,19 +1651,229 @@ function openBuildFlavourSelector() {
   updateFlavourSelector();
   openModal(flavourModal);
 }
+
+function resetCheckoutState() {
+  checkoutState = {
+    serverQuote: null,
+    clientRequestId: null,
+    orderId: null,
+    paymentStatus: null,
+    workflow: null,
+  };
+  currentOrderId = null;
+}
+
+function createCartItemId() {
+  return (
+    "CART-" +
+    Date.now().toString(36).toUpperCase() +
+    "-" +
+    Math.random().toString(36).slice(2, 7).toUpperCase()
+  );
+}
+
+function commitOrderToCart(order) {
+  if (
+    !order ||
+    !Array.isArray(order.cookies) ||
+    order.cookies.length !== order.boxSize
+  ) {
+    throw new Error("This Gookie box is incomplete.");
+  }
+
+  const nextOrder = {
+    ...order,
+    cookies: [...order.cookies],
+    cartItemId:
+      order.cartItemId ||
+      (editingCartIndex !== null
+        ? cart[editingCartIndex]?.cartItemId
+        : null) ||
+      createCartItemId(),
+  };
+
+  if (
+    editingCartIndex !== null &&
+    cart[editingCartIndex]
+  ) {
+    cart[editingCartIndex] = nextOrder;
+  } else {
+    cart.push(nextOrder);
+  }
+
+  currentOrder = nextOrder;
+  editingCartIndex = null;
+  resetCheckoutState();
+  updateCart();
+}
+
+function getCartCookieCount() {
+  return cart.reduce((total, order) => {
+    return total + Number(order.boxSize || 0);
+  }, 0);
+}
+
+function getCartBoxCount() {
+  return cart.length;
+}
+
+function getCartItemPrice(order) {
+  if (!order) return 0;
+
+  return Number.isFinite(Number(order.price))
+    ? Number(order.price)
+    : Number(GOOKIE_PRICING[order.boxSize] || 0);
+}
+
+function getCartSubtotal() {
+  return cart.reduce((total, order) => {
+    return total + getCartItemPrice(order);
+  }, 0);
+}
+
+function getCartFlavourSummary(order) {
+  const counts = {};
+
+  order.cookies.forEach((id) => {
+    counts[id] = (counts[id] || 0) + 1;
+  });
+
+  return Object.entries(counts)
+    .map(([id, quantity]) => {
+      const cookie = getCookieById(id);
+      if (!cookie) return "";
+
+      return `
+        <div class="cart-flavour-row">
+          <div class="cart-flavour-image">
+            <img src="${cookie.image}" alt="${cookie.name}">
+          </div>
+          <div class="cart-flavour-copy">
+            <strong>${cookie.name}</strong>
+            <span>${cookie.subtitle}</span>
+          </div>
+          <span class="cart-flavour-quantity">×${quantity}</span>
+        </div>
+      `;
+    })
+    .join("");
+}
+
+function removeCartItem(index) {
+  if (!cart[index]) return;
+
+  cart.splice(index, 1);
+  editingCartIndex = null;
+  currentOrder = cart.length
+    ? cart[cart.length - 1]
+    : null;
+
+  resetCheckoutState();
+  updateCart();
+}
+
+function editCartItem(index) {
+  const order = cart[index];
+  if (!order) return;
+
+  editingCartIndex = index;
+  currentOrder = order;
+  closeDrawer(cartDrawer);
+
+  if (order.type === "Build Your Box") {
+    buildBoxSize = order.boxSize;
+    buildBoxName = order.boxName;
+    buildSelection = [...order.cookies];
+
+    showShopCategory("build");
+
+    setTimeout(() => {
+      openBuildFlavourSelector();
+    }, 250);
+    return;
+  }
+
+  if (order.pickId) {
+    setTimeout(() => {
+      openGookiePickDetails(order.pickId);
+    }, 200);
+    return;
+  }
+
+  if (
+    order.type === "Single Flavour Box" ||
+    order.type === "Gookie Big Box"
+  ) {
+    const uniqueCookieIds =
+      [...new Set(order.cookies)];
+
+    openSingleFlavourShop({
+      size: order.boxSize,
+      bigBox: order.type === "Gookie Big Box",
+    });
+
+    singleFlavourCookieIds = [];
+    singleFlavourCookieId = "";
+
+    uniqueCookieIds.forEach((cookieId) => {
+      const button = singleFlavourButtons.find(
+        (item) =>
+          item.dataset.singleCookie === cookieId
+      );
+
+      if (!button) return;
+
+      button.classList.add("is-selected");
+
+      if (order.type === "Gookie Big Box") {
+        singleFlavourCookieIds.push(cookieId);
+      } else {
+        singleFlavourCookieId = cookieId;
+      }
+    });
+
+    if (confirmSingleFlavourShop) {
+      confirmSingleFlavourShop.disabled = false;
+
+      if (order.type === "Gookie Big Box") {
+        confirmSingleFlavourShop.textContent =
+          uniqueCookieIds.length === 1
+            ? "UPDATE BIG BOX · 1 FLAVOUR →"
+            : "UPDATE BIG BOX · 2 FLAVOURS →";
+      } else {
+        const cookie =
+          getCookieById(singleFlavourCookieId);
+
+        confirmSingleFlavourShop.textContent =
+          cookie
+            ? `UPDATE ${cookie.name.toUpperCase()} →`
+            : "UPDATE BOX →";
+      }
+    }
+  }
+}
+
+function continueShopping() {
+  closeDrawer(cartDrawer);
+
+  document
+    .querySelector("#shopCatalogue")
+    ?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+}
+
 function saveBuildOrder() {
   if (buildSelection.length !== buildBoxSize) return;
 
-  currentOrder = {
+  commitOrderToCart({
     type: "Build Your Box",
     boxName: buildBoxName,
     boxSize: buildBoxSize,
+    price: GOOKIE_PRICING[buildBoxSize] || 0,
     cookies: [...buildSelection],
-  };
-
-  currentOrderId = null;
-
-  updateCart();
+  });
 
   renderMiniSlots(buildBoxSize);
   updateAccordionAction();
@@ -1766,7 +1987,7 @@ function openGookiePickDetails(pickId) {
 function addSelectedGookiePickToCart() {
   if (!activeGookiePick) return;
 
-  currentOrder = {
+  commitOrderToCart({
     type: activeGookiePick.orderType || "Gookie's Picks",
     pickId: activeGookiePick.id,
     collectionName: activeGookiePick.name,
@@ -1774,134 +1995,125 @@ function addSelectedGookiePickToCart() {
     boxSize: activeGookiePick.quantity,
     price: activeGookiePick.price,
     cookies: [...activeGookiePick.cookies],
-  };
+  });
 
-  currentOrderId = null;
-  updateCart();
   closeModal(gookiePickModal);
   openDrawer(cartDrawer, cartButton);
 }
 
-function editCurrentOrder() {
-  if (!currentOrder) return;
+function updateCart() {
+  const totalCookies = getCartCookieCount();
 
-  closeDrawer(cartDrawer);
+  cartCount.textContent = String(totalCookies);
+  cartSelectedCount.textContent = String(totalCookies);
 
-  if (currentOrder.type === "Build Your Box") {
-    showOrderSection(buildYourBoxSection, gookiesChoiceSection);
-    setTimeout(() => {
-      openBuildFlavourSelector();
-    }, 380);
+  if (!cart.length) {
+    cartEmptyState.hidden = false;
+    cartContent.hidden = true;
+    checkoutButton.disabled = true;
+    cartOrderSummary.innerHTML = "";
     return;
   }
 
-  showOrderSection(gookiesChoiceSection, buildYourBoxSection);
-
-  if (currentOrder.pickId) {
-    setTimeout(() => {
-      openGookiePickDetails(currentOrder.pickId);
-    }, 380);
-  }
-}
-
-function removeCurrentOrder() {
-  if (!currentOrder) return;
-
-  currentOrder = null;
-  currentOrderId = null;
-  updateCart();
-}
-
-function updateCart() {
-  const total = currentOrder ? currentOrder.cookies.length : 0;
-
-  cartCount.textContent = String(total);
-  cartSelectedCount.textContent = String(total);
-
-  if (!currentOrder) {
-  cartEmptyState.hidden = false;
-  cartContent.hidden = true;
-  checkoutButton.disabled = true;
-  cartOrderSummary.innerHTML = "";
-  return;
-}
   cartEmptyState.hidden = true;
   cartContent.hidden = false;
   checkoutButton.disabled = false;
 
-  const counts = {};
-  currentOrder.cookies.forEach((id) => {
-    counts[id] = (counts[id] || 0) + 1;
-  });
+  cartOrderSummary.innerHTML =
+    cart
+      .map((order, index) => {
+        const orderLabel =
+          order.collectionName || order.boxName;
 
-  const flavourSummary = Object.entries(counts)
-    .map(([id, quantity]) => {
-      const cookie = getCookieById(id);
+        return `
+          <article class="cart-multi-item">
+            <div class="cart-order-card">
+              <div class="cart-item-number">
+                BOX ${index + 1}
+              </div>
 
-      return `
-        <div class="cart-flavour-row">
-          <div class="cart-flavour-image">
-            <img src="${cookie.image}" alt="${cookie.name}">
-          </div>
+              <strong class="cart-order-title">
+                ${order.type}
+              </strong>
 
-          <div class="cart-flavour-copy">
-            <strong>${cookie.name}</strong>
-            <span>${cookie.subtitle}</span>
-          </div>
+              <span class="cart-order-label">
+                ${orderLabel}
+              </span>
 
-          <span class="cart-flavour-quantity">×${quantity}</span>
-        </div>
-      `;
-    })
-    .join("");
+              <div class="cart-order-meta">
+                <span>${order.boxSize} cookies</span>
+                <strong>
+                  ${formatMoney(getCartItemPrice(order))}
+                </strong>
+              </div>
+            </div>
 
-  const orderLabel = currentOrder.collectionName || currentOrder.boxName;
+            <div class="cart-flavour-list">
+              ${getCartFlavourSummary(order)}
+            </div>
 
-  cartOrderSummary.innerHTML = `
-    <div class="cart-order-card">
-      <p class="cart-order-kicker">CURRENT SELECTION</p>
-      <strong class="cart-order-title">${currentOrder.type}</strong>
-      <span class="cart-order-label">${orderLabel}</span>
+            <div class="cart-action-row">
+              <button
+                class="cart-edit-button"
+                type="button"
+                data-edit-cart-index="${index}"
+              >
+                EDIT BOX
+              </button>
 
-      <div class="cart-order-meta">
-        <span>${currentOrder.boxName} · ${currentOrder.boxSize} cookies</span>
-        <strong>${formatMoney(getOrderSubtotal())}</strong>
+              <button
+                class="cart-remove-button"
+                type="button"
+                data-remove-cart-index="${index}"
+              >
+                REMOVE
+              </button>
+            </div>
+          </article>
+        `;
+      })
+      .join("") +
+    `
+      <div class="cart-multi-total">
+        <span>
+          ${getCartBoxCount()}
+          ${getCartBoxCount() === 1 ? "box" : "boxes"}
+        </span>
+        <strong>${formatMoney(getCartSubtotal())}</strong>
       </div>
-    </div>
+    `;
 
-    <div class="cart-flavour-list">
-      ${flavourSummary}
-    </div>
+  cartOrderSummary
+    .querySelectorAll("[data-edit-cart-index]")
+    .forEach((button) => {
+      button.addEventListener("click", () => {
+        editCartItem(
+          Number(button.dataset.editCartIndex),
+        );
+      });
+    });
 
-    <div class="cart-action-row">
-      <button class="cart-edit-button" id="editCartOrder" type="button">
-        EDIT BOX
-      </button>
-
-      <button class="cart-remove-button" id="removeCartOrder" type="button">
-        REMOVE
-      </button>
-    </div>
-  `;
-
-  $("editCartOrder").addEventListener("click", editCurrentOrder);
-  $("removeCartOrder").addEventListener("click", removeCurrentOrder);
+  cartOrderSummary
+    .querySelectorAll("[data-remove-cart-index]")
+    .forEach((button) => {
+      button.addEventListener("click", () => {
+        removeCartItem(
+          Number(button.dataset.removeCartIndex),
+        );
+      });
+    });
 }
-
 
 function formatMoney(amount) {
   return `RM${Number(amount).toFixed(2)}`;
 }
 
 function getOrderSubtotal() {
-  if (!currentOrder) return 0;
-  return Number.isFinite(currentOrder.price)
-    ? currentOrder.price
-    : GOOKIE_PRICING[currentOrder.boxSize] || 0;
+  return getCartSubtotal();
 }
 
 function getOrderTotal() {
-  return getOrderSubtotal() + GOOKIE_DELIVERY_FEE;
+  return getCartSubtotal() + GOOKIE_DELIVERY_FEE;
 }
 
 /* =========================================================
@@ -1990,24 +2202,7 @@ function populateCustomerDetailsForm() {
 }
 
 function renderCheckoutReview() {
-  if (!currentOrder || !customerDetails) return;
-
-  const counts = {};
-  currentOrder.cookies.forEach((id) => {
-    counts[id] = (counts[id] || 0) + 1;
-  });
-
-  const flavourRows = Object.entries(counts)
-    .map(([id, quantity]) => {
-      const cookie = getCookieById(id);
-      return `
-        <div class="checkout-review-flavour">
-          <span>${cookie.name}</span>
-          <strong>×${quantity}</strong>
-        </div>
-      `;
-    })
-    .join("");
+  if (!cart.length || !customerDetails) return;
 
   const notesMarkup = customerDetails.notes
     ? `<span class="checkout-notes"><strong>Order notes</strong>${customerDetails.notes}</span>`
@@ -2020,17 +2215,63 @@ function renderCheckoutReview() {
     ${notesMarkup}
   `;
 
-  checkoutReviewCount.textContent = `${currentOrder.boxSize} cookies`;
-  checkoutOrderReview.innerHTML = `
-    <div class="checkout-order-header">
-      <strong>${currentOrder.boxName}</strong>
-      <span>${currentOrder.collectionName || currentOrder.type}</span>
-      <span class="checkout-order-price">${formatMoney(getOrderSubtotal())}</span>
-    </div>
-    <div class="checkout-review-flavours">
-      ${flavourRows}
-    </div>
-  `;
+  checkoutReviewCount.textContent =
+    `${getCartBoxCount()} ${getCartBoxCount() === 1 ? "box" : "boxes"} · ` +
+    `${getCartCookieCount()} cookies`;
+
+  checkoutOrderReview.innerHTML =
+    cart
+      .map((order, index) => {
+        const counts = {};
+
+        order.cookies.forEach((id) => {
+          counts[id] = (counts[id] || 0) + 1;
+        });
+
+        const flavourRows =
+          Object.entries(counts)
+            .map(([id, quantity]) => {
+              const cookie = getCookieById(id);
+              if (!cookie) return "";
+
+              return `
+                <div class="checkout-review-flavour">
+                  <span>${cookie.name}</span>
+                  <strong>×${quantity}</strong>
+                </div>
+              `;
+            })
+            .join("");
+
+        return `
+          <section class="checkout-multi-box">
+            <div class="checkout-order-header">
+              <strong>
+                BOX ${index + 1} · ${order.boxName}
+              </strong>
+
+              <span>
+                ${order.collectionName || order.type}
+              </span>
+
+              <span class="checkout-order-price">
+                ${formatMoney(getCartItemPrice(order))}
+              </span>
+            </div>
+
+            <div class="checkout-review-flavours">
+              ${flavourRows}
+            </div>
+          </section>
+        `;
+      })
+      .join("") +
+    `
+      <div class="checkout-multi-subtotal">
+        <span>Subtotal</span>
+        <strong>${formatMoney(getCartSubtotal())}</strong>
+      </div>
+    `;
 }
 
 function showCustomerDetailsStep() {
@@ -2049,7 +2290,7 @@ function showCheckoutReviewStep() {
 }
 
 function openCheckout() {
-  if (!currentOrder) return;
+  if (!cart.length) return;
 
   closeDrawer(cartDrawer);
   showCustomerDetailsStep();
@@ -2068,9 +2309,9 @@ function handleCustomerDetailsSubmit(event) {
 }
 
 function renderPaymentStep() {
-  if (!currentOrder || !customerDetails) return;
+  if (!cart.length || !customerDetails) return;
 
-  const quote = currentOrder.serverQuote;
+  const quote = checkoutState.serverQuote;
 
   if (
     !quote ||
@@ -2086,8 +2327,8 @@ function renderPaymentStep() {
   currentOrderId = null;
 
   paymentBoxSummary.textContent =
-    `${currentOrder.boxName} · ` +
-    `${currentOrder.boxSize} cookies`;
+    `${getCartBoxCount()} ${getCartBoxCount() === 1 ? "box" : "boxes"} · ` +
+    `${getCartCookieCount()} cookies`;
 
   paymentSubtotal.textContent = formatMoney(
     quote.subtotal,
@@ -2108,7 +2349,7 @@ function renderPaymentStep() {
 }
 
 async function openPaymentStep() {
-  if (!currentOrder || !customerDetails) return;
+  if (!cart.length || !customerDetails) return;
 
   const originalButtonText =
     proceedToPaymentButton.textContent;
@@ -2168,7 +2409,7 @@ async function openPaymentStep() {
       );
     }
 
-    currentOrder.serverQuote = {
+    checkoutState.serverQuote = {
       subtotal: Number(result.totals.subtotal),
 
       discount: Number(
@@ -2212,7 +2453,7 @@ async function openPaymentStep() {
   }
 }
 function getWhatsAppMessage() {
-  const quote = currentOrder?.serverQuote;
+  const quote = checkoutState.serverQuote;
 
   if (
     !quote ||
@@ -2223,19 +2464,33 @@ function getWhatsAppMessage() {
     );
   }
 
-  const counts = {};
+  const boxLines = cart
+    .map((order, index) => {
+      const counts = {};
 
-  currentOrder.cookies.forEach((id) => {
-    counts[id] = (counts[id] || 0) + 1;
-  });
+      order.cookies.forEach((id) => {
+        counts[id] = (counts[id] || 0) + 1;
+      });
 
-  const itemLines = Object.entries(counts)
-    .map(([id, quantity]) => {
-      return (
-        `• ${getCookieById(id).name} ×${quantity}`
-      );
+      const itemLines =
+        Object.entries(counts)
+          .map(([id, quantity]) => {
+            const cookie = getCookieById(id);
+
+            return cookie
+              ? `   • ${cookie.name} ×${quantity}`
+              : "";
+          })
+          .filter(Boolean)
+          .join("\n");
+
+      return [
+        `BOX ${index + 1}: ${order.boxName}`,
+        `${order.type} · ${order.boxSize} cookies`,
+        itemLines,
+      ].join("\n");
     })
-    .join("\n");
+    .join("\n\n");
 
   const notesLine = customerDetails.notes
     ? `\nOrder notes: ${customerDetails.notes}`
@@ -2251,8 +2506,7 @@ function getWhatsAppMessage() {
     `Phone: ${customerDetails.phone}`,
     `Delivery address: ${customerDetails.address}, ${customerDetails.postcode}${notesLine}`,
     "",
-    `${currentOrder.type} — ${currentOrder.boxName}`,
-    itemLines,
+    boxLines,
     "",
     `Subtotal: ${formatMoney(quote.subtotal)}`,
     `Delivery: ${formatMoney(quote.shippingCharge)}`,
@@ -2374,19 +2628,21 @@ let isOrderSubmissionLocked = false;
  * - a new order object receives a new ID.
  */
 function getOrCreateClientRequestId() {
-  if (!currentOrder) {
-    throw new Error("No active order was found.");
+  if (!cart.length) {
+    throw new Error("Your Gookie cart is empty.");
   }
 
-  if (currentOrder.clientRequestId) {
-    return currentOrder.clientRequestId;
+  if (checkoutState.clientRequestId) {
+    return checkoutState.clientRequestId;
   }
 
-  const randomPart = generateClientRequestRandomPart();
+  const randomPart =
+    generateClientRequestRandomPart();
 
-  currentOrder.clientRequestId = `CRQ${randomPart}`;
+  checkoutState.clientRequestId =
+    `CRQ${randomPart}`;
 
-  return currentOrder.clientRequestId;
+  return checkoutState.clientRequestId;
 }
 
 
@@ -2502,7 +2758,7 @@ function unlockOrderSubmission() {
 
 async function continueToWhatsApp() {
   if (!paymentProofSaved.checked) return;
-  if (!currentOrder || !customerDetails) return;
+  if (!cart.length || !customerDetails) return;
 
   /*
    * The first synchronous check prevents another invocation before
@@ -2568,13 +2824,13 @@ async function continueToWhatsApp() {
     orderCreatedSuccessfully = true;
 
     currentOrderId = result.orderId;
-    currentOrder.orderId = result.orderId;
-    currentOrder.clientRequestId =
+    checkoutState.orderId = result.orderId;
+    checkoutState.clientRequestId =
       result.clientRequestId || clientRequestId;
-    currentOrder.paymentStatus =
+    checkoutState.paymentStatus =
       result.paymentStatus;
-    currentOrder.workflow = result.workflow;
-    currentOrder.serverQuote = result.quote;
+    checkoutState.workflow = result.workflow;
+    checkoutState.serverQuote = result.quote;
 
     paymentTotal.textContent = formatMoney(
       result.quote.grandTotal,
@@ -3257,16 +3513,13 @@ confirmSingleFlavourShop?.addEventListener(
               ...Array(6).fill(singleFlavourCookieIds[1]),
             ];
 
-      currentOrder = {
+      commitOrderToCart({
         type: "Gookie Big Box",
         boxName: "Gookie Big Box",
         boxSize: 12,
         price: GOOKIE_PRICING[12] || 0,
         cookies: bigBoxCookies,
-      };
-
-      currentOrderId = null;
-      updateCart();
+      });
       closeModal(singleFlavourShopModal);
       openDrawer(cartDrawer, cartButton);
       return;
@@ -3280,16 +3533,13 @@ confirmSingleFlavourShop?.addEventListener(
 
     const size = singleFlavourSize;
 
-    currentOrder = {
+    commitOrderToCart({
       type: "Single Flavour Box",
       boxName: `Single Flavour · Box of ${size}`,
       boxSize: size,
       price: GOOKIE_PRICING[size] || 0,
       cookies: Array(size).fill(singleFlavourCookieId),
-    };
-
-    currentOrderId = null;
-    updateCart();
+    });
     closeModal(singleFlavourShopModal);
     openDrawer(cartDrawer, cartButton);
   }
@@ -3475,6 +3725,13 @@ if (
   buildBoxProgressText
 ) {
   updateBuildBoxProgress();
+}
+
+if (continueShoppingButton) {
+  continueShoppingButton.addEventListener(
+    "click",
+    continueShopping,
+  );
 }
 
 updateCart();

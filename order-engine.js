@@ -20,7 +20,7 @@ const GOOGLE_SCRIPT_URL =
 
 const GOOKIE_BOX_IDS = Object.freeze({
   4: "BOX001",
-  6: "BOX002",
+  8: "BOX002",
   12: "BOX003",
 });
 
@@ -62,12 +62,18 @@ function getOrderSelectionType(order) {
     return "BUILD_YOUR_OWN";
   }
 
-  if (order.type === "Gookie's Picks") {
+  if (
+    order.type === "Gookie's Picks" ||
+    order.type === "Assorted Box" ||
+    order.type === "Single Flavour Box" ||
+    order.type === "Gookie Big Box"
+  ) {
     return "GOOKIES_CHOICE";
   }
 
   throw new Error(
-    "Unknown order type: " + String(order.type || "")
+    "Unknown order type: " +
+      String(order.type || "")
   );
 }
 
@@ -112,7 +118,7 @@ function buildOrderItems(cookieIds) {
 ========================================================= */
 
 function buildOrderPayload() {
-  if (!currentOrder) {
+  if (!Array.isArray(cart) || cart.length === 0) {
     throw new Error("Your Gookie cart is empty.");
   }
 
@@ -120,34 +126,47 @@ function buildOrderPayload() {
     throw new Error("Customer details are missing.");
   }
 
-  const boxId =
-    GOOKIE_BOX_IDS[currentOrder.boxSize];
+  const boxes = cart.map(function (order, index) {
+    const boxId =
+      GOOKIE_BOX_IDS[order.boxSize];
 
-  if (!boxId) {
-    throw new Error(
-      "No Box ID found for " +
-        currentOrder.boxSize +
-        " cookies."
-    );
-  }
+    if (!boxId) {
+      throw new Error(
+        "No Box ID found for " +
+          order.boxSize +
+          " cookies in cart box " +
+          (index + 1) +
+          "."
+      );
+    }
 
-  const items =
-    buildOrderItems(currentOrder.cookies);
+    const items =
+      buildOrderItems(order.cookies);
 
-  const totalQuantity =
-    items.reduce(function (total, item) {
-      return total + item.qty;
-    }, 0);
+    const totalQuantity =
+      items.reduce(function (total, item) {
+        return total + item.qty;
+      }, 0);
 
-  if (totalQuantity !== currentOrder.boxSize) {
-    throw new Error(
-      "This box requires exactly " +
-        currentOrder.boxSize +
-        " cookies, but received " +
-        totalQuantity +
-        "."
-    );
-  }
+    if (totalQuantity !== order.boxSize) {
+      throw new Error(
+        "Cart box " +
+          (index + 1) +
+          " requires exactly " +
+          order.boxSize +
+          " cookies, but received " +
+          totalQuantity +
+          "."
+      );
+    }
+
+    return {
+      boxId: boxId,
+      selectionType:
+        getOrderSelectionType(order),
+      items: items,
+    };
+  });
 
   return {
     customer: {
@@ -159,13 +178,6 @@ function buildOrderPayload() {
       notes: customerDetails.notes || "",
     },
 
-    boxes: [
-      {
-        boxId: boxId,
-        selectionType:
-          getOrderSelectionType(currentOrder),
-        items: items,
-      },
-    ],
+    boxes: boxes,
   };
 }

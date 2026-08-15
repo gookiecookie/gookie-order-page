@@ -9023,3 +9023,96 @@ margin-bottom: 0;
     gap:9px;
   }
 }
+
+
+/* =========================================================
+   MULTI-BOX CART V1
+========================================================= */
+
+.cart-continue-shopping{
+  width:100%;
+  min-height:44px;
+  margin-bottom:10px;
+  padding:10px 14px;
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  font-size:.72rem;
+  font-weight:800;
+  letter-spacing:.05em;
+  cursor:pointer;
+}
+
+.cart-continue-shopping:hover{
+  color:var(--gookie-red);
+}
+
+.cart-multi-item{
+  padding:0 0 20px;
+  margin:0 0 20px;
+  border-bottom:1px solid var(--line);
+}
+
+.cart-item-number{
+  margin-bottom:5px;
+  color:var(--gookie-red);
+  font-size:.6rem;
+  font-weight:800;
+  letter-spacing:.12em;
+}
+
+.cart-multi-item .cart-order-card{
+  margin-bottom:12px;
+}
+
+.cart-multi-item .cart-flavour-list{
+  margin-top:10px;
+}
+
+.cart-multi-total{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:16px 0 4px;
+}
+
+.cart-multi-total span{
+  color:var(--muted);
+  font-size:.78rem;
+}
+
+.cart-multi-total strong{
+  color:var(--ink);
+  font-size:1rem;
+}
+
+.checkout-multi-box{
+  padding:0 0 18px;
+  margin:0 0 18px;
+  border-bottom:1px solid var(--line);
+}
+
+.checkout-multi-subtotal{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:14px 0 0;
+}
+
+.checkout-multi-subtotal span{
+  color:var(--muted);
+  font-size:.78rem;
+}
+
+.checkout-multi-subtotal strong{
+  font-size:1rem;
+}
+
+@media (max-width:600px){
+  .cart-multi-item{
+    padding-bottom:16px;
+    margin-bottom:16px;
+  }
+}
