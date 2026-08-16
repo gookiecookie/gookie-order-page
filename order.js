@@ -1954,19 +1954,11 @@ function openGookiePickDetails(pickId) {
   gookiePickModalQuantity.textContent = `BOX OF ${pick.quantity}`;
   gookiePickModalPrice.textContent = formatMoney(pick.price);
 
+  // Keep the top of the product popup purchase-focused.
+  // Flavour contents are available in the “WHAT'S IN THE BOX” accordion below.
   if (gookiePickModalPreview) {
-    const flavourNames = [];
-
-    pick.cookies.forEach((cookieId) => {
-      const cookie = getCookieById(cookieId);
-      if (!cookie) return;
-      if (!flavourNames.includes(cookie.name)) {
-        flavourNames.push(cookie.name);
-      }
-    });
-
-    gookiePickModalPreview.textContent =
-      flavourNames.join(" · ");
+    gookiePickModalPreview.textContent = "";
+    gookiePickModalPreview.hidden = true;
   }
 
   if (addGookiePickToCart) {
