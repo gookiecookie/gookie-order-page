@@ -959,13 +959,13 @@ const GOOKIE_ADDONS = Object.freeze({
   "party-kit": {
     id: "party-kit",
     addonId: "ADDON001",
-    name: "Party Kit",
+    name: "Party Kit + Wish Card",
     price: 7,
     requiresMessage: false,
     messageMaxLength: 70,
     iconClass: "fa-solid fa-cake-candles",
     description:
-      "Candle, cardboard, wish card topper and sprinkles for a celebration-ready Gookie box.",
+      "Candle, cardboard, sprinkles and a custom wish card topper for a celebration-ready Gookie box.",
     messageHeading: "Wish card topper message",
     messageHelp:
       "Optional. Keep it short and sweet so it fits nicely on the topper.",
@@ -2051,6 +2051,82 @@ function saveAddonToCart() {
       return;
     }
 
+    /*
+     * Bundle rule:
+     * Party Kit + Wish Card already includes a wish card.
+     * If a standalone Wish Card is already attached to this box,
+     * upgrade it to the Party Kit instead of charging RM9.
+     */
+    if (definition.addonId === "ADDON001") {
+      const wishCardIndex =
+        addons.findIndex(
+          (addon) => addon.addonId === "ADDON002",
+        );
+
+      if (wishCardIndex !== -1) {
+        const existingWishCard =
+          addons[wishCardIndex];
+
+        nextAddon.message =
+          message ||
+          existingWishCard.message ||
+          "";
+
+        addons.splice(wishCardIndex, 1);
+      }
+    }
+
+    /*
+     * If Party Kit already exists, a separate Wish Card is unnecessary.
+     * Open the existing Party Kit for editing instead.
+     */
+    if (definition.addonId === "ADDON002") {
+      const partyKitIndex =
+        addons.findIndex(
+          (addon) => addon.addonId === "ADDON001",
+        );
+
+      if (partyKitIndex !== -1) {
+        activeAddonId = "party-kit";
+        editingAddonBoxIndex =
+          selectedBoxIndex;
+        editingAddonIndex =
+          partyKitIndex;
+        activeAddonBoxIndex =
+          selectedBoxIndex;
+
+        const partyKit =
+          GOOKIE_ADDONS["party-kit"];
+
+        addonModalEyebrow.textContent =
+          partyKit.name.toUpperCase();
+        addonModalName.textContent =
+          partyKit.name;
+        addonModalTitle.textContent =
+          `Edit ${partyKit.name}.`;
+        addonModalDescription.textContent =
+          partyKit.description;
+        addonModalPrice.textContent =
+          formatMoney(partyKit.price);
+        addonModalIcon.innerHTML =
+          `<i class="${partyKit.iconClass}"></i>`;
+        addonMessageHeading.textContent =
+          partyKit.messageHeading;
+        addonMessageHelp.textContent =
+          partyKit.messageHelp;
+        addonMessageRequirement.textContent =
+          "Optional";
+        addonMessage.value =
+          addons[partyKitIndex].message || "";
+        saveAddonButton.textContent =
+          "SAVE CHANGES";
+
+        renderAddonBoxChoices();
+        updateAddonMessageCounter();
+        return;
+      }
+    }
+
     addons.push(nextAddon);
   }
 
@@ -2103,111 +2179,141 @@ function renderCartAddons(order, boxIndex) {
   const addons =
     cloneAddons(order.addons);
 
-  if (!addons.length) {
-    return `
-      <div class="cart-addon-block cart-addon-block-empty">
-        <p class="cart-addon-heading">ADD-ONS</p>
-        <div class="cart-addon-quick-actions">
-          <button
-            type="button"
-            data-quick-addon="party-kit"
-            data-addon-target-box="${boxIndex}"
-          >
-            + PARTY KIT · RM7
-          </button>
-          <button
-            type="button"
-            data-quick-addon="wishcard"
-            data-addon-target-box="${boxIndex}"
-          >
-            + WISH CARD · RM2
-          </button>
+  const hasPartyKit =
+    addons.some(
+      (addon) => addon.addonId === "ADDON001",
+    );
+
+  const hasWishCard =
+    addons.some(
+      (addon) => addon.addonId === "ADDON002",
+    );
+
+  const existingRows = addons
+    .map((addon, addonIndex) => {
+      const definition =
+        getAddonDefinition(addon);
+
+      const name =
+        addon.name ||
+        definition?.name ||
+        "Add-on";
+
+      const message =
+        addon.message
+          ? `<span class="cart-addon-message">“${escapeHtml(addon.message)}”</span>`
+          : "";
+
+      return `
+        <div class="cart-addon-selected">
+          <div class="cart-addon-selected-main">
+            <span class="cart-addon-selected-check" aria-hidden="true">✓</span>
+
+            <div class="cart-addon-copy">
+              <strong>${escapeHtml(name)}</strong>
+              ${message}
+            </div>
+
+            <span class="cart-addon-price">
+              ${formatMoney(getAddonPrice(addon))}
+            </span>
+          </div>
+
+          <div class="cart-addon-actions">
+            <button
+              type="button"
+              data-edit-addon-box="${boxIndex}"
+              data-edit-addon-index="${addonIndex}"
+            >
+              EDIT
+            </button>
+
+            <button
+              type="button"
+              data-remove-addon-box="${boxIndex}"
+              data-remove-addon-index="${addonIndex}"
+            >
+              REMOVE
+            </button>
+          </div>
         </div>
-      </div>
-    `;
-  }
+      `;
+    })
+    .join("");
+
+  const wishCardOption =
+    hasWishCard || hasPartyKit
+      ? ""
+      : `
+        <button
+          class="cart-addon-option"
+          type="button"
+          data-quick-addon="wishcard"
+          data-addon-target-box="${boxIndex}"
+        >
+          <span class="cart-addon-option-icon" aria-hidden="true">
+            <i class="fa-regular fa-envelope"></i>
+          </span>
+
+          <span class="cart-addon-option-copy">
+            <strong>WISH CARD</strong>
+            <small>Custom message up to 70 characters</small>
+          </span>
+
+          <span class="cart-addon-option-side">
+            <strong>+ RM2</strong>
+            <small>ADD +</small>
+          </span>
+        </button>
+      `;
+
+  const partyKitOption =
+    hasPartyKit
+      ? ""
+      : `
+        <button
+          class="cart-addon-option cart-addon-option-featured"
+          type="button"
+          data-quick-addon="party-kit"
+          data-addon-target-box="${boxIndex}"
+        >
+          <span class="cart-addon-option-icon" aria-hidden="true">
+            <i class="fa-solid fa-cake-candles"></i>
+          </span>
+
+          <span class="cart-addon-option-copy">
+            <strong>PARTY KIT + WISH CARD</strong>
+            <small>Candle · cardboard · sprinkles · custom topper</small>
+          </span>
+
+          <span class="cart-addon-option-side">
+            <strong>+ RM7</strong>
+            <small>ADD +</small>
+          </span>
+        </button>
+      `;
 
   return `
     <div class="cart-addon-block">
-      <p class="cart-addon-heading">ADD-ONS</p>
-
-      ${addons
-        .map((addon, addonIndex) => {
-          const definition =
-            getAddonDefinition(addon);
-
-          const name =
-            addon.name ||
-            definition?.name ||
-            "Add-on";
-
-          const message =
-            addon.message
-              ? `<span class="cart-addon-message">“${escapeHtml(addon.message)}”</span>`
-              : "";
-
-          return `
-            <div class="cart-addon-row">
-              <div class="cart-addon-copy">
-                <strong>+ ${escapeHtml(name)}</strong>
-                ${message}
-              </div>
-
-              <span class="cart-addon-price">
-                ${formatMoney(getAddonPrice(addon))}
-              </span>
-
-              <div class="cart-addon-actions">
-                <button
-                  type="button"
-                  data-edit-addon-box="${boxIndex}"
-                  data-edit-addon-index="${addonIndex}"
-                >
-                  EDIT
-                </button>
-
-                <button
-                  type="button"
-                  data-remove-addon-box="${boxIndex}"
-                  data-remove-addon-index="${addonIndex}"
-                >
-                  REMOVE
-                </button>
-              </div>
-            </div>
-          `;
-        })
-        .join("")}
-
-      <div class="cart-addon-quick-actions">
-        ${
-          addons.some((addon) => addon.addonId === "ADDON001")
-            ? ""
-            : `
-              <button
-                type="button"
-                data-quick-addon="party-kit"
-                data-addon-target-box="${boxIndex}"
-              >
-                + PARTY KIT · RM7
-              </button>
-            `
-        }
-
-        ${
-          addons.some((addon) => addon.addonId === "ADDON002")
-            ? ""
-            : `
-              <button
-                type="button"
-                data-quick-addon="wishcard"
-                data-addon-target-box="${boxIndex}"
-              >
-                + WISH CARD · RM2
-              </button>
-            `
-        }
+      <div class="cart-addon-header">
+        <div>
+          <p class="cart-addon-heading">MAKE IT EXTRA SPECIAL</p>
+          <span>Optional add-ons for this box</span>
+        </div>
       </div>
+
+      ${existingRows}
+
+      ${
+        wishCardOption || partyKitOption
+          ? `
+            <div class="cart-addon-options">
+              ${wishCardOption}
+              ${partyKitOption}
+            </div>
+          `
+          : ""
+      }
     </div>
   `;
 }
