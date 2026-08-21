@@ -1,7 +1,7 @@
 "use strict";
 
 /* =========================================================
-   GOOKIE ORDER ENGINE V5.1
+   GOOKIE ORDER ENGINE V5.2 — ADD-ONS READY
    Converts website cart data into Apps Script payload.
 ========================================================= */
 
@@ -23,6 +23,21 @@ const GOOKIE_BOX_IDS = Object.freeze({
   8: "BOX002",
   12: "BOX003",
 });
+
+
+/* =========================================================
+   3. ADD-ON ID MAPPING
+========================================================= */
+
+const GOOKIE_ADDON_IDS = Object.freeze({
+  "party-kit": "ADDON001",
+  "wishcard": "ADDON002",
+  "wish-card": "ADDON002",
+  ADDON001: "ADDON001",
+  ADDON002: "ADDON002",
+});
+
+const GOOKIE_ADDON_MESSAGE_LIMIT = 70;
 
 
 /* =========================================================
@@ -114,7 +129,82 @@ function buildOrderItems(cookieIds) {
 
 
 /* =========================================================
-   6. BUILD CREATE ORDER PAYLOAD
+   7. NORMALISE ADD-ONS
+========================================================= */
+
+function buildOrderAddons(addons, boxIndex) {
+  if (!Array.isArray(addons) || addons.length === 0) {
+    return [];
+  }
+
+  const seenAddonIds = new Set();
+
+  return addons.map(function (addon) {
+    if (!addon || typeof addon !== "object") {
+      throw new Error(
+        "Invalid add-on in cart box " + (boxIndex + 1) + "."
+      );
+    }
+
+    const rawId =
+      addon.addonId ||
+      addon.id ||
+      addon.type ||
+      "";
+
+    const addonId =
+      GOOKIE_ADDON_IDS[String(rawId)];
+
+    if (!addonId) {
+      throw new Error(
+        "Unknown add-on in cart box " +
+          (boxIndex + 1) +
+          ": " +
+          String(rawId || "(missing Add-on ID)")
+      );
+    }
+
+    if (seenAddonIds.has(addonId)) {
+      throw new Error(
+        "The same add-on cannot be added twice to cart box " +
+          (boxIndex + 1) +
+          "."
+      );
+    }
+
+    seenAddonIds.add(addonId);
+
+    const message =
+      String(addon.message || "").trim();
+
+    if (message.length > GOOKIE_ADDON_MESSAGE_LIMIT) {
+      throw new Error(
+        "Add-on message for cart box " +
+          (boxIndex + 1) +
+          " must be " +
+          GOOKIE_ADDON_MESSAGE_LIMIT +
+          " characters or fewer."
+      );
+    }
+
+    if (addonId === "ADDON002" && !message) {
+      throw new Error(
+        "Wish Card for cart box " +
+          (boxIndex + 1) +
+          " needs a custom message."
+      );
+    }
+
+    return {
+      addonId: addonId,
+      qty: 1,
+      message: message,
+    };
+  });
+}
+
+/* =========================================================
+   8. BUILD CREATE ORDER PAYLOAD
 ========================================================= */
 
 function buildOrderPayload() {
@@ -160,11 +250,18 @@ function buildOrderPayload() {
       );
     }
 
+    const addons =
+      buildOrderAddons(
+        order.addons || [],
+        index
+      );
+
     return {
       boxId: boxId,
       selectionType:
         getOrderSelectionType(order),
       items: items,
+      addons: addons,
     };
   });
 

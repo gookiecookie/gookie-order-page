@@ -481,7 +481,8 @@
 
             <div class="shop-addon-copy">
               <h3>Party Kit</h3>
-              <p>Everything you need for a little Gookie celebration.</p>
+              <p>Candle, cardboard, wish card topper &amp; sprinkles.</p>
+              <span class="shop-addon-price">RM7</span>
               <button type="button" data-addon="party-kit">
                 ADD PARTY KIT →
               </button>
@@ -495,10 +496,11 @@
             </div>
 
             <div class="shop-addon-copy">
-              <h3>Wishcard</h3>
-              <p>Add a short message for someone special.</p>
+              <h3>Wish Card</h3>
+              <p>A little card with your custom message, up to 70 characters.</p>
+              <span class="shop-addon-price">RM2</span>
               <button type="button" data-addon="wishcard">
-                ADD WISHCARD →
+                ADD WISH CARD →
               </button>
             </div>
           </article>
@@ -1225,6 +1227,100 @@
             disabled
           >
             COMPLETE YOUR BOX
+          </button>
+        </div>
+      </div>
+    </section>
+
+
+
+    <!-- =========================================================
+         ADD-ON MODAL
+    ========================================================= -->
+    <section
+      class="modal addon-modal"
+      id="addonModal"
+      aria-hidden="true"
+      aria-label="Add an extra to your Gookie box"
+    >
+      <div class="modal-card addon-modal-card">
+        <div class="modal-sticky-header">
+          <div>
+            <p class="drawer-eyebrow">A LITTLE EXTRA</p>
+            <h2 id="addonModalTitle">Add something special.</h2>
+          </div>
+
+          <button
+            class="modal-close-button"
+            id="addonModalClose"
+            type="button"
+            aria-label="Close add-on"
+          >
+            ×
+          </button>
+        </div>
+
+        <div class="addon-modal-body">
+          <div class="addon-modal-product">
+            <div class="addon-modal-icon" id="addonModalIcon" aria-hidden="true">
+              <i class="fa-solid fa-gift"></i>
+            </div>
+
+            <div class="addon-modal-product-copy">
+              <p class="section-kicker" id="addonModalEyebrow">PARTY KIT</p>
+              <h3 id="addonModalName">Party Kit</h3>
+              <p id="addonModalDescription"></p>
+              <strong id="addonModalPrice">RM7</strong>
+            </div>
+          </div>
+
+          <section class="addon-box-section" id="addonBoxSection">
+            <div class="addon-section-heading">
+              <h4>Which box is this for?</h4>
+              <p id="addonBoxHelper">
+                Choose the Gookie box that should receive this add-on.
+              </p>
+            </div>
+
+            <div
+              class="addon-box-list"
+              id="addonBoxList"
+              role="radiogroup"
+              aria-label="Choose a box for this add-on"
+            ></div>
+          </section>
+
+          <section class="addon-message-section" id="addonMessageSection">
+            <div class="addon-section-heading">
+              <h4 id="addonMessageHeading">Wish card message</h4>
+              <p id="addonMessageHelp"></p>
+            </div>
+
+            <label class="addon-message-field" for="addonMessage">
+              <textarea
+                id="addonMessage"
+                maxlength="70"
+                rows="3"
+                placeholder="Type your short wish here..."
+              ></textarea>
+
+              <span class="addon-message-meta">
+                <small id="addonMessageRequirement"></small>
+                <strong><span id="addonMessageCount">0</span>/70</strong>
+              </span>
+            </label>
+
+            <p class="addon-message-error" id="addonMessageError" role="alert"></p>
+          </section>
+        </div>
+
+        <div class="addon-modal-footer">
+          <button
+            class="primary-button"
+            id="saveAddonButton"
+            type="button"
+          >
+            ADD TO BOX
           </button>
         </div>
       </div>

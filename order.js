@@ -260,6 +260,27 @@ const $ = (id) => document.getElementById(id),
   cartOrderSummary = $("cartOrderSummary"),
   checkoutButton = $("checkoutButton"),
   continueShoppingButton = $("continueShoppingButton"),
+
+  addonModal = $("addonModal"),
+  addonModalClose = $("addonModalClose"),
+  addonModalTitle = $("addonModalTitle"),
+  addonModalIcon = $("addonModalIcon"),
+  addonModalEyebrow = $("addonModalEyebrow"),
+  addonModalName = $("addonModalName"),
+  addonModalDescription = $("addonModalDescription"),
+  addonModalPrice = $("addonModalPrice"),
+  addonBoxSection = $("addonBoxSection"),
+  addonBoxHelper = $("addonBoxHelper"),
+  addonBoxList = $("addonBoxList"),
+  addonMessageSection = $("addonMessageSection"),
+  addonMessageHeading = $("addonMessageHeading"),
+  addonMessageHelp = $("addonMessageHelp"),
+  addonMessage = $("addonMessage"),
+  addonMessageRequirement = $("addonMessageRequirement"),
+  addonMessageCount = $("addonMessageCount"),
+  addonMessageError = $("addonMessageError"),
+  saveAddonButton = $("saveAddonButton"),
+
   checkoutModal = $("checkoutModal"),
   checkoutModalClose = $("checkoutModalClose"),
   checkoutModalTitle = $("checkoutModalTitle"),
@@ -933,6 +954,39 @@ terms: {
 
 };
 
+
+const GOOKIE_ADDONS = Object.freeze({
+  "party-kit": {
+    id: "party-kit",
+    addonId: "ADDON001",
+    name: "Party Kit",
+    price: 7,
+    requiresMessage: false,
+    messageMaxLength: 70,
+    iconClass: "fa-solid fa-cake-candles",
+    description:
+      "Candle, cardboard, wish card topper and sprinkles for a celebration-ready Gookie box.",
+    messageHeading: "Wish card topper message",
+    messageHelp:
+      "Optional. Keep it short and sweet so it fits nicely on the topper.",
+  },
+
+  wishcard: {
+    id: "wishcard",
+    addonId: "ADDON002",
+    name: "Wish Card",
+    price: 2,
+    requiresMessage: true,
+    messageMaxLength: 70,
+    iconClass: "fa-regular fa-envelope",
+    description:
+      "A small wish card with your custom message.",
+    messageHeading: "Your wish card message",
+    messageHelp:
+      "Required. Your message can be up to 70 characters.",
+  },
+});
+
 let buildBoxSize = 0,
   buildBoxName = "",
   buildSelection = [],
@@ -965,6 +1019,12 @@ let buildBoxSize = 0,
   marqueeDragDistance = 0,
   marqueeResumeTimer = null,
   marqueeAutoPosition = 0,
+
+  activeAddonId = null,
+  activeAddonBoxIndex = null,
+  editingAddonBoxIndex = null,
+  editingAddonIndex = null,
+
   flavourMeterPreviousCount = 0;
 const getCookieById = (id) => gookieCatalogue.find((c) => c.id === id);
 function openOverlay() {
@@ -1652,6 +1712,506 @@ function openBuildFlavourSelector() {
   openModal(flavourModal);
 }
 
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function cloneAddons(addons) {
+  return Array.isArray(addons)
+    ? addons.map((addon) => ({ ...addon }))
+    : [];
+}
+
+function getAddonDefinition(addonOrId) {
+  const id =
+    typeof addonOrId === "string"
+      ? addonOrId
+      : addonOrId?.id;
+
+  return GOOKIE_ADDONS[id] || null;
+}
+
+function getAddonPrice(addon) {
+  const definition = getAddonDefinition(addon);
+
+  if (Number.isFinite(Number(addon?.price))) {
+    return Number(addon.price);
+  }
+
+  return definition
+    ? Number(definition.price)
+    : 0;
+}
+
+function getOrderAddonTotal(order) {
+  return cloneAddons(order?.addons).reduce(
+    (total, addon) => total + getAddonPrice(addon),
+    0,
+  );
+}
+
+function getCartAddonCount() {
+  return cart.reduce(
+    (total, order) =>
+      total + cloneAddons(order.addons).length,
+    0,
+  );
+}
+
+function renderAddonBoxChoices() {
+  if (!addonBoxList) return;
+
+  addonBoxList.innerHTML = cart
+    .map((order, index) => {
+      const isSelected =
+        index === activeAddonBoxIndex;
+
+      const label =
+        order.collectionName || order.boxName;
+
+      const isEditingThisBox =
+        editingAddonBoxIndex !== null &&
+        index === editingAddonBoxIndex;
+
+      return `
+        <button
+          class="addon-box-option ${isSelected ? "is-selected" : ""}"
+          type="button"
+          role="radio"
+          aria-checked="${isSelected ? "true" : "false"}"
+          data-addon-box-index="${index}"
+          ${editingAddonBoxIndex !== null && !isEditingThisBox ? "disabled" : ""}
+        >
+          <span class="addon-box-radio" aria-hidden="true"></span>
+          <span class="addon-box-option-copy">
+            <strong>BOX ${index + 1}</strong>
+            <small>${escapeHtml(label)}</small>
+          </span>
+          <span class="addon-box-option-meta">${order.boxSize} cookies</span>
+        </button>
+      `;
+    })
+    .join("");
+
+  addonBoxList
+    .querySelectorAll("[data-addon-box-index]")
+    .forEach((button) => {
+      button.addEventListener("click", () => {
+        if (button.disabled) return;
+
+        activeAddonBoxIndex =
+          Number(button.dataset.addonBoxIndex);
+
+        renderAddonBoxChoices();
+        validateAddonModal();
+      });
+    });
+}
+
+function updateAddonMessageCounter() {
+  if (!addonMessage || !addonMessageCount) return;
+
+  addonMessage.value =
+    addonMessage.value.slice(0, 70);
+
+  addonMessageCount.textContent =
+    String(addonMessage.value.length);
+
+  validateAddonModal();
+}
+
+function validateAddonModal() {
+  const definition =
+    GOOKIE_ADDONS[activeAddonId];
+
+  if (!definition || !saveAddonButton) return false;
+
+  const hasBox =
+    Number.isInteger(activeAddonBoxIndex) &&
+    Boolean(cart[activeAddonBoxIndex]);
+
+  const message =
+    addonMessage?.value.trim() || "";
+
+  const messageValid =
+    !definition.requiresMessage ||
+    Boolean(message);
+
+  if (addonMessageError) {
+    addonMessageError.textContent =
+      definition.requiresMessage &&
+      addonMessage &&
+      addonMessage.value.length > 0 &&
+      !message
+        ? "Please enter a message."
+        : "";
+  }
+
+  saveAddonButton.disabled =
+    !hasBox || !messageValid;
+
+  return hasBox && messageValid;
+}
+
+function openAddonModal(addonId, options = {}) {
+  const definition =
+    GOOKIE_ADDONS[addonId];
+
+  if (!definition) return;
+
+  if (!cart.length) {
+    alert(
+      "Add a Gookie box to your cart first, then choose your add-on.",
+    );
+
+    document
+      .querySelector("#shopCatalogue")
+      ?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+
+    return;
+  }
+
+  activeAddonId = addonId;
+  editingAddonBoxIndex =
+    Number.isInteger(options.boxIndex)
+      ? options.boxIndex
+      : null;
+  editingAddonIndex =
+    Number.isInteger(options.addonIndex)
+      ? options.addonIndex
+      : null;
+
+  activeAddonBoxIndex =
+    editingAddonBoxIndex !== null
+      ? editingAddonBoxIndex
+      : cart.length === 1
+        ? 0
+        : null;
+
+  const existingAddon =
+    editingAddonBoxIndex !== null &&
+    editingAddonIndex !== null
+      ? cart[editingAddonBoxIndex]
+          ?.addons?.[editingAddonIndex]
+      : null;
+
+  addonModalEyebrow.textContent =
+    definition.name.toUpperCase();
+  addonModalName.textContent =
+    definition.name;
+  addonModalTitle.textContent =
+    existingAddon
+      ? `Edit ${definition.name}.`
+      : `Add ${definition.name}.`;
+  addonModalDescription.textContent =
+    definition.description;
+  addonModalPrice.textContent =
+    formatMoney(definition.price);
+  addonModalIcon.innerHTML =
+    `<i class="${definition.iconClass}"></i>`;
+
+  addonMessageHeading.textContent =
+    definition.messageHeading;
+  addonMessageHelp.textContent =
+    definition.messageHelp;
+  addonMessageRequirement.textContent =
+    definition.requiresMessage
+      ? "Required"
+      : "Optional";
+
+  addonMessage.value =
+    existingAddon?.message || "";
+  addonMessage.maxLength =
+    definition.messageMaxLength;
+  addonMessageError.textContent = "";
+
+  if (editingAddonBoxIndex !== null) {
+    addonBoxHelper.textContent =
+      "This add-on stays attached to the same box while you edit it.";
+  } else if (cart.length === 1) {
+    addonBoxHelper.textContent =
+      "You only have one box in your cart, so we’ll attach it there.";
+  } else {
+    addonBoxHelper.textContent =
+      "Choose the Gookie box that should receive this add-on.";
+  }
+
+  saveAddonButton.textContent =
+    existingAddon
+      ? "SAVE CHANGES"
+      : `ADD ${definition.name.toUpperCase()} · ${formatMoney(definition.price)}`;
+
+  renderAddonBoxChoices();
+  updateAddonMessageCounter();
+  validateAddonModal();
+
+  closeDrawer(cartDrawer);
+  openModal(addonModal);
+
+  setTimeout(() => {
+    if (
+      activeAddonBoxIndex !== null &&
+      addonMessage
+    ) {
+      addonMessage.focus();
+    }
+  }, 260);
+}
+
+function closeAddonEditor() {
+  closeModal(addonModal);
+
+  activeAddonId = null;
+  activeAddonBoxIndex = null;
+  editingAddonBoxIndex = null;
+  editingAddonIndex = null;
+
+  if (addonMessage) {
+    addonMessage.value = "";
+  }
+
+  if (addonMessageError) {
+    addonMessageError.textContent = "";
+  }
+}
+
+function saveAddonToCart() {
+  const definition =
+    GOOKIE_ADDONS[activeAddonId];
+
+  if (!definition) return;
+  if (!validateAddonModal()) return;
+
+  const selectedBoxIndex =
+    activeAddonBoxIndex;
+
+  const order =
+    cart[selectedBoxIndex];
+
+  if (!order) return;
+
+  const message =
+    addonMessage.value.trim();
+
+  const nextAddon = {
+    id: definition.id,
+    addonId: definition.addonId,
+    name: definition.name,
+    price: definition.price,
+    qty: 1,
+    message: message,
+  };
+
+  const addons =
+    cloneAddons(order.addons);
+
+  if (
+    editingAddonBoxIndex !== null &&
+    editingAddonIndex !== null
+  ) {
+    addons[editingAddonIndex] =
+      nextAddon;
+  } else {
+    const duplicateIndex =
+      addons.findIndex(
+        (addon) =>
+          addon.addonId === definition.addonId,
+      );
+
+    if (duplicateIndex !== -1) {
+      editingAddonBoxIndex =
+        selectedBoxIndex;
+      editingAddonIndex =
+        duplicateIndex;
+      activeAddonBoxIndex =
+        selectedBoxIndex;
+
+      addonModalTitle.textContent =
+        `Edit ${definition.name}.`;
+      saveAddonButton.textContent =
+        "SAVE CHANGES";
+
+      const existing =
+        addons[duplicateIndex];
+
+      addonMessage.value =
+        existing.message || "";
+
+      renderAddonBoxChoices();
+      updateAddonMessageCounter();
+      return;
+    }
+
+    addons.push(nextAddon);
+  }
+
+  cart[selectedBoxIndex] = {
+    ...order,
+    addons,
+  };
+
+  currentOrder =
+    cart[selectedBoxIndex];
+
+  resetCheckoutState();
+  updateCart();
+  closeAddonEditor();
+
+  setTimeout(() => {
+    openDrawer(
+      cartDrawer,
+      cartButton,
+    );
+  }, 80);
+}
+
+function removeAddonFromCart(boxIndex, addonIndex) {
+  const order =
+    cart[boxIndex];
+
+  if (!order) return;
+
+  const addons =
+    cloneAddons(order.addons);
+
+  if (!addons[addonIndex]) return;
+
+  addons.splice(addonIndex, 1);
+
+  cart[boxIndex] = {
+    ...order,
+    addons,
+  };
+
+  currentOrder =
+    cart[boxIndex];
+
+  resetCheckoutState();
+  updateCart();
+}
+
+function renderCartAddons(order, boxIndex) {
+  const addons =
+    cloneAddons(order.addons);
+
+  if (!addons.length) {
+    return `
+      <div class="cart-addon-block cart-addon-block-empty">
+        <p class="cart-addon-heading">ADD-ONS</p>
+        <div class="cart-addon-quick-actions">
+          <button
+            type="button"
+            data-quick-addon="party-kit"
+            data-addon-target-box="${boxIndex}"
+          >
+            + PARTY KIT · RM7
+          </button>
+          <button
+            type="button"
+            data-quick-addon="wishcard"
+            data-addon-target-box="${boxIndex}"
+          >
+            + WISH CARD · RM2
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  return `
+    <div class="cart-addon-block">
+      <p class="cart-addon-heading">ADD-ONS</p>
+
+      ${addons
+        .map((addon, addonIndex) => {
+          const definition =
+            getAddonDefinition(addon);
+
+          const name =
+            addon.name ||
+            definition?.name ||
+            "Add-on";
+
+          const message =
+            addon.message
+              ? `<span class="cart-addon-message">“${escapeHtml(addon.message)}”</span>`
+              : "";
+
+          return `
+            <div class="cart-addon-row">
+              <div class="cart-addon-copy">
+                <strong>+ ${escapeHtml(name)}</strong>
+                ${message}
+              </div>
+
+              <span class="cart-addon-price">
+                ${formatMoney(getAddonPrice(addon))}
+              </span>
+
+              <div class="cart-addon-actions">
+                <button
+                  type="button"
+                  data-edit-addon-box="${boxIndex}"
+                  data-edit-addon-index="${addonIndex}"
+                >
+                  EDIT
+                </button>
+
+                <button
+                  type="button"
+                  data-remove-addon-box="${boxIndex}"
+                  data-remove-addon-index="${addonIndex}"
+                >
+                  REMOVE
+                </button>
+              </div>
+            </div>
+          `;
+        })
+        .join("")}
+
+      <div class="cart-addon-quick-actions">
+        ${
+          addons.some((addon) => addon.addonId === "ADDON001")
+            ? ""
+            : `
+              <button
+                type="button"
+                data-quick-addon="party-kit"
+                data-addon-target-box="${boxIndex}"
+              >
+                + PARTY KIT · RM7
+              </button>
+            `
+        }
+
+        ${
+          addons.some((addon) => addon.addonId === "ADDON002")
+            ? ""
+            : `
+              <button
+                type="button"
+                data-quick-addon="wishcard"
+                data-addon-target-box="${boxIndex}"
+              >
+                + WISH CARD · RM2
+              </button>
+            `
+        }
+      </div>
+    </div>
+  `;
+}
+
 function resetCheckoutState() {
   checkoutState = {
     serverQuote: null,
@@ -1681,14 +2241,21 @@ function commitOrderToCart(order) {
     throw new Error("This Gookie box is incomplete.");
   }
 
+  const existingOrder =
+    editingCartIndex !== null
+      ? cart[editingCartIndex]
+      : null;
+
   const nextOrder = {
     ...order,
     cookies: [...order.cookies],
+    addons:
+      Array.isArray(order.addons)
+        ? cloneAddons(order.addons)
+        : cloneAddons(existingOrder?.addons),
     cartItemId:
       order.cartItemId ||
-      (editingCartIndex !== null
-        ? cart[editingCartIndex]?.cartItemId
-        : null) ||
+      existingOrder?.cartItemId ||
       createCartItemId(),
   };
 
@@ -1727,7 +2294,11 @@ function getCartItemPrice(order) {
 
 function getCartSubtotal() {
   return cart.reduce((total, order) => {
-    return total + getCartItemPrice(order);
+    return (
+      total +
+      getCartItemPrice(order) +
+      getOrderAddonTotal(order)
+    );
   }, 0);
 }
 
@@ -2035,7 +2606,10 @@ function updateCart() {
               <div class="cart-order-meta">
                 <span>${order.boxSize} cookies</span>
                 <strong>
-                  ${formatMoney(getCartItemPrice(order))}
+                  ${formatMoney(
+                    getCartItemPrice(order) +
+                    getOrderAddonTotal(order)
+                  )}
                 </strong>
               </div>
             </div>
@@ -2043,6 +2617,8 @@ function updateCart() {
             <div class="cart-flavour-list">
               ${getCartFlavourSummary(order)}
             </div>
+
+            ${renderCartAddons(order, index)}
 
             <div class="cart-action-row">
               <button
@@ -2091,6 +2667,57 @@ function updateCart() {
       button.addEventListener("click", () => {
         removeCartItem(
           Number(button.dataset.removeCartIndex),
+        );
+      });
+    });
+
+  cartOrderSummary
+    .querySelectorAll("[data-quick-addon]")
+    .forEach((button) => {
+      button.addEventListener("click", () => {
+        openAddonModal(
+          button.dataset.quickAddon,
+          {
+            boxIndex:
+              Number(button.dataset.addonTargetBox),
+          },
+        );
+      });
+    });
+
+  cartOrderSummary
+    .querySelectorAll("[data-edit-addon-box]")
+    .forEach((button) => {
+      button.addEventListener("click", () => {
+        const boxIndex =
+          Number(button.dataset.editAddonBox);
+        const addonIndex =
+          Number(button.dataset.editAddonIndex);
+        const addon =
+          cart[boxIndex]?.addons?.[addonIndex];
+
+        if (!addon) return;
+
+        openAddonModal(
+          addon.id ||
+            (addon.addonId === "ADDON001"
+              ? "party-kit"
+              : "wishcard"),
+          {
+            boxIndex,
+            addonIndex,
+          },
+        );
+      });
+    });
+
+  cartOrderSummary
+    .querySelectorAll("[data-remove-addon-box]")
+    .forEach((button) => {
+      button.addEventListener("click", () => {
+        removeAddonFromCart(
+          Number(button.dataset.removeAddonBox),
+          Number(button.dataset.removeAddonIndex),
         );
       });
     });
@@ -2235,6 +2862,34 @@ function renderCheckoutReview() {
             })
             .join("");
 
+        const addonRows =
+          cloneAddons(order.addons)
+            .map((addon) => {
+              const definition =
+                getAddonDefinition(addon);
+
+              const name =
+                addon.name ||
+                definition?.name ||
+                "Add-on";
+
+              const message =
+                addon.message
+                  ? `<small>“${escapeHtml(addon.message)}”</small>`
+                  : "";
+
+              return `
+                <div class="checkout-review-addon">
+                  <span>
+                    + ${escapeHtml(name)}
+                    ${message}
+                  </span>
+                  <strong>${formatMoney(getAddonPrice(addon))}</strong>
+                </div>
+              `;
+            })
+            .join("");
+
         return `
           <section class="checkout-multi-box">
             <div class="checkout-order-header">
@@ -2254,6 +2909,17 @@ function renderCheckoutReview() {
             <div class="checkout-review-flavours">
               ${flavourRows}
             </div>
+
+            ${
+              addonRows
+                ? `
+                  <div class="checkout-review-addons">
+                    <p>ADD-ONS</p>
+                    ${addonRows}
+                  </div>
+                `
+                : ""
+            }
           </section>
         `;
       })
@@ -2318,9 +2984,15 @@ function renderPaymentStep() {
 
   currentOrderId = null;
 
+  const addonCount =
+    getCartAddonCount();
+
   paymentBoxSummary.textContent =
     `${getCartBoxCount()} ${getCartBoxCount() === 1 ? "box" : "boxes"} · ` +
-    `${getCartCookieCount()} cookies`;
+    `${getCartCookieCount()} cookies` +
+    (addonCount
+      ? ` · ${addonCount} ${addonCount === 1 ? "add-on" : "add-ons"}`
+      : "");
 
   paymentSubtotal.textContent = formatMoney(
     quote.subtotal,
@@ -2402,6 +3074,12 @@ async function openPaymentStep() {
     }
 
     checkoutState.serverQuote = {
+      boxSubtotal: Number(
+        result.totals.boxSubtotal || 0,
+      ),
+      addonSubtotal: Number(
+        result.totals.addonSubtotal || 0,
+      ),
       subtotal: Number(result.totals.subtotal),
 
       discount: Number(
@@ -2476,11 +3154,37 @@ function getWhatsAppMessage() {
           .filter(Boolean)
           .join("\n");
 
+      const addonLines =
+        cloneAddons(order.addons)
+          .map((addon) => {
+            const definition =
+              getAddonDefinition(addon);
+
+            const name =
+              addon.name ||
+              definition?.name ||
+              "Add-on";
+
+            const message =
+              addon.message
+                ? ` — "${addon.message}"`
+                : "";
+
+            return (
+              `   + ${name} · ${formatMoney(getAddonPrice(addon))}` +
+              message
+            );
+          })
+          .join("\n");
+
       return [
         `BOX ${index + 1}: ${order.boxName}`,
         `${order.type} · ${order.boxSize} cookies`,
         itemLines,
-      ].join("\n");
+        addonLines,
+      ]
+        .filter(Boolean)
+        .join("\n");
     })
     .join("\n\n");
 
@@ -3594,28 +4298,33 @@ document
 
 
 /* =========================================================
-   ADD-ONS — UI STATE ONLY FOR NOW
-   Checkout data model will be extended in the next wiring pass.
+   ADD-ONS — ATTACH TO A SPECIFIC BOX
 ========================================================= */
 
 document
   .querySelectorAll("[data-addon]")
   .forEach((button) => {
     button.addEventListener("click", () => {
-      const added =
-        button.classList.toggle("is-added");
-
-      const label =
-        button.dataset.addon === "party-kit"
-          ? "PARTY KIT"
-          : "WISHCARD";
-
-      button.textContent =
-        added
-          ? `✓ ${label} SELECTED`
-          : `ADD ${label} →`;
+      openAddonModal(
+        button.dataset.addon,
+      );
     });
   });
+
+addonModalClose?.addEventListener(
+  "click",
+  closeAddonEditor,
+);
+
+addonMessage?.addEventListener(
+  "input",
+  updateAddonMessageCounter,
+);
+
+saveAddonButton?.addEventListener(
+  "click",
+  saveAddonToCart,
+);
 
 
 if (shopCategoryTabs.length) {
